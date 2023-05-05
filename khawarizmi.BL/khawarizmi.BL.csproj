@@ -6,4 +6,8 @@
     <Nullable>enable</Nullable>
   </PropertyGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\khawarizmi.DAL\khawarizmi.DAL.csproj" />
+  </ItemGroup>
+
 </Project>
