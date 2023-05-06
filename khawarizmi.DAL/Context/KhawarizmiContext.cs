@@ -35,5 +35,9 @@ public class KhawarizmiContext : IdentityDbContext<User>
             .WithMany(u => u.Feedbacks)
             .HasForeignKey(f => f.UserId)
             .OnDelete(DeleteBehavior.Restrict); // to prevent multiple cascading paths and cycles
+
+        builder.Entity<Course>()
+            .Property(c => c.IsPublished)
+            .HasDefaultValue(false);
     }
 }

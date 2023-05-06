@@ -9,5 +9,5 @@ namespace khawarizmi.BL.Managers;
 
 public interface ICoursesManager
 {
-    void AddNewCourse(int userId, CourseAddDto newCourse);
+    void AddNewCourse(string userId, CourseAddDto newCourse);
 }

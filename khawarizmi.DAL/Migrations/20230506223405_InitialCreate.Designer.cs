@@ -12,8 +12,8 @@ using khawarizmi.DAL.Context;
 namespace khawarizmi.DAL.Migrations
 {
     [DbContext(typeof(KhawarizmiContext))]
-    [Migration("20230505193633_FixRelationshipIssues")]
-    partial class FixRelationshipIssues
+    [Migration("20230506223405_InitialCreate")]
+    partial class InitialCreate
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -217,10 +217,10 @@ namespace khawarizmi.DAL.Migrations
                         .HasColumnType("int");
 
                     b.Property<string>("CourseImage")
-                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Description")
+                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<int?>("DownVotes")
@@ -233,7 +233,9 @@ namespace khawarizmi.DAL.Migrations
                         .HasColumnType("bit");
 
                     b.Property<bool>("IsPublished")
-                        .HasColumnType("bit");
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("bit")
+                        .HasDefaultValue(false);
 
                     b.Property<string>("Name")
                         .IsRequired()
