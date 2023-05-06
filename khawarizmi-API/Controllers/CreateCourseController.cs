@@ -21,19 +21,19 @@ public class CreateCourseController : ControllerBase
     }
 
 	[HttpGet]
-	[Route("/categories")]
+	[Route("/CreateCourse/categories")]
 	public ActionResult<List<CategoryReadDto>> GetCategories()
 	{
 		return _categoriesManager.GetAllCategories();
     }
 	[HttpGet]
-	[Route("/{category}/tags")]
+	[Route("/CreateCourse/{category}/tags")]
 	public ActionResult<List<TagReadDto>> GetTags(string category)
 	{
 		return _tagsManager.GetTagsByCategory(category);
     }
 	[HttpPost]
-	[Route("/NewCourse/{userId}")]
+	[Route("/CreateCourse/{userId}")]
 	public IActionResult PostNewCourse(string userId, CourseAddDto newCourse)
 	{
         _coursesManager.AddNewCourse(userId, newCourse);
