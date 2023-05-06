@@ -6,4 +6,17 @@
     <Nullable>enable</Nullable>
   </PropertyGroup>
 
+  <ItemGroup>
+    <Folder Include="Dtos\Lessons\" />
+    <Folder Include="Dtos\Feedback\" />
+    <Folder Include="Dtos\Users\" />
+    <Folder Include="Managers\Feedback\" />
+    <Folder Include="Managers\Lessons\" />
+    <Folder Include="Managers\Users\" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\khawarizmi.DAL\khawarizmi.DAL.csproj" />
+  </ItemGroup>
+
 </Project>
