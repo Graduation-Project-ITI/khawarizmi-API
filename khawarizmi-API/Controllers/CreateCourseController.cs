@@ -27,7 +27,7 @@ public class CreateCourseController : ControllerBase
 		return _categoriesManager.GetAllCategories();
     }
 	[HttpGet]
-	[Route("{category}/tags")]
+	[Route("/{category}/tags")]
 	public ActionResult<List<TagReadDto>> GetTags(string category)
 	{
 		return _tagsManager.GetTagsByCategory(category);
