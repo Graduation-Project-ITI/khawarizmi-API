@@ -7,7 +7,9 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Folder Include="Repos\" />
+    <Compile Remove="Repos\**" />
+    <EmbeddedResource Remove="Repos\**" />
+    <None Remove="Repos\**" />
   </ItemGroup>
 
   <ItemGroup>
@@ -19,6 +21,12 @@
       <PrivateAssets>all</PrivateAssets>
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
     </PackageReference>
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="Repositories\Feedback\" />
+    <Folder Include="Repositories\Lessons\" />
+    <Folder Include="Repositories\Users\" />
   </ItemGroup>
 
 </Project>
