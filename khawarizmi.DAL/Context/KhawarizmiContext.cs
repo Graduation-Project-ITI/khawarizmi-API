@@ -41,7 +41,8 @@ public class KhawarizmiContext : IdentityDbContext<User>
             .Property(c => c.IsPublished)
             .HasDefaultValue(false);
 
-        // Data Seeding
+        #region Data Seeding
+
         builder.Entity<Category>()
             .HasData(
             new { Id = 1, Name = "Web Development" },
@@ -207,5 +208,6 @@ public class KhawarizmiContext : IdentityDbContext<User>
                         new{ CategoriesId= 10, TagsId=63 }
 
                     ));
+        #endregion
     }
 }
