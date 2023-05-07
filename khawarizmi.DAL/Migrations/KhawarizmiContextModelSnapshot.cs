@@ -603,10 +603,10 @@ namespace khawarizmi.DAL.Migrations
                         .HasColumnType("int");
 
                     b.Property<string>("CourseImage")
-                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Description")
+                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<int?>("DownVotes")
@@ -619,7 +619,9 @@ namespace khawarizmi.DAL.Migrations
                         .HasColumnType("bit");
 
                     b.Property<bool>("IsPublished")
-                        .HasColumnType("bit");
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("bit")
+                        .HasDefaultValue(false);
 
                     b.Property<string>("Name")
                         .IsRequired()

@@ -37,7 +37,12 @@ public class KhawarizmiContext : IdentityDbContext<User>
             .HasForeignKey(f => f.UserId)
             .OnDelete(DeleteBehavior.Restrict); // to prevent multiple cascading paths and cycles
 
-        // Data Seeding
+        builder.Entity<Course>()
+            .Property(c => c.IsPublished)
+            .HasDefaultValue(false);
+
+        #region Data Seeding
+
         builder.Entity<Category>()
             .HasData(
             new { Id = 1, Name = "Web Development" },
@@ -203,5 +208,6 @@ public class KhawarizmiContext : IdentityDbContext<User>
                         new{ CategoriesId= 10, TagsId=63 }
 
                     ));
+        #endregion
     }
 }
