@@ -1,5 +1,6 @@
 ﻿using khawarizmi.DAL.Context;
 using khawarizmi.DAL.Models;
+using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -15,10 +16,15 @@ public class CategoriesRepo : GenericRepo<Category>, ICategoriesRepo
     {
         _context = context;
     }
-    public Category? GetCategoryByName(string category)
+    public Category? GetCategoryByIdWithTags(int categoryId)
     {
-        Category? _category = _context.Set<Category>().FirstOrDefault(c => c.Name == category);
+        Category? _category = _context.Set<Category>().Include(c => c.Tags).FirstOrDefault(c => c.Id == categoryId);
         if(_category == null) { return null; }
         return _category;
+    }
+
+    public IEnumerable<Category> GetCategories() 
+    { 
+        return _context.Categories;
     }
 }

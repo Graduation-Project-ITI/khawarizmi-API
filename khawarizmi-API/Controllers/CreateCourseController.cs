@@ -27,10 +27,10 @@ public class CreateCourseController : ControllerBase
 		return _categoriesManager.GetAllCategories();
     }
 	[HttpGet]
-	[Route("/CreateCourse/{category}/tags")]
-	public ActionResult<List<TagReadDto>> GetTags(string category)
+	[Route("/CreateCourse/{categoryId}/tags")]
+	public ActionResult<List<TagReadDto>> GetTags(int categoryId)
 	{
-		return _tagsManager.GetTagsByCategory(category);
+		return _tagsManager.GetTagsByCategory(categoryId);
     }
 	[HttpPost]
 	[Route("/CreateCourse/{userId}")]

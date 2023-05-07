@@ -18,10 +18,10 @@ public class TagsRepo : GenericRepo<Tag>, ITagsRepo
         _context = context;
         _categoriesRepo = categoriesRepo;
     }
-    public IQueryable<Tag> GetTagsByCategory(string category)
+    public ICollection<Tag> GetTagsByCategoryId(int categoryId)
     {
-        Category? _category = _categoriesRepo.GetCategoryByName(category);
+        Category? category = _categoriesRepo.GetCategoryByIdWithTags(categoryId);
 
-        return _context.Set<Tag>().Include(t => t.Categories).Where(t => t.Categories.Contains(_category ?? new Category()));
+        return category.Tags;
     }
 }

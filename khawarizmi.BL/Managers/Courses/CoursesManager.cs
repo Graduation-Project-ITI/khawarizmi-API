@@ -23,19 +23,21 @@ public class CoursesManager : ICoursesManager
     }
     public void AddNewCourse(string userId, CourseAddDto newCourse)
     {
-        IQueryable<Tag> tags = _tagsRepo.GetTagsByCategory(newCourse.Category);
+        //IQueryable<Tag> tags = _tagsRepo.GetTagsByCategoryId(newCourse.CategoryId);
 
-        Category? category = _categoriesRepo.GetCategoryByName(newCourse.Category);
+        Category? category = _categoriesRepo.GetCategoryByIdWithTags(newCourse.CategoryId);
         if(category == null) { return; }
 
         Course CourseToAdd = new Course() 
         {
-            Name = newCourse.Title, 
+            Name = newCourse.Title,
             Description = newCourse.Description, 
-            CourseImage = newCourse.Image ?? "" ,
-            CategoryId = category.Id,
-            Tags = tags.ToList(),
-            UserId = userId
+            CourseImage = newCourse.Image ?? "",
+            CategoryId = newCourse.CategoryId,
+            Tags = category?.Tags?.Where(t => newCourse.TagsIds.Contains(t.Id.ToString())).ToList(),
+            UserId = userId,
+            DownVotes = 0,
+            UpVotes = 0
         };
 
         _coursesRepo.AddNewCourse(CourseToAdd);
