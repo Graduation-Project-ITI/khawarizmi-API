@@ -9,5 +9,6 @@ namespace khawarizmi.DAL.Repositories;
 
 public interface ICategoriesRepo : IGenericRepo<Category>
 {
-    Category? GetCategoryByName(string category);
+    Category? GetCategoryByIdWithTags(int categoryId);
+    public IEnumerable<Category> GetCategories();
 }

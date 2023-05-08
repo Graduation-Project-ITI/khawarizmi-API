@@ -16,10 +16,10 @@ public class TagsManager : ITagsManager
 	{
         _tagsRepo = tagsRepo;
 	}
-    public List<TagReadDto> GetTagsByCategory(string category)
+    public List<TagReadDto> GetTagsByCategory(int categoryId)
     {
-        IQueryable<TagReadDto> relatedTags = _tagsRepo.GetTagsByCategory(category).Select(t => new TagReadDto(t.Id,t.Name));
+        List<TagReadDto> relatedTags = _tagsRepo.GetTagsByCategoryId(categoryId).Select(t => new TagReadDto(t.Id,t.Name)).ToList();
 
-        return relatedTags.ToList();
+        return relatedTags;
     }
 }
