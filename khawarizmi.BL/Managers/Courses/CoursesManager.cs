@@ -1,6 +1,7 @@
 ﻿using khawarizmi.BL.Dtos;
 using khawarizmi.DAL.Models;
 using khawarizmi.DAL.Repositories;
+using Microsoft.AspNetCore.Http.Authentication.Internal;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -11,6 +12,7 @@ namespace khawarizmi.BL.Managers;
 
 public class CoursesManager : ICoursesManager
 {
+    private string DefaultCourseImage = "https://chemonics.com/wp-content/uploads/2017/08/JobsPages_GenericBanner.jpg";
     private readonly ITagsRepo _tagsRepo;
     private readonly ICoursesRepo _coursesRepo;
     private readonly ICategoriesRepo _categoriesRepo;
@@ -32,7 +34,7 @@ public class CoursesManager : ICoursesManager
         {
             Name = newCourse.Title,
             Description = newCourse.Description, 
-            CourseImage = newCourse.Image ?? "",
+            CourseImage = newCourse.Image ?? DefaultCourseImage,
             CategoryId = newCourse.CategoryId,
             Tags = category?.Tags?.Where(t => newCourse.TagsIds.Contains(t.Id.ToString())).ToList(),
             UserId = userId,
@@ -41,5 +43,29 @@ public class CoursesManager : ICoursesManager
         };
 
         _coursesRepo.AddNewCourse(CourseToAdd);
+    }
+
+    public CourseDisplayDto? GetCourseById(int courseId)
+    {
+        Course? c = _coursesRepo.GetCourseById(courseId);
+        if (c == null) return null;
+
+        IEnumerable<TagReadDto>? tags = c?.Tags?.Select(t => new TagReadDto(t.Id, t.Name));
+        IEnumerable<FeedbackReadDto>? feedbacks = c?.Feedbacks?.Select(t => new FeedbackReadDto(t.Id, t.body));
+        IEnumerable<LessonReadDto>? lessons = c?.Lessons?.Select(t => new LessonReadDto(t.Id, t.Name, t.Description??"", t.VideoURL, t.IsPublished));
+        string publisher = c.User.UserName??"";
+
+        return new CourseDisplayDto(courseId,
+                                    c.Name,
+                                    c.Description,
+                                    c.CourseImage ?? DefaultCourseImage,
+                                    c.UpVotes,
+                                    c.DownVotes,
+                                    c.IsPublished,
+                                    c.CategoryId,
+                                    publisher,
+                                    tags,
+                                    feedbacks,
+                                    lessons );
     }
 }

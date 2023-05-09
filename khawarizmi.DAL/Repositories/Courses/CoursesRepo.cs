@@ -1,5 +1,6 @@
 ﻿using khawarizmi.DAL.Context;
 using khawarizmi.DAL.Models;
+using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -20,5 +21,14 @@ public class CoursesRepo : GenericRepo<Course>, ICoursesRepo
         _context.Set<Course>().Add(course);
 
         _context.SaveChanges();
+    }
+    public Course? GetCourseById(int courseId)
+    {
+        return _context.Set<Course>()
+                        .Include(c => c.Tags)
+                        .Include(c => c.Feedbacks)
+                        .Include(c => c.Lessons)
+                        .Include(c => c.User)
+                        .FirstOrDefault(c => c.Id == courseId);
     }
 }
