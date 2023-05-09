@@ -373,6 +373,8 @@ namespace khawarizmi.DAL.Migrations
                             TagsId = 63
                         });
                 });
+                    b.ToTable("CategoryTag", (string)null);
+                });
 
             modelBuilder.Entity("CourseTag", b =>
                 {
@@ -386,7 +388,7 @@ namespace khawarizmi.DAL.Migrations
 
                     b.HasIndex("TagsId");
 
-                    b.ToTable("CourseTag");
+                    b.ToTable("CourseTag", (string)null);
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRole", b =>
@@ -589,6 +591,7 @@ namespace khawarizmi.DAL.Migrations
                             Id = 10,
                             Name = "No-Code Development"
                         });
+                    b.ToTable("Categories", (string)null);
                 });
 
             modelBuilder.Entity("khawarizmi.DAL.Models.Course", b =>
@@ -640,7 +643,7 @@ namespace khawarizmi.DAL.Migrations
 
                     b.HasIndex("UserId");
 
-                    b.ToTable("Courses");
+                    b.ToTable("Courses", (string)null);
                 });
 
             modelBuilder.Entity("khawarizmi.DAL.Models.Feedback", b =>
@@ -668,7 +671,7 @@ namespace khawarizmi.DAL.Migrations
 
                     b.HasIndex("UserId");
 
-                    b.ToTable("Feedbacks");
+                    b.ToTable("Feedbacks", (string)null);
                 });
 
             modelBuilder.Entity("khawarizmi.DAL.Models.Lesson", b =>
@@ -700,7 +703,7 @@ namespace khawarizmi.DAL.Migrations
 
                     b.HasIndex("CourseId");
 
-                    b.ToTable("Lessons");
+                    b.ToTable("Lessons", (string)null);
                 });
 
             modelBuilder.Entity("khawarizmi.DAL.Models.Tag", b =>
@@ -1035,6 +1038,7 @@ namespace khawarizmi.DAL.Migrations
                             Id = 63,
                             Name = "Elementor"
                         });
+                    b.ToTable("Tags", (string)null);
                 });
 
             modelBuilder.Entity("khawarizmi.DAL.Models.User", b =>
