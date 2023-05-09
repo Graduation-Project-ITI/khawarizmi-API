@@ -48,12 +48,13 @@ public class CoursesManager : ICoursesManager
     public CourseDisplayDto? GetCourseById(int courseId)
     {
         Course? c = _coursesRepo.GetCourseById(courseId);
-        if (c == null) return null;
 
         IEnumerable<TagReadDto>? tags = c?.Tags?.Select(t => new TagReadDto(t.Id, t.Name));
         IEnumerable<FeedbackReadDto>? feedbacks = c?.Feedbacks?.Select(t => new FeedbackReadDto(t.Id, t.body));
         IEnumerable<LessonReadDto>? lessons = c?.Lessons?.Select(t => new LessonReadDto(t.Id, t.Name, t.Description??"", t.VideoURL, t.IsPublished));
-        string publisher = c.User.UserName??"";
+        
+        if (c == null) return null;
+        string publisher = c.User.UserName ?? "";
 
         return new CourseDisplayDto(courseId,
                                     c.Name,
