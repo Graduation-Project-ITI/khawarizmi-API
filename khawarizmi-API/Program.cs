@@ -1,7 +1,9 @@
 using khawarizmi.BL.Managers;
 using khawarizmi.DAL.Context;
+using khawarizmi.DAL.Models;
 using khawarizmi.DAL.Repositories;
 using Microsoft.AspNetCore.Cors.Infrastructure;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -29,16 +31,17 @@ builder.Services.AddScoped<ICategoriesManager, CategoriesManager>();
 builder.Services.AddScoped<ITagsManager, TagsManager>();
 #endregion
 
-#region Cors Service
-var corsPolicy = "corsPolicy";
-
-builder.Services.AddCors(options => 
-{
-    options.AddPolicy(corsPolicy, builder => 
+#region IdentityManager
+builder.Services.AddIdentity<User, IdentityRole>(
+    options =>
     {
-        builder.AllowAnyOrigin().AllowAnyHeader().AllowAnyMethod();
-    });
-});
+       
+        options.Password.RequireLowercase = false;
+        options.Password.RequireUppercase = false;
+        options.User.RequireUniqueEmail = true;
+        
+    }
+).AddEntityFrameworkStores<KhawarizmiContext>();
 #endregion
 
 var app = builder.Build();
@@ -49,8 +52,6 @@ if (app.Environment.IsDevelopment())
     app.UseSwagger();
     app.UseSwaggerUI();
 }
-
-app.UseCors(corsPolicy);
 
 app.UseHttpsRedirection();
 
