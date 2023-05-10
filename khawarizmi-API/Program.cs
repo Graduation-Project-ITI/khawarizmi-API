@@ -10,6 +10,9 @@ using Microsoft.IdentityModel.Tokens;
 using System.Drawing.Imaging;
 using System.Security.Claims;
 using System.Text;
+using khawarizmi.BL.Managers.StorageService;
+using Microsoft.Extensions.Azure;
+using Microsoft.AspNetCore.Http.Features;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -24,6 +27,11 @@ builder.Services.AddSwaggerGen();
 var connectionString = builder.Configuration.GetConnectionString("connStr");
 builder.Services.AddDbContext<KhawarizmiContext>(options => options.UseSqlServer(connectionString));
 
+// service for storing data to MS Azure Blob Storage
+builder.Services.AddAzureClients(options=>
+{
+    options.AddBlobServiceClient(builder.Configuration.GetSection("Storage:ConnectionString").Value); // might be an issue here
+});
 
 #region IdentityManager
 builder.Services.AddIdentity<User, IdentityRole>(
@@ -46,6 +54,7 @@ builder.Services.AddScoped<ITagsRepo, TagsRepo>();
 builder.Services.AddScoped<ICoursesManager, CoursesManager>();
 builder.Services.AddScoped<ICategoriesManager, CategoriesManager>();
 builder.Services.AddScoped<ITagsManager, TagsManager>();
+builder.Services.AddTransient<IStorageService, StorageService>();
 #endregion
 
 #region Cors Service
@@ -107,6 +116,12 @@ builder.Services.AddCors(options =>
 });
 
 #endregion
+
+// increasing the maximum multipart body length limit to 10MB
+builder.Services.Configure<FormOptions>(options =>
+{
+    options.MultipartBodyLengthLimit = 10 * 1024 * 1024;
+});
 
 
 var app = builder.Build();
