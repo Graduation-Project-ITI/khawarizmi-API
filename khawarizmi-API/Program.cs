@@ -4,10 +4,8 @@ using khawarizmi.DAL.Models;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using khawarizmi.DAL.Repositories;
-using Microsoft.AspNetCore.Cors.Infrastructure;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
-using System.Drawing.Imaging;
 using System.Security.Claims;
 using System.Text;
 
@@ -24,18 +22,6 @@ builder.Services.AddSwaggerGen();
 var connectionString = builder.Configuration.GetConnectionString("connStr");
 builder.Services.AddDbContext<KhawarizmiContext>(options => options.UseSqlServer(connectionString));
 
-
-#region IdentityManager
-builder.Services.AddIdentity<User, IdentityRole>(
-    options =>
-    {
-       
-        options.Password.RequireLowercase = false;
-        options.Password.RequireUppercase = false;
-        options.User.RequireUniqueEmail = true;
-        
-    }
-).AddEntityFrameworkStores<KhawarizmiContext>();
 #region Repositories
 builder.Services.AddScoped<ICoursesRepo, CoursesRepo>();
 builder.Services.AddScoped<ICategoriesRepo, CategoriesRepo>();
@@ -48,18 +34,17 @@ builder.Services.AddScoped<ICategoriesManager, CategoriesManager>();
 builder.Services.AddScoped<ITagsManager, TagsManager>();
 #endregion
 
-#region Cors Service
-var corsPolicy = "corsPolicy";
-
-builder.Services.AddCors(options => 
-{
-    options.AddPolicy(corsPolicy, builder => 
+#region IdentityManager
+builder.Services.AddIdentity<User, IdentityRole>(
+    options =>
     {
-        builder.AllowAnyOrigin().AllowAnyHeader().AllowAnyMethod();
-    });
-});
-#endregion
-
+       
+        options.Password.RequireLowercase = false;
+        options.Password.RequireUppercase = false;
+        options.User.RequireUniqueEmail = true;
+        
+    }
+).AddEntityFrameworkStores<KhawarizmiContext>();
 #endregion
 
 #region JWTBearer
@@ -108,7 +93,6 @@ builder.Services.AddCors(options =>
 
 #endregion
 
-
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
@@ -118,8 +102,6 @@ if (app.Environment.IsDevelopment())
     app.UseSwaggerUI();
 }
 app.UseCors("MyCorsPolicy");
-
-app.UseCors(corsPolicy);
 
 app.UseHttpsRedirection();
 
