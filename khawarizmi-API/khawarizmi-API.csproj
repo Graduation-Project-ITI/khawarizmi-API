@@ -25,10 +25,6 @@
 
   <ItemGroup>
     <ProjectReference Include="..\khawarizmi.BL\khawarizmi.BL.csproj" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <ProjectReference Include="..\khawarizmi.BL\khawarizmi.BL.csproj" />
     <ProjectReference Include="..\khawarizmi.DAL\khawarizmi.DAL.csproj" />
   </ItemGroup>
 
