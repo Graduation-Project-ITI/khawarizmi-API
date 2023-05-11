@@ -8,6 +8,12 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
 using System.Security.Claims;
 using System.Text;
+using khawarizmi.BL.Managers.StorageService;
+using Microsoft.Extensions.Azure;
+using Microsoft.AspNetCore.Http.Features;
+using Microsoft.Extensions.FileProviders;
+using khawarizmi.BL.Managers.Lessons;
+using khawarizmi.DAL.Repositories.Lessons;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -22,16 +28,39 @@ builder.Services.AddSwaggerGen();
 var connectionString = builder.Configuration.GetConnectionString("connStr");
 builder.Services.AddDbContext<KhawarizmiContext>(options => options.UseSqlServer(connectionString));
 
+<<<<<<< HEAD
+=======
+// service for storing data to MS Azure Blob Storage
+builder.Services.AddAzureClients(options=>
+{
+    options.AddBlobServiceClient(builder.Configuration.GetSection("Storage:ConnectionString").Value); // might be an issue here
+});
+
+#region IdentityManager
+builder.Services.AddIdentity<User, IdentityRole>(
+    options =>
+    {
+       
+        options.Password.RequireLowercase = false;
+        options.Password.RequireUppercase = false;
+        options.User.RequireUniqueEmail = true;
+        
+    }
+).AddEntityFrameworkStores<KhawarizmiContext>();
+>>>>>>> nagy
 #region Repositories
 builder.Services.AddScoped<ICoursesRepo, CoursesRepo>();
 builder.Services.AddScoped<ICategoriesRepo, CategoriesRepo>();
 builder.Services.AddScoped<ITagsRepo, TagsRepo>();
+builder.Services.AddScoped<ILessonRepo, LessonRepo>();
 #endregion
 
 #region Managers
 builder.Services.AddScoped<ICoursesManager, CoursesManager>();
 builder.Services.AddScoped<ICategoriesManager, CategoriesManager>();
 builder.Services.AddScoped<ITagsManager, TagsManager>();
+builder.Services.AddTransient<IStorageService, StorageService>();
+builder.Services.AddScoped<ILessonsManager, LessonsManager>();
 #endregion
 
 #region IdentityManager
@@ -93,6 +122,16 @@ builder.Services.AddCors(options =>
 
 #endregion
 
+<<<<<<< HEAD
+=======
+// increasing the maximum multipart body length limit to 10MB
+builder.Services.Configure<FormOptions>(options =>
+{
+    options.MultipartBodyLengthLimit = 20 * 1024 * 1024;
+});
+
+
+>>>>>>> nagy
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
@@ -104,6 +143,16 @@ if (app.Environment.IsDevelopment())
 app.UseCors("MyCorsPolicy");
 
 app.UseHttpsRedirection();
+
+// to serve satatic files
+app.UseStaticFiles(new StaticFileOptions
+{
+    // now we can access any file in the "Uploads" folder like this:
+    // https://<hostname>/Uploads/Images/red-rose.jpg or
+    // https://<hostname>/Uploads/Videos/video.mp4
+    FileProvider = new PhysicalFileProvider(Path.Combine(builder.Environment.ContentRootPath, "Uploads")),
+    RequestPath = "/Uploads"
+});
 
 app.UseAuthentication();
 app.UseAuthorization();

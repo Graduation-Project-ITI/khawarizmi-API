@@ -4,6 +4,6 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace khawarizmi.BL.Dtos;
+namespace khawarizmi.BL.Dtos.Lessons;
 
-public record LessonReadDto(int Id, string Name, string Description, string VideoURL, bool? IsPublished);
+public record LessonReadDto();

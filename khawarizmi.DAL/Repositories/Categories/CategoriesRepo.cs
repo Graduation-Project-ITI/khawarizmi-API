@@ -13,7 +13,7 @@ public class CategoriesRepo : GenericRepo<Category>, ICategoriesRepo
 {
     private readonly KhawarizmiContext _context;
     public CategoriesRepo(KhawarizmiContext context) : base(context)
-    {
+    {   
         _context = context;
     }
     public Category? GetCategoryByIdWithTags(int categoryId)

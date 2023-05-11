@@ -19,6 +19,7 @@
       <PrivateAssets>all</PrivateAssets>
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
     </PackageReference>
+    <PackageReference Include="Microsoft.Extensions.Azure" Version="1.6.3" />
     <PackageReference Include="Swashbuckle.AspNetCore" Version="6.4.0" />
     <PackageReference Include="System.IdentityModel.Tokens.Jwt" Version="6.30.0" />
   </ItemGroup>
@@ -30,6 +31,11 @@
   <ItemGroup>
     <ProjectReference Include="..\khawarizmi.BL\khawarizmi.BL.csproj" />
     <ProjectReference Include="..\khawarizmi.DAL\khawarizmi.DAL.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="Uploads\Images\" />
+    <Folder Include="Uploads\Videos\" />
   </ItemGroup>
 
 </Project>
