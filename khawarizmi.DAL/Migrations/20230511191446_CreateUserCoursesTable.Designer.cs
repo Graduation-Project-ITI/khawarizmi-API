@@ -12,8 +12,8 @@ using khawarizmi.DAL.Context;
 namespace khawarizmi.DAL.Migrations
 {
     [DbContext(typeof(KhawarizmiContext))]
-    [Migration("20230511123806_InitialCreation")]
-    partial class InitialCreation
+    [Migration("20230511191446_CreateUserCoursesTable")]
+    partial class CreateUserCoursesTable
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)

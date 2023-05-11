@@ -19,6 +19,7 @@ public class KhawarizmiContext : IdentityDbContext<User>
     public DbSet<Feedback> Feedbacks => Set<Feedback>();
     public DbSet<Lesson> Lessons => Set<Lesson>();
     public DbSet<Tag> Tags => Set<Tag>();
+    public DbSet<UserCourses> UserCourses => Set<UserCourses>();
 
     public KhawarizmiContext(DbContextOptions<KhawarizmiContext> options) : base(options)
     {
