@@ -12,7 +12,7 @@ namespace khawarizmi.BL.Managers;
 
 public class CoursesManager : ICoursesManager
 {
-    private string DefaultCourseImage = "https://chemonics.com/wp-content/uploads/2017/08/JobsPages_GenericBanner.jpg";
+    private readonly string DefaultCourseImage = "https://chemonics.com/wp-content/uploads/2017/08/JobsPages_GenericBanner.jpg";
     private readonly ITagsRepo _tagsRepo;
     private readonly ICoursesRepo _coursesRepo;
     private readonly ICategoriesRepo _categoriesRepo;
@@ -25,21 +25,23 @@ public class CoursesManager : ICoursesManager
     }
     public void AddNewCourse(string userId, CourseAddDto newCourse)
     {
-        //IQueryable<Tag> tags = _tagsRepo.GetTagsByCategoryId(newCourse.CategoryId);
+        var tags = _tagsRepo.GetTagsByCategoryId(newCourse.CategoryId);
 
         Category? category = _categoriesRepo.GetCategoryByIdWithTags(newCourse.CategoryId);
         if(category == null) { return; }
 
-        Course CourseToAdd = new Course() 
+        Course CourseToAdd = new() 
         {
             Name = newCourse.Title,
-            Description = newCourse.Description, 
+            Description = newCourse.Description,
             CourseImage = newCourse.Image ?? DefaultCourseImage,
-            CategoryId = newCourse.CategoryId,
-            Tags = category?.Tags?.Where(t => newCourse.TagsIds.Contains(t.Id.ToString())).ToList(),
-            UserId = userId,
+            Date = DateTime.Now,
+            UpVotes = 0,
             DownVotes = 0,
-            UpVotes = 0
+            IsPublished = false,
+            CategoryId = newCourse.CategoryId,
+            PublisherId = userId,
+            Tags = tags.Where(t => newCourse.TagsIds.Contains(t.Id.ToString())).ToList()
         };
 
         _coursesRepo.AddNewCourse(CourseToAdd);
@@ -60,6 +62,7 @@ public class CoursesManager : ICoursesManager
                                     c.Name,
                                     c.Description,
                                     c.CourseImage ?? DefaultCourseImage,
+                                    c.Date.ToShortDateString(),
                                     c.UpVotes,
                                     c.DownVotes,
                                     c.IsPublished,
