@@ -31,15 +31,22 @@ public class KhawarizmiContext : IdentityDbContext<User>
 
         builder.Entity<User>().ToTable("Users");
 
+        builder.Entity<Course>()
+            .Property(c => c.IsPublished)
+            .HasDefaultValue(false);
+
         builder.Entity<Feedback>()
             .HasOne(f => f.User)
             .WithMany(u => u.Feedbacks)
             .HasForeignKey(f => f.UserId)
             .OnDelete(DeleteBehavior.Restrict); // to prevent multiple cascading paths and cycles
 
-        builder.Entity<Course>()
-            .Property(c => c.IsPublished)
-            .HasDefaultValue(false);
+        builder.Entity<UserCourses>()
+            .HasOne(uc => uc.User)
+            .WithMany(u => u.UserCourses)
+            .HasForeignKey(uc => uc.UserId)
+            .OnDelete(DeleteBehavior.NoAction);
+
 
         #region Data Seeding
 
