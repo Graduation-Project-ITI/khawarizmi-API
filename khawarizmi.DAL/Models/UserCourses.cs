@@ -7,14 +7,18 @@ using System.Threading.Tasks;
 
 namespace khawarizmi.DAL.Models;
 
-public class Feedback
+public class UserCourses
 {
     public int Id { get; set; }
-    public string body { get; set; } = string.Empty;
-    [ForeignKey(nameof(Course))]
-    public int CourseId { get; set; }
+    public bool IsBookmarked { get; set; }
+    public bool IsLearning { get; set; }
+    public bool IsVoted { get; set; }
+    public bool IsUpVoted { get; set; }
     [ForeignKey(nameof(User))]
     public string UserId { get; set; } = string.Empty;
-    public Course Course { get; set; } = null!;
+    [ForeignKey(nameof(Course))]
+    public int CourseId { get; set; }
     public User User { get; set; } = null!;
+    public Course Course { get; set; } = null!;
+
 }
