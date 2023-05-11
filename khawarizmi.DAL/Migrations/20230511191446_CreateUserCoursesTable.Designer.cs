@@ -12,8 +12,8 @@ using khawarizmi.DAL.Context;
 namespace khawarizmi.DAL.Migrations
 {
     [DbContext(typeof(KhawarizmiContext))]
-    [Migration("20230506225503_DataSeeding")]
-    partial class DataSeeding
+    [Migration("20230511191446_CreateUserCoursesTable")]
+    partial class CreateUserCoursesTable
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -38,6 +38,343 @@ namespace khawarizmi.DAL.Migrations
                     b.HasIndex("TagsId");
 
                     b.ToTable("CategoryTag");
+
+                    b.HasData(
+                        new
+                        {
+                            CategoriesId = 1,
+                            TagsId = 1
+                        },
+                        new
+                        {
+                            CategoriesId = 1,
+                            TagsId = 2
+                        },
+                        new
+                        {
+                            CategoriesId = 1,
+                            TagsId = 3
+                        },
+                        new
+                        {
+                            CategoriesId = 1,
+                            TagsId = 4
+                        },
+                        new
+                        {
+                            CategoriesId = 1,
+                            TagsId = 5
+                        },
+                        new
+                        {
+                            CategoriesId = 1,
+                            TagsId = 6
+                        },
+                        new
+                        {
+                            CategoriesId = 1,
+                            TagsId = 7
+                        },
+                        new
+                        {
+                            CategoriesId = 1,
+                            TagsId = 8
+                        },
+                        new
+                        {
+                            CategoriesId = 4,
+                            TagsId = 9
+                        },
+                        new
+                        {
+                            CategoriesId = 4,
+                            TagsId = 10
+                        },
+                        new
+                        {
+                            CategoriesId = 4,
+                            TagsId = 11
+                        },
+                        new
+                        {
+                            CategoriesId = 4,
+                            TagsId = 12
+                        },
+                        new
+                        {
+                            CategoriesId = 4,
+                            TagsId = 13
+                        },
+                        new
+                        {
+                            CategoriesId = 4,
+                            TagsId = 14
+                        },
+                        new
+                        {
+                            CategoriesId = 4,
+                            TagsId = 15
+                        },
+                        new
+                        {
+                            CategoriesId = 4,
+                            TagsId = 16
+                        },
+                        new
+                        {
+                            CategoriesId = 4,
+                            TagsId = 17
+                        },
+                        new
+                        {
+                            CategoriesId = 2,
+                            TagsId = 18
+                        },
+                        new
+                        {
+                            CategoriesId = 2,
+                            TagsId = 19
+                        },
+                        new
+                        {
+                            CategoriesId = 2,
+                            TagsId = 20
+                        },
+                        new
+                        {
+                            CategoriesId = 2,
+                            TagsId = 21
+                        },
+                        new
+                        {
+                            CategoriesId = 2,
+                            TagsId = 22
+                        },
+                        new
+                        {
+                            CategoriesId = 2,
+                            TagsId = 23
+                        },
+                        new
+                        {
+                            CategoriesId = 2,
+                            TagsId = 24
+                        },
+                        new
+                        {
+                            CategoriesId = 2,
+                            TagsId = 25
+                        },
+                        new
+                        {
+                            CategoriesId = 5,
+                            TagsId = 26
+                        },
+                        new
+                        {
+                            CategoriesId = 5,
+                            TagsId = 27
+                        },
+                        new
+                        {
+                            CategoriesId = 5,
+                            TagsId = 28
+                        },
+                        new
+                        {
+                            CategoriesId = 5,
+                            TagsId = 29
+                        },
+                        new
+                        {
+                            CategoriesId = 5,
+                            TagsId = 30
+                        },
+                        new
+                        {
+                            CategoriesId = 5,
+                            TagsId = 31
+                        },
+                        new
+                        {
+                            CategoriesId = 5,
+                            TagsId = 15
+                        },
+                        new
+                        {
+                            CategoriesId = 5,
+                            TagsId = 9
+                        },
+                        new
+                        {
+                            CategoriesId = 5,
+                            TagsId = 1
+                        },
+                        new
+                        {
+                            CategoriesId = 5,
+                            TagsId = 8
+                        },
+                        new
+                        {
+                            CategoriesId = 6,
+                            TagsId = 32
+                        },
+                        new
+                        {
+                            CategoriesId = 6,
+                            TagsId = 33
+                        },
+                        new
+                        {
+                            CategoriesId = 6,
+                            TagsId = 34
+                        },
+                        new
+                        {
+                            CategoriesId = 6,
+                            TagsId = 35
+                        },
+                        new
+                        {
+                            CategoriesId = 6,
+                            TagsId = 36
+                        },
+                        new
+                        {
+                            CategoriesId = 3,
+                            TagsId = 37
+                        },
+                        new
+                        {
+                            CategoriesId = 3,
+                            TagsId = 38
+                        },
+                        new
+                        {
+                            CategoriesId = 3,
+                            TagsId = 39
+                        },
+                        new
+                        {
+                            CategoriesId = 3,
+                            TagsId = 40
+                        },
+                        new
+                        {
+                            CategoriesId = 3,
+                            TagsId = 41
+                        },
+                        new
+                        {
+                            CategoriesId = 3,
+                            TagsId = 42
+                        },
+                        new
+                        {
+                            CategoriesId = 7,
+                            TagsId = 43
+                        },
+                        new
+                        {
+                            CategoriesId = 7,
+                            TagsId = 44
+                        },
+                        new
+                        {
+                            CategoriesId = 7,
+                            TagsId = 45
+                        },
+                        new
+                        {
+                            CategoriesId = 8,
+                            TagsId = 46
+                        },
+                        new
+                        {
+                            CategoriesId = 8,
+                            TagsId = 47
+                        },
+                        new
+                        {
+                            CategoriesId = 8,
+                            TagsId = 48
+                        },
+                        new
+                        {
+                            CategoriesId = 8,
+                            TagsId = 49
+                        },
+                        new
+                        {
+                            CategoriesId = 8,
+                            TagsId = 50
+                        },
+                        new
+                        {
+                            CategoriesId = 9,
+                            TagsId = 51
+                        },
+                        new
+                        {
+                            CategoriesId = 9,
+                            TagsId = 52
+                        },
+                        new
+                        {
+                            CategoriesId = 9,
+                            TagsId = 53
+                        },
+                        new
+                        {
+                            CategoriesId = 9,
+                            TagsId = 54
+                        },
+                        new
+                        {
+                            CategoriesId = 9,
+                            TagsId = 55
+                        },
+                        new
+                        {
+                            CategoriesId = 9,
+                            TagsId = 56
+                        },
+                        new
+                        {
+                            CategoriesId = 9,
+                            TagsId = 57
+                        },
+                        new
+                        {
+                            CategoriesId = 9,
+                            TagsId = 58
+                        },
+                        new
+                        {
+                            CategoriesId = 10,
+                            TagsId = 59
+                        },
+                        new
+                        {
+                            CategoriesId = 10,
+                            TagsId = 60
+                        },
+                        new
+                        {
+                            CategoriesId = 10,
+                            TagsId = 61
+                        },
+                        new
+                        {
+                            CategoriesId = 10,
+                            TagsId = 62
+                        },
+                        new
+                        {
+                            CategoriesId = 10,
+                            TagsId = 63
+                        });
                 });
 
             modelBuilder.Entity("CourseTag", b =>
@@ -269,40 +606,39 @@ namespace khawarizmi.DAL.Migrations
                         .HasColumnType("int");
 
                     b.Property<string>("CourseImage")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTime>("Date")
+                        .HasColumnType("Date");
+
+                    b.Property<string>("Description")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<string>("Description")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<int?>("DownVotes")
+                    b.Property<int>("DownVotes")
                         .HasColumnType("int");
 
-                    b.Property<bool?>("IsBookmarked")
-                        .HasColumnType("bit");
-
-                    b.Property<bool?>("IsLearning")
-                        .HasColumnType("bit");
-
                     b.Property<bool>("IsPublished")
-                        .HasColumnType("bit");
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("bit")
+                        .HasDefaultValue(false);
 
                     b.Property<string>("Name")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<int?>("UpVotes")
-                        .HasColumnType("int");
-
-                    b.Property<string>("UserId")
+                    b.Property<string>("PublisherId")
                         .IsRequired()
                         .HasColumnType("nvarchar(450)");
+
+                    b.Property<int>("UpVotes")
+                        .HasColumnType("int");
 
                     b.HasKey("Id");
 
                     b.HasIndex("CategoryId");
 
-                    b.HasIndex("UserId");
+                    b.HasIndex("PublisherId");
 
                     b.ToTable("Courses");
                 });
@@ -346,10 +682,14 @@ namespace khawarizmi.DAL.Migrations
                     b.Property<int>("CourseId")
                         .HasColumnType("int");
 
+                    b.Property<DateTime>("Date")
+                        .HasColumnType("Date");
+
                     b.Property<string>("Description")
+                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<bool?>("IsPublished")
+                    b.Property<bool>("IsPublished")
                         .HasColumnType("bit");
 
                     b.Property<string>("Name")
@@ -776,6 +1116,42 @@ namespace khawarizmi.DAL.Migrations
                     b.ToTable("Users", (string)null);
                 });
 
+            modelBuilder.Entity("khawarizmi.DAL.Models.UserCourses", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<int>("CourseId")
+                        .HasColumnType("int");
+
+                    b.Property<bool>("IsBookmarked")
+                        .HasColumnType("bit");
+
+                    b.Property<bool>("IsLearning")
+                        .HasColumnType("bit");
+
+                    b.Property<bool>("IsUpVoted")
+                        .HasColumnType("bit");
+
+                    b.Property<bool>("IsVoted")
+                        .HasColumnType("bit");
+
+                    b.Property<string>("UserId")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(450)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("CourseId");
+
+                    b.HasIndex("UserId");
+
+                    b.ToTable("UserCourses");
+                });
+
             modelBuilder.Entity("CategoryTag", b =>
                 {
                     b.HasOne("khawarizmi.DAL.Models.Category", null)
@@ -860,14 +1236,14 @@ namespace khawarizmi.DAL.Migrations
             modelBuilder.Entity("khawarizmi.DAL.Models.Course", b =>
                 {
                     b.HasOne("khawarizmi.DAL.Models.Category", "Category")
-                        .WithMany()
+                        .WithMany("Courses")
                         .HasForeignKey("CategoryId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
                     b.HasOne("khawarizmi.DAL.Models.User", "User")
-                        .WithMany("Courses")
-                        .HasForeignKey("UserId")
+                        .WithMany()
+                        .HasForeignKey("PublisherId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
@@ -906,18 +1282,44 @@ namespace khawarizmi.DAL.Migrations
                     b.Navigation("Course");
                 });
 
+            modelBuilder.Entity("khawarizmi.DAL.Models.UserCourses", b =>
+                {
+                    b.HasOne("khawarizmi.DAL.Models.Course", "Course")
+                        .WithMany("UserCourses")
+                        .HasForeignKey("CourseId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("khawarizmi.DAL.Models.User", "User")
+                        .WithMany("UserCourses")
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.NoAction)
+                        .IsRequired();
+
+                    b.Navigation("Course");
+
+                    b.Navigation("User");
+                });
+
+            modelBuilder.Entity("khawarizmi.DAL.Models.Category", b =>
+                {
+                    b.Navigation("Courses");
+                });
+
             modelBuilder.Entity("khawarizmi.DAL.Models.Course", b =>
                 {
                     b.Navigation("Feedbacks");
 
                     b.Navigation("Lessons");
+
+                    b.Navigation("UserCourses");
                 });
 
             modelBuilder.Entity("khawarizmi.DAL.Models.User", b =>
                 {
-                    b.Navigation("Courses");
-
                     b.Navigation("Feedbacks");
+
+                    b.Navigation("UserCourses");
                 });
 #pragma warning restore 612, 618
         }

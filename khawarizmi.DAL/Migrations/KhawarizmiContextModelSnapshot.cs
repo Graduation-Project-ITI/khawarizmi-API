@@ -603,40 +603,39 @@ namespace khawarizmi.DAL.Migrations
                         .HasColumnType("int");
 
                     b.Property<string>("CourseImage")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTime>("Date")
+                        .HasColumnType("Date");
+
+                    b.Property<string>("Description")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<string>("Description")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<int?>("DownVotes")
+                    b.Property<int>("DownVotes")
                         .HasColumnType("int");
 
-                    b.Property<bool?>("IsBookmarked")
-                        .HasColumnType("bit");
-
-                    b.Property<bool?>("IsLearning")
-                        .HasColumnType("bit");
-
                     b.Property<bool>("IsPublished")
-                        .HasColumnType("bit");
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("bit")
+                        .HasDefaultValue(false);
 
                     b.Property<string>("Name")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<int?>("UpVotes")
-                        .HasColumnType("int");
-
-                    b.Property<string>("UserId")
+                    b.Property<string>("PublisherId")
                         .IsRequired()
                         .HasColumnType("nvarchar(450)");
+
+                    b.Property<int>("UpVotes")
+                        .HasColumnType("int");
 
                     b.HasKey("Id");
 
                     b.HasIndex("CategoryId");
 
-                    b.HasIndex("UserId");
+                    b.HasIndex("PublisherId");
 
                     b.ToTable("Courses");
                 });
@@ -680,10 +679,14 @@ namespace khawarizmi.DAL.Migrations
                     b.Property<int>("CourseId")
                         .HasColumnType("int");
 
+                    b.Property<DateTime>("Date")
+                        .HasColumnType("Date");
+
                     b.Property<string>("Description")
+                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<bool?>("IsPublished")
+                    b.Property<bool>("IsPublished")
                         .HasColumnType("bit");
 
                     b.Property<string>("Name")
@@ -1110,6 +1113,42 @@ namespace khawarizmi.DAL.Migrations
                     b.ToTable("Users", (string)null);
                 });
 
+            modelBuilder.Entity("khawarizmi.DAL.Models.UserCourses", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<int>("CourseId")
+                        .HasColumnType("int");
+
+                    b.Property<bool>("IsBookmarked")
+                        .HasColumnType("bit");
+
+                    b.Property<bool>("IsLearning")
+                        .HasColumnType("bit");
+
+                    b.Property<bool>("IsUpVoted")
+                        .HasColumnType("bit");
+
+                    b.Property<bool>("IsVoted")
+                        .HasColumnType("bit");
+
+                    b.Property<string>("UserId")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(450)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("CourseId");
+
+                    b.HasIndex("UserId");
+
+                    b.ToTable("UserCourses");
+                });
+
             modelBuilder.Entity("CategoryTag", b =>
                 {
                     b.HasOne("khawarizmi.DAL.Models.Category", null)
@@ -1194,14 +1233,14 @@ namespace khawarizmi.DAL.Migrations
             modelBuilder.Entity("khawarizmi.DAL.Models.Course", b =>
                 {
                     b.HasOne("khawarizmi.DAL.Models.Category", "Category")
-                        .WithMany()
+                        .WithMany("Courses")
                         .HasForeignKey("CategoryId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
                     b.HasOne("khawarizmi.DAL.Models.User", "User")
-                        .WithMany("Courses")
-                        .HasForeignKey("UserId")
+                        .WithMany()
+                        .HasForeignKey("PublisherId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
@@ -1240,18 +1279,44 @@ namespace khawarizmi.DAL.Migrations
                     b.Navigation("Course");
                 });
 
+            modelBuilder.Entity("khawarizmi.DAL.Models.UserCourses", b =>
+                {
+                    b.HasOne("khawarizmi.DAL.Models.Course", "Course")
+                        .WithMany("UserCourses")
+                        .HasForeignKey("CourseId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("khawarizmi.DAL.Models.User", "User")
+                        .WithMany("UserCourses")
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.NoAction)
+                        .IsRequired();
+
+                    b.Navigation("Course");
+
+                    b.Navigation("User");
+                });
+
+            modelBuilder.Entity("khawarizmi.DAL.Models.Category", b =>
+                {
+                    b.Navigation("Courses");
+                });
+
             modelBuilder.Entity("khawarizmi.DAL.Models.Course", b =>
                 {
                     b.Navigation("Feedbacks");
 
                     b.Navigation("Lessons");
+
+                    b.Navigation("UserCourses");
                 });
 
             modelBuilder.Entity("khawarizmi.DAL.Models.User", b =>
                 {
-                    b.Navigation("Courses");
-
                     b.Navigation("Feedbacks");
+
+                    b.Navigation("UserCourses");
                 });
 #pragma warning restore 612, 618
         }
