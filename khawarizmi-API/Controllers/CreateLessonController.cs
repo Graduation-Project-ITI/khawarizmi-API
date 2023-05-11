@@ -1,4 +1,6 @@
-﻿using Microsoft.AspNetCore.Http;
+﻿using khawarizmi.BL.Managers.Lessons;
+using khawarizmi.DAL.Models;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging.Abstractions;
 using System.Text.Json;
@@ -9,21 +11,22 @@ namespace khawarizmi_API.Controllers
     [ApiController]
     public class CreateLessonController : ControllerBase
     {
+        private readonly ILessonsManager lessonsManager;
+
+        public CreateLessonController(ILessonsManager lessonsManager)
+        {
+            this.lessonsManager = lessonsManager;
+        }
+
         [HttpPost]
         async public Task<IActionResult> CreateLesson([FromForm]IFormFile video, [FromForm]string metadata)
         {
-            string directory = Path.Combine(Directory.GetCurrentDirectory(), "Uploads\\Videos");
-            string videoName = DateTime.Now.Ticks + video.FileName;
-            if(!Directory.Exists(directory)) Directory.CreateDirectory(directory);
-            string path = Path.Combine(directory, videoName);
-            
-            using(var stream = new FileStream(path, FileMode.Create))
-            {
-                await video.CopyToAsync(stream);
-            }
+            string videoPath = await lessonsManager.StoreVideoToUploads(video);
+            Lesson? lesson = lessonsManager.VideoMetadataToLesson(metadata, videoPath);
 
-            //object metadataObj = JsonSerializer.Deserialize<object>(metadata)!;
-            
+            if (lesson is null) return BadRequest();
+            lessonsManager.AddLesson(lesson);
+
             return Ok("all good");
         }
     }
