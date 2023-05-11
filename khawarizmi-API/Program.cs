@@ -28,8 +28,6 @@ builder.Services.AddSwaggerGen();
 var connectionString = builder.Configuration.GetConnectionString("connStr");
 builder.Services.AddDbContext<KhawarizmiContext>(options => options.UseSqlServer(connectionString));
 
-<<<<<<< HEAD
-=======
 // service for storing data to MS Azure Blob Storage
 builder.Services.AddAzureClients(options=>
 {
@@ -47,7 +45,8 @@ builder.Services.AddIdentity<User, IdentityRole>(
         
     }
 ).AddEntityFrameworkStores<KhawarizmiContext>();
->>>>>>> nagy
+#endregion
+
 #region Repositories
 builder.Services.AddScoped<ICoursesRepo, CoursesRepo>();
 builder.Services.AddScoped<ICategoriesRepo, CategoriesRepo>();
@@ -122,16 +121,12 @@ builder.Services.AddCors(options =>
 
 #endregion
 
-<<<<<<< HEAD
-=======
 // increasing the maximum multipart body length limit to 10MB
 builder.Services.Configure<FormOptions>(options =>
 {
     options.MultipartBodyLengthLimit = 20 * 1024 * 1024;
 });
 
-
->>>>>>> nagy
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
