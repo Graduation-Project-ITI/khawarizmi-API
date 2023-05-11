@@ -1,4 +1,5 @@
-﻿using khawarizmi.DAL.Models;
+﻿using khawarizmi.BL.Dtos.Lessons;
+using khawarizmi.DAL.Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;
