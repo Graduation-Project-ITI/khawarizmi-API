@@ -62,19 +62,6 @@ builder.Services.AddTransient<IStorageService, StorageService>();
 builder.Services.AddScoped<ILessonsManager, LessonsManager>();
 #endregion
 
-#region IdentityManager
-builder.Services.AddIdentity<User, IdentityRole>(
-    options =>
-    {
-       
-        options.Password.RequireLowercase = false;
-        options.Password.RequireUppercase = false;
-        options.User.RequireUniqueEmail = true;
-        
-    }
-).AddEntityFrameworkStores<KhawarizmiContext>();
-#endregion
-
 #region JWTBearer
 builder.Services.AddAuthentication(options =>
 {

@@ -1,4 +1,5 @@
 ﻿using khawarizmi.BL.Dtos;
+using khawarizmi.BL.Dtos.Lessons;
 using khawarizmi.DAL.Models;
 using khawarizmi.DAL.Repositories;
 using Microsoft.AspNetCore.Http.Authentication.Internal;
