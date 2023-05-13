@@ -48,7 +48,6 @@ public class KhawarizmiContext : IdentityDbContext<User>
             .HasForeignKey(uc => uc.UserId)
             .OnDelete(DeleteBehavior.NoAction);
 
-
         #region Data Seeding
 
         builder.Entity<Category>()

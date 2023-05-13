@@ -3,6 +3,7 @@ using khawarizmi.DAL.Context;
 using khawarizmi.DAL.Models;
 using khawarizmi.DAL.Repositories.Lessons;
 using Microsoft.AspNetCore.Http;
+using Microsoft.EntityFrameworkCore.Metadata.Internal;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -20,20 +21,35 @@ public class LessonsManager : LessonRepo, ILessonsManager
     {
         this.lessonRepo = lessonRepo;
     }
-
-    async public Task<string> StoreVideoToUploads(IFormFile video)
+    public string GetVideoPath(string videoName)
     {
         string directory = Path.Combine(Directory.GetCurrentDirectory(), "Uploads\\Videos");
-        string videoName = DateTime.Now.Ticks + video.FileName;
+        string fullVideoName = DateTime.Now.Ticks + videoName;
         if (!Directory.Exists(directory)) Directory.CreateDirectory(directory);
-        string path = Path.Combine(directory, videoName);
+        string path = Path.Combine(directory, fullVideoName);
 
-        using (var stream = new FileStream(path, FileMode.Create))
+        return path;
+    }
+    public string RelativeToAbsolutePath(string relativePath)
+    {
+        return Path.Combine(Directory.GetCurrentDirectory(), relativePath);
+    }
+
+    async public Task StoreVideoToUploads(IFormFile video, string videoPath)
+    {
+        using (var stream = new FileStream(videoPath, FileMode.Create))
         {
             await video.CopyToAsync(stream);
         }
 
-        return $"Uploads/Videos/{videoName}";
+        return;
+    }
+    public void DeleteVideo(string videoPath)
+    {
+        if (File.Exists(videoPath))
+        {
+            File.Delete(videoPath);
+        }
     }
 
     public Lesson? VideoMetadataToLesson(string metadata, string videoPath)
@@ -45,7 +61,7 @@ public class LessonsManager : LessonRepo, ILessonsManager
             Name = lessonObj.title,
             Description = lessonObj.description,
             IsPublished = lessonObj.isPublish,
-            CourseId = int.Parse(lessonObj.courseId),
+            CourseId = lessonObj.courseId,
             VideoURL= videoPath,
         };
     }
@@ -54,6 +70,46 @@ public class LessonsManager : LessonRepo, ILessonsManager
     {
         if (lesson == null) return;
         lessonRepo.Add(lesson);
+        lessonRepo.SaveChanges();
+    }
+
+    public Lesson? GetLessonById(int id)
+    {
+        return lessonRepo.Get(id);
+    }
+
+    public LessonDisplayDto ConvertLessonToLessonDisplayDto(Lesson lesson, string host)
+    {
+        var videoURLWithHostName = $"https://{host}/{lesson.VideoURL}";
+
+        return new LessonDisplayDto
+        (
+            lesson.Name,
+            videoURLWithHostName, 
+            lesson.Description
+        );
+    }
+
+    public void ChangeDescription(int id, string description)
+    {
+        var lesson = lessonRepo.Get(id);
+        if (lesson is null) return;
+        lesson.Description = description;
+        lessonRepo.SaveChanges();
+    }
+
+    public void ChangeTitle(int id, string title)
+    {
+        var lesson = lessonRepo.Get(id);
+        if (lesson is null) return;
+        lesson.Name = title;
+        lessonRepo.SaveChanges();
+    }
+    public void ChangeVideo(int id, string videoURL)
+    {
+        var lesson = lessonRepo.Get(id);
+        if (lesson is null) return;
+        lesson.VideoURL = videoURL;
         lessonRepo.SaveChanges();
     }
 }

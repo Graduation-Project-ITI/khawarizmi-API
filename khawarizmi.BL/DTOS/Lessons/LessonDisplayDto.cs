@@ -6,4 +6,4 @@ using System.Threading.Tasks;
 
 namespace khawarizmi.BL.Dtos.Lessons;
 
-public record LessonAddDto(string title, string description, bool isPublish, int courseId);
+public record LessonDisplayDto(string Title, string VideoURL, string Description);
