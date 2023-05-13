@@ -16,6 +16,7 @@ public class LearningController : ControllerBase
         this.coursesManager = coursesManager;
     }
     [HttpGet]
+    [Route("allcourses/{UserId}")]
     public async Task<ActionResult> GetAllCoursesChecked( string UserId)
     {
         var courses=  coursesManager.GetLearningCoursesById(UserId);
@@ -23,6 +24,7 @@ public class LearningController : ControllerBase
     }
 
     [HttpGet]
+    [Route("wishlist/{UserId}")]
     public async Task<ActionResult> GetAllCoursesinWishList(string UserId)
     {
         var courses = coursesManager.GetLearningCoursesIsBookMarked(UserId);
@@ -31,6 +33,7 @@ public class LearningController : ControllerBase
 
 
     [HttpGet]
+    [Route("mylist/{UserId}")]
     public async Task<ActionResult> GetAllCoursesinIsLearning(string UserId)
     {
         var courses = coursesManager.GetLearningCoursesIsLearning(UserId);

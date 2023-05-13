@@ -74,7 +74,7 @@ public class CoursesManager : ICoursesManager
                                     lessons);
     }
 
-    public ICollection<MyLearningDTO>etLearningCoursesById(string UserId)
+    public ICollection<MyLearningDTO> GetLearningCoursesById(string UserId)
     {
         var courses = _coursesRepo.GetAllCoursesIsLearining(UserId);
         return courses.Select(c => new MyLearningDTO( image: c.Course.CourseImage, name: c.Course.Name,
