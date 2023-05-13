@@ -11,4 +11,8 @@ public interface ICoursesRepo : IGenericRepo<Course>
 {
     void AddNewCourse(Course course);
     Course? GetCourseById(int courseId);
+    ICollection<UserCourses> GetAllCourses(string UserId);
+    ICollection<UserCourses> GetAllCoursesIsBookMarked(string UserId);
+    ICollection<UserCourses> GetAllCoursesIsLearining(string UserId);
+    string? GetCourseNameById(int courseId);
 }
