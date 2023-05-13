@@ -1,4 +1,5 @@
 ﻿using khawarizmi.BL.Dtos;
+using khawarizmi.BL.Dtos.Courses;
 using khawarizmi.DAL.Models;
 using System;
 using System.Collections.Generic;
@@ -12,4 +13,7 @@ public interface ICoursesManager
 {
     void AddNewCourse(string userId, CourseAddDto newCourse);
     CourseDisplayDto? GetCourseById(int courseId);
+    ICollection<MyLearningDTO> GetLearningCoursesById(string UserId);
+    ICollection<MyLearningDTO> GetLearningCoursesIsBookMarked(string UserId);
+    ICollection<MyLearningDTO> GetLearningCoursesIsLearning(string UserId);
 }
