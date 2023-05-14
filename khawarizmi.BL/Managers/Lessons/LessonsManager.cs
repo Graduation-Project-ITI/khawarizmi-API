@@ -32,6 +32,8 @@ public class LessonsManager : LessonRepo, ILessonsManager
     }
     public string RelativeToAbsolutePath(string relativePath)
     {
+        // video stored in relative path in database.
+        // we get full path to delete the video if needed
         return Path.Combine(Directory.GetCurrentDirectory(), relativePath);
     }
 

@@ -1,4 +1,5 @@
-﻿using khawarizmi.BL.Managers.Lessons;
+﻿using khawarizmi.BL.Dtos.Lessons;
+using khawarizmi.BL.Managers.Lessons;
 using khawarizmi.DAL.Models;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -45,19 +46,21 @@ namespace khawarizmi_API.Controllers
 
         // update descriptoin
         [HttpPut]
-        [Route("api/[controller]/update-description")]
-        public IActionResult ChangeDescription(int id, [FromBody] string description)
+        [Route("update-description/{id}")]
+        public IActionResult ChangeDescription(int id, [FromBody] ChangeDescriptionDto body)
         {
-            lessonsManager.ChangeDescription(id, description);
+            lessonsManager.ChangeDescription(id, body.description);
 
             return Ok();
         }
 
         // update title
         [HttpPut]
-        [Route("api/[controller]/update-title")]
+        [Route("update-title")]
         public IActionResult ChangeTitle(int id, string title)
         {
+            Console.WriteLine(id);
+            Console.WriteLine(title);
             lessonsManager.ChangeTitle(id, title);
 
             return Ok();
@@ -65,21 +68,23 @@ namespace khawarizmi_API.Controllers
 
         // update video
         [HttpPut]
-        [Route("api/[controller]/update-video")]
+        [Route("update-video/{id}")]
         async public Task<IActionResult> ChangeVideo(int id, [FromForm] IFormFile video)
         {
             var lesson = lessonsManager.GetLessonById(id);
             if (lesson is null) return NotFound();
             
+            // delete prev video by full path
             string videoFullPath = lessonsManager.RelativeToAbsolutePath(lesson.VideoURL);
             lessonsManager.DeleteVideo(videoFullPath);
 
+
             // store the new video
             await lessonsManager.StoreVideoToUploads(video, videoFullPath);
-            lessonsManager.ChangeVideo(id, videoFullPath);
+            //lessonsManager.ChangeVideo(id, videoFullPath);
             
             // return new videoURL
-            return Ok();
+            return Ok(new {videoURL = lesson.VideoURL});
         }
     }
 }
