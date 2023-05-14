@@ -15,15 +15,18 @@ public class LearningController : ControllerBase
     {
         this.coursesManager = coursesManager;
     }
+
     [HttpGet]
-    public async Task<ActionResult> GetAllCoursesChecked( string UserId)
+    [Route("getAllCourses")]
+    public ActionResult GetAllCoursesChecked( string UserId)
     {
         var courses=  coursesManager.GetLearningCoursesById(UserId);
         return Ok(courses);
     }
 
     [HttpGet]
-    public async Task<ActionResult> GetAllCoursesinWishList(string UserId)
+    [Route("getWishlist")]
+    public ActionResult GetAllCoursesinWishList(string UserId)
     {
         var courses = coursesManager.GetLearningCoursesIsBookMarked(UserId);
         return Ok(courses);
@@ -31,7 +34,8 @@ public class LearningController : ControllerBase
 
 
     [HttpGet]
-    public async Task<ActionResult> GetAllCoursesinIsLearning(string UserId)
+    [Route("getLearning")]
+    public ActionResult GetAllCoursesinIsLearning(string UserId)
     {
         var courses = coursesManager.GetLearningCoursesIsLearning(UserId);
         return Ok(courses);
