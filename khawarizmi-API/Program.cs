@@ -8,6 +8,9 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
 using System.Security.Claims;
 using System.Text;
+using khawarizmi.DAL;
+using khawarizmi.BL.Managers.Profile;
+using khawarizmi.BL;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -93,6 +96,12 @@ builder.Services.AddCors(options =>
 
 #endregion
 
+#region servicesRegistered
+builder.Services.AddScoped<IUserProfile, UserProfile>();
+builder.Services.AddScoped<IProfileManager,ProfileManager>();
+
+#endregion
+
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
@@ -104,6 +113,7 @@ if (app.Environment.IsDevelopment())
 app.UseCors("MyCorsPolicy");
 
 app.UseHttpsRedirection();
+app.UseStaticFiles(); // Add this line to enable serving of static files
 
 app.UseAuthentication();
 app.UseAuthorization();
