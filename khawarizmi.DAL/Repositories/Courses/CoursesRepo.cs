@@ -22,6 +22,29 @@ public class CoursesRepo : GenericRepo<Course>, ICoursesRepo
 
         _context.SaveChanges();
     }
+
+    public ICollection<UserCourses> GetAllCourses(string UserId)
+    {
+        var courses = _context.Set<UserCourses>()
+      .Where(c => c.UserId == UserId && c.IsLearning && c.IsBookmarked)
+      .Include(c => c.Course)
+      .ToList();
+        return courses;
+
+    }
+
+    public ICollection<UserCourses> GetAllCoursesIsBookMarked(string UserId)
+    {
+        var CoursesIsBookMarked = _context.Set<UserCourses>().Where(c => c.IsBookmarked).Include(c => c.Course).ToList();
+        return CoursesIsBookMarked;
+    }
+
+    public ICollection<UserCourses> GetAllCoursesIsLearining(string UserId)
+    {
+        var coursesIsLearning = _context.Set<UserCourses>().Where(c => c.IsLearning).Include(c => c.Course).ToList();
+        return coursesIsLearning;
+    }
+
     public Course? GetCourseById(int courseId)
     {
         return _context.Set<Course>()
@@ -31,5 +54,12 @@ public class CoursesRepo : GenericRepo<Course>, ICoursesRepo
                         .Include(c => c.User)
                         .FirstOrDefault(c => c.Id == courseId);
     }
-   
+
+    public string? GetCourseNameById(int courseId)
+    {
+        var courseName = _context.Set<Course>().FirstOrDefault(c => c.Id == courseId)?.Name;
+        return courseName;
+    }
+
+
 }

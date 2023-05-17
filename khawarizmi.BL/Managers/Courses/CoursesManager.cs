@@ -1,5 +1,6 @@
 ﻿using khawarizmi.BL.Dtos;
 using khawarizmi.BL.Dtos.Lessons;
+using khawarizmi.BL.Dtos.Courses;
 using khawarizmi.DAL.Models;
 using khawarizmi.DAL.Repositories;
 using Microsoft.AspNetCore.Http.Authentication.Internal;
@@ -20,7 +21,7 @@ public class CoursesManager : ICoursesManager
     private readonly ICategoriesRepo _categoriesRepo;
 
     public CoursesManager(ICoursesRepo coursesRepo, ICategoriesRepo categoriesRepo, ITagsRepo tagsRepo)
-	{
+    {
         _tagsRepo = tagsRepo;
         _coursesRepo = coursesRepo;
         _categoriesRepo = categoriesRepo;
@@ -30,9 +31,9 @@ public class CoursesManager : ICoursesManager
         var tags = _tagsRepo.GetTagsByCategoryId(newCourse.CategoryId);
 
         Category? category = _categoriesRepo.GetCategoryByIdWithTags(newCourse.CategoryId);
-        if(category == null) { return; }
+        if (category == null) { return; }
 
-        Course CourseToAdd = new() 
+        Course CourseToAdd = new()
         {
             Name = newCourse.Title,
             Description = newCourse.Description,
@@ -70,8 +71,8 @@ public class CoursesManager : ICoursesManager
 
         IEnumerable<TagReadDto>? tags = c?.Tags?.Select(t => new TagReadDto(t.Id, t.Name));
         IEnumerable<FeedbackReadDto>? feedbacks = c?.Feedbacks?.Select(t => new FeedbackReadDto(t.Id, t.body));
-        IEnumerable<LessonReadDto>? lessons = c?.Lessons?.Select(t => new LessonReadDto(t.Id, t.Name, t.Description??"", t.VideoURL, t.IsPublished));
-        
+        IEnumerable<LessonReadDto>? lessons = c?.Lessons?.Select(t => new LessonReadDto(t.Id, t.Name, t.Description ?? "", t.VideoURL, t.IsPublished));
+
         if (c == null) return null;
         string publisher = c.User.UserName ?? "";
 
@@ -87,6 +88,24 @@ public class CoursesManager : ICoursesManager
                                     publisher,
                                     tags,
                                     feedbacks,
-                                    lessons );
+                                    lessons);
+    }
+
+    public ICollection<MyLearningDTO>GetLearningCoursesById(string UserId)
+    {
+        var courses = _coursesRepo.GetAllCoursesIsLearining(UserId);
+        
+        return courses.Select(c => new MyLearningDTO( image: c.Course.CourseImage, name: c.Course.Name,
+            Creatorname: _coursesRepo.GetCourseNameById(c.CourseId))).ToList();
+    }
+
+    public ICollection<MyLearningDTO> GetLearningCoursesIsBookMarked(string UserId)
+    {
+        throw new NotImplementedException();
+    }
+
+    public ICollection<MyLearningDTO> GetLearningCoursesIsLearning(string UserId)
+    {
+        throw new NotImplementedException();
     }
 }
