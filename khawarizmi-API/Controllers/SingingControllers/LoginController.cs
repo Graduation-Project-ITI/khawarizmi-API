@@ -40,7 +40,7 @@ namespace khawarizmi_API.Controllers.SingingControllers
 
           var token=  Helper.GenrateToken(claims, exp, config);
 
-            return new TokenDTO(token);
+            return new TokenDTO(token, user.Id);
 
         }
     }

@@ -18,7 +18,6 @@ public class CategoriesManager : ICategoriesManager
     }
     public List<CategoryReadDto> GetAllCategories()
     {
-
         IEnumerable<CategoryReadDto> categories = _categoriesRepo.GetCategories().Select(c => new CategoryReadDto(c.Id, c.Name));
 
         return categories.ToList();

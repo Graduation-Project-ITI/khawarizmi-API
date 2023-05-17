@@ -18,9 +18,10 @@ public class TagsRepo : GenericRepo<Tag>, ITagsRepo
         _context = context;
         _categoriesRepo = categoriesRepo;
     }
-    public ICollection<Tag> GetTagsByCategoryId(int categoryId)
+    public ICollection<Tag>? GetTagsByCategoryId(int categoryId)
     {
         Category? category = _categoriesRepo.GetCategoryByIdWithTags(categoryId);
+        if(category is null) { return null; }
 
         return category.Tags;
     }
