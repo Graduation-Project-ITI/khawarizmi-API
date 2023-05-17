@@ -6,6 +6,7 @@ using Microsoft.AspNetCore.Http.Authentication.Internal;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Security.Policy;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -46,6 +47,21 @@ public class CoursesManager : ICoursesManager
         };
 
         _coursesRepo.AddNewCourse(CourseToAdd);
+    }
+
+    public List<AllCoursesDto> GetAll()
+    {
+        List<Course> coursesDb = _coursesRepo.GetAll().Where(c=> c.IsPublished == true).ToList();
+        return coursesDb.Select(c => new AllCoursesDto
+        {
+            Name = c.Name,
+            Description = c.Description,
+            CourseImage = c.CourseImage,
+            Date = c.Date,
+            UpVotes = c.UpVotes,
+            DownVotes = c.DownVotes
+
+        }).ToList();
     }
 
     public CourseDisplayDto? GetCourseById(int courseId)

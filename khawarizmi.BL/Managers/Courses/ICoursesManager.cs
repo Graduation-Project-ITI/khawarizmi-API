@@ -12,4 +12,5 @@ public interface ICoursesManager
 {
     void AddNewCourse(string userId, CourseAddDto newCourse);
     CourseDisplayDto? GetCourseById(int courseId);
+    List<AllCoursesDto> GetAll();
 }

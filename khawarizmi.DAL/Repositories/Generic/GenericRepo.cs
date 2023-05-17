@@ -16,9 +16,9 @@ public class GenericRepo<T> : IGenericRepo<T> where T : class
     {
         _context = context;
     }
-    public IQueryable<T> GetAll()
+    public List<T> GetAll()
     {
-        return _context.Set<T>();
+        return _context.Set<T>().ToList();
     }
     public T? Get(int id)
     {

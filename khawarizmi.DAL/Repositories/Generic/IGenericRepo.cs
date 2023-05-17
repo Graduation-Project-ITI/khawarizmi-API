@@ -9,7 +9,7 @@ namespace khawarizmi.DAL.Repositories;
 
 public interface IGenericRepo<T> where T : class
 {
-    IQueryable<T> GetAll();
+    List<T> GetAll();
     T? Get(int id);
     void Add(T entity);
     void Update(T entity);
