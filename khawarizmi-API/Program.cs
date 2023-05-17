@@ -8,11 +8,14 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
 using System.Security.Claims;
 using System.Text;
-using khawarizmi.BL.Managers.StorageService;
 using Microsoft.Extensions.Azure;
+using khawarizmi.BL.Managers.StorageService;
+using khawarizmi.BL.Managers.Lessons;
+using khawarizmi.DAL;
+using khawarizmi.BL.Managers.Profile;
+using khawarizmi.BL;
 using Microsoft.AspNetCore.Http.Features;
 using Microsoft.Extensions.FileProviders;
-using khawarizmi.BL.Managers.Lessons;
 using khawarizmi.DAL.Repositories.Lessons;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -108,6 +111,12 @@ builder.Services.AddCors(options =>
 
 #endregion
 
+#region servicesRegistered
+builder.Services.AddScoped<IUserProfile, UserProfile>();
+builder.Services.AddScoped<IProfileManager,ProfileManager>();
+
+#endregion
+
 // increasing the maximum multipart body length limit to 10MB
 builder.Services.Configure<FormOptions>(options =>
 {
@@ -125,6 +134,7 @@ if (app.Environment.IsDevelopment())
 app.UseCors("MyCorsPolicy");
 
 app.UseHttpsRedirection();
+app.UseStaticFiles(); // Add this line to enable serving of static files
 
 // to serve satatic files
 app.UseStaticFiles(new StaticFileOptions
