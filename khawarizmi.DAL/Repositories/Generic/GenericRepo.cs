@@ -19,4 +19,9 @@ public class GenericRepo<T> : IGenericRepo<T> where T : class
     {
         return _context.Set<T>();
     }
+
+    public void SaveChanges()
+    {
+        _context.SaveChanges();
+    }
 }
