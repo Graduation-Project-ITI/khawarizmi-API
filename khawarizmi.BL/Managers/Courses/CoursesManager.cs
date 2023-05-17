@@ -205,21 +205,6 @@ public class CoursesManager : ICoursesManager
         }
     }
 
-    public List<AllCoursesDto> GetAll()
-    {
-        List<Course> coursesDb = _coursesRepo.GetAll().Where(c=> c.IsPublished == true).ToList();
-        return coursesDb.Select(c => new AllCoursesDto
-        {
-            Name = c.Name,
-            Description = c.Description,
-            CourseImage = c.CourseImage,
-            Date = c.Date,
-            UpVotes = c.UpVotes,
-            DownVotes = c.DownVotes
-
-        }).ToList();
-    }
-
     public void AddCourseFeedback(int courseId, string userId, string feedback)
     {
         Course? course = _coursesRepo.GetCourseById(courseId);
@@ -242,5 +227,38 @@ public class CoursesManager : ICoursesManager
         }
 
         _coursesRepo.SaveChanges();
+    }
+
+    public List<AllCoursesDto> GetAll()
+    {
+        List<Course> coursesDb = _coursesRepo.GetAll().Where(c => c.IsPublished == true).ToList();
+        return coursesDb.Select(c => new AllCoursesDto
+        {
+            Name = c.Name,
+            Description = c.Description,
+            CourseImage = c.CourseImage,
+            Date = c.Date,
+            UpVotes = c.UpVotes,
+            DownVotes = c.DownVotes
+
+        }).ToList();
+    }
+
+    public ICollection<MyLearningDTO> GetLearningCoursesById(string UserId)
+    {
+        var courses = _coursesRepo.GetAllCoursesIsLearining(UserId);
+
+        return courses.Select(c => new MyLearningDTO(image: c.Course.CourseImage??"", name: c.Course.Name,
+            Creatorname: _coursesRepo.GetCourseNameById(c.CourseId)??"")).ToList();
+    }
+
+    public ICollection<MyLearningDTO> GetLearningCoursesIsBookMarked(string UserId)
+    {
+        throw new NotImplementedException();
+    }
+
+    public ICollection<MyLearningDTO> GetLearningCoursesIsLearning(string UserId)
+    {
+        throw new NotImplementedException();
     }
 }

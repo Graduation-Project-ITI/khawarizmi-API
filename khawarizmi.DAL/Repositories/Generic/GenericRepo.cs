@@ -42,9 +42,4 @@ public class GenericRepo<T> : IGenericRepo<T> where T : class
     {
         return _context.SaveChanges();
     }
-
-    public void SaveChanges()
-    {
-        _context.SaveChanges();
-    }
 }
