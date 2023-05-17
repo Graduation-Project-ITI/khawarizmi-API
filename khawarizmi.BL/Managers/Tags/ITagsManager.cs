@@ -9,5 +9,5 @@ namespace khawarizmi.BL.Managers;
 
 public interface ITagsManager
 {
-    List<TagReadDto> GetTagsByCategory(int categoryId);
+    List<TagReadDto>? GetTagsByCategory(int categoryId);
 }

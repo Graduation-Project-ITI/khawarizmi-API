@@ -11,9 +11,17 @@ namespace khawarizmi.BL.Managers;
 
 public interface ICoursesManager
 {
-    void AddNewCourse(string userId, CourseAddDto newCourse);
     CourseDisplayDto? GetCourseById(int courseId);
+    int AddNewCourse(string userId, CourseAddDto newCourse);
+    void EditCourse(CourseEditDto course);
+    void UpdateUserCourseVote(int courseId, string userId, bool vote);
+    void UpdateUserCourseLearn(int courseId, string userId, bool learn);
+    void UpdateUserCourseBookmark(int courseId, string userId, bool bookmark);
+    void UpdateCoursePublish(int courseId, string userId, bool publish);
+    void AddCourseFeedback(int courseId, string userId, string feedback);
+
     ICollection<MyLearningDTO> GetLearningCoursesById(string UserId);
     ICollection<MyLearningDTO> GetLearningCoursesIsBookMarked(string UserId);
     ICollection<MyLearningDTO> GetLearningCoursesIsLearning(string UserId);
+    List<AllCoursesDto> GetAll();
 }

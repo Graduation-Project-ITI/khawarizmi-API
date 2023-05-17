@@ -16,11 +16,60 @@ namespace khawarizmi_API.Controllers
         {
             _coursesManager = coursesManager;
         }
+
         [HttpGet]
-        [Route("/CourseOverview/{courseId}")]
+        [Route("/CoursePage/{courseId}")]
         public ActionResult<CourseDisplayDto?> GetCourseInfo(int courseId) 
         {
             return _coursesManager.GetCourseById(courseId);
+        }
+
+        [HttpPut]
+        [Route("/CoursePage/Edit")]
+        public IActionResult PutCourse(CourseEditDto course)
+        {
+            _coursesManager.EditCourse(course);
+            return Ok();
+        }
+
+        [HttpPatch]
+        [Route("/CoursePage/userVote")]
+        public IActionResult PatchUserCourseVote(UserCourseEditDto edit)
+        {
+            _coursesManager.UpdateUserCourseVote(edit.CourseId, edit.UserId, edit.Boolean);
+            return Ok();
+        }
+        
+        [HttpPatch]
+        [Route("/CoursePage/userLearn")]
+        public IActionResult PatchUserCourseLearn(UserCourseEditDto edit)
+        {
+            _coursesManager.UpdateUserCourseLearn(edit.CourseId, edit.UserId, edit.Boolean);
+            return Ok();
+        }
+        
+        [HttpPatch]
+        [Route("/CoursePage/userBookmark")]
+        public IActionResult PatchUserCourseBookmark(UserCourseEditDto edit)
+        {
+            _coursesManager.UpdateUserCourseBookmark(edit.CourseId, edit.UserId, edit.Boolean);
+            return Ok();
+        }
+
+        [HttpPatch]
+        [Route("/CoursePage/Publish")]
+        public IActionResult PatchCoursePublish(UserCourseEditDto edit)
+        {
+            _coursesManager.UpdateCoursePublish(edit.CourseId, edit.UserId, edit.Boolean);
+            return Ok();
+        }
+
+        [HttpPost]
+        [Route("/CoursePage/Feedback")]
+        public IActionResult PostCourseFeedback(FeedbackAddDto data)
+        {
+            _coursesManager.AddCourseFeedback(data.CourseId, data.UserId, data.Feedback);
+            return Ok();
         }
     }
 }

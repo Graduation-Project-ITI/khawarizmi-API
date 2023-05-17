@@ -4,6 +4,6 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace khawarizmi.BL.DTOS.RegisterDTO;
+namespace khawarizmi.BL.Dtos;
 
-public record TokenDTO(string Token, string UserId);
+public record UserCourseEditDto(int CourseId, string UserId, bool Boolean);
