@@ -7,7 +7,7 @@ using Microsoft.AspNetCore.Http.Authentication.Internal;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Linq.Expressions;
+using System.Linq.Expressions; 
 using System.Security.Policy;
 using System.Text;
 using System.Threading.Tasks;
@@ -229,20 +229,6 @@ public class CoursesManager : ICoursesManager
         _coursesRepo.SaveChanges();
     }
 
-    public List<AllCoursesDto> GetAll()
-    {
-        List<Course> coursesDb = _coursesRepo.GetAll().Where(c => c.IsPublished == true).ToList();
-        return coursesDb.Select(c => new AllCoursesDto
-        {
-            Name = c.Name,
-            Description = c.Description,
-            CourseImage = c.CourseImage,
-            Date = c.Date,
-            UpVotes = c.UpVotes,
-            DownVotes = c.DownVotes
-
-        }).ToList();
-    }
 
     public ICollection<MyLearningDTO> GetLearningCoursesById(string UserId)
     {
@@ -260,5 +246,33 @@ public class CoursesManager : ICoursesManager
     public ICollection<MyLearningDTO> GetLearningCoursesIsLearning(string UserId)
     {
         throw new NotImplementedException();
+    }
+
+    public List<AllCoursesDto> GetPaginationCourse(int PageNumber)
+    {
+        List<Course> coursePageDb = _coursesRepo.GetAll().Where(c => c.IsPublished == true).Skip((PageNumber - 1) * 1).Take(8).ToList();
+        return coursePageDb.Select(c => new AllCoursesDto
+        {
+            Name = c.Name,
+            Description = c.Description,
+            CourseImage = c.CourseImage,
+            Date = c.Date,
+            UpVotes = c.UpVotes,
+            DownVotes = c.DownVotes
+        }).ToList();
+    }
+    public List<AllCoursesDto> GetAll()
+    {
+        List<Course> coursesDb = _coursesRepo.GetAll().Where(c => c.IsPublished == true).ToList();
+        return coursesDb.Select(c => new AllCoursesDto
+        {
+            Name = c.Name,
+            Description = c.Description,
+            CourseImage = c.CourseImage,
+            Date = c.Date,
+            UpVotes = c.UpVotes,
+            DownVotes = c.DownVotes
+
+        }).ToList();
     }
 }

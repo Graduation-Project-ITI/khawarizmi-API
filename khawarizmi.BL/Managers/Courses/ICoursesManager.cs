@@ -24,4 +24,5 @@ public interface ICoursesManager
     ICollection<MyLearningDTO> GetLearningCoursesIsBookMarked(string UserId);
     ICollection<MyLearningDTO> GetLearningCoursesIsLearning(string UserId);
     List<AllCoursesDto> GetAll();
+    List<AllCoursesDto> GetPaginationCourse(int PageNumber);
 }

@@ -18,5 +18,4 @@ public class AllCoursesDto
     public int UpVotes { get; set; }
     public int DownVotes { get; set; }
 
-
 }

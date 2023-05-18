@@ -15,12 +15,20 @@ namespace khawarizmi_API.Controllers
         {
             _courseManager = courseManager;
         }
-        [HttpGet]
+        [HttpGet]  
         [Route("/CoursesPage")]
         public ActionResult <List<AllCoursesDto>> GetAll()
         {
             return _courseManager.GetAll();
 
         }
+
+        [HttpGet]
+        [Route("/CoursesPerPage")]
+        public ActionResult <List<AllCoursesDto>> GetPaginationCourse(int PageNumber)
+        {
+            return _courseManager.GetPaginationCourse(PageNumber);
+        }
+       
     }
 }
