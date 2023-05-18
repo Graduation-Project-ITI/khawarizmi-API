@@ -1,5 +1,6 @@
 ﻿using khawarizmi.BL.Dtos;
 using khawarizmi.BL.Managers;
+using khawarizmi.DAL.Models;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
@@ -26,17 +27,20 @@ public class CreateCourseController : ControllerBase
 	{
 		return _categoriesManager.GetAllCategories();
     }
+
 	[HttpGet]
 	[Route("/CreateCourse/{categoryId}/tags")]
-	public ActionResult<List<TagReadDto>> GetTags(int categoryId)
+	public ActionResult<List<TagReadDto>?> GetTags(int categoryId)
 	{
 		return _tagsManager.GetTagsByCategory(categoryId);
     }
+
 	[HttpPost]
 	[Route("/CreateCourse/{userId}")]
-	public IActionResult PostNewCourse(string userId, [FromForm]CourseAddDto newCourse)
+	public ActionResult<int> PostNewCourse([FromForm] CourseAddDto newCourse, string userId)
 	{
-        _coursesManager.AddNewCourse(userId, newCourse);
-        return NoContent();
+        var NewCourseId = _coursesManager.AddNewCourse(userId, newCourse);
+
+		return Ok(NewCourseId);
 	}
 }

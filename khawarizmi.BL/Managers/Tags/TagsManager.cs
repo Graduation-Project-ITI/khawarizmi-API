@@ -16,9 +16,9 @@ public class TagsManager : ITagsManager
 	{
         _tagsRepo = tagsRepo;
 	}
-    public List<TagReadDto> GetTagsByCategory(int categoryId)
+    public List<TagReadDto>? GetTagsByCategory(int categoryId)
     {
-        List<TagReadDto> relatedTags = _tagsRepo.GetTagsByCategoryId(categoryId).Select(t => new TagReadDto(t.Id,t.Name)).ToList();
+        List<TagReadDto>? relatedTags = _tagsRepo.GetTagsByCategoryId(categoryId)?.Select(t => new TagReadDto(t.Id,t.Name)).ToList();
 
         return relatedTags;
     }
