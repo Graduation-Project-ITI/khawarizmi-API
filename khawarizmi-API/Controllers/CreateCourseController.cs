@@ -34,7 +34,7 @@ public class CreateCourseController : ControllerBase
     }
 	[HttpPost]
 	[Route("/CreateCourse/{userId}")]
-	public IActionResult PostNewCourse(string userId, CourseAddDto newCourse)
+	public IActionResult PostNewCourse(string userId, [FromForm]CourseAddDto newCourse)
 	{
         _coursesManager.AddNewCourse(userId, newCourse);
         return NoContent();
