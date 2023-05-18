@@ -6,4 +6,4 @@ using System.Threading.Tasks;
 
 namespace khawarizmi.BL.DTOS.RegisterDTO;
 
-public record TokenDTO(string Token);
+public record TokenDTO(string Token, string UserId);

@@ -7,4 +7,4 @@ using System.Threading.Tasks;
 
 namespace khawarizmi.BL.Dtos;
 
-public record CourseAddDto(string Title, string Description, string? Image, int CategoryId, List<string> TagsIds);
+public record CourseAddDto(string Title, string Description, string? Image, int CategoryId, string TagsIds);

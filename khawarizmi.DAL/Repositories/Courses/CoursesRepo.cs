@@ -17,11 +17,13 @@ public class CoursesRepo : GenericRepo<Course>, ICoursesRepo
     {
         _context = context;
     }
-    public void AddNewCourse(Course course)
+    public int AddNewCourse(Course course)
     {
         _context.Set<Course>().Add(course);
 
         _context.SaveChanges();
+
+        return course.Id;
     }
 
     public ICollection<UserCourses> GetAllCourses(string UserId,int pagenumber=1)
@@ -61,10 +63,12 @@ public class CoursesRepo : GenericRepo<Course>, ICoursesRepo
                         .Include(c => c.Feedbacks)
                         .Include(c => c.Lessons)
                         .Include(c => c.User)
+                        .Include(c => c.UserCourses)
                         .FirstOrDefault(c => c.Id == courseId);
     }
 
     public string? GetPublisherNameById(string UserId)
+
     {
         var PublisherName = _context.Set<User>()
             .FirstOrDefault(c => c.Id == UserId)?.UserName;

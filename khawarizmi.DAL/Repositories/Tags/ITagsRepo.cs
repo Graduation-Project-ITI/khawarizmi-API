@@ -9,5 +9,5 @@ namespace khawarizmi.DAL.Repositories;
 
 public interface ITagsRepo : IGenericRepo<Tag>
 {
-    ICollection<Tag> GetTagsByCategoryId(int categoryId);
+    ICollection<Tag>? GetTagsByCategoryId(int categoryId);
 }

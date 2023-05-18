@@ -11,6 +11,7 @@
     <PackageReference Include="microsoft.aspnetcore.authentication.jwtbearer" Version="7.0.5" />
     <PackageReference Include="microsoft.aspnetcore.identity" Version="2.2.0" />
     <PackageReference Include="Microsoft.AspNetCore.OpenApi" Version="7.0.2" />
+    <PackageReference Include="Microsoft.AspNetCore.StaticFiles" Version="2.2.0" />
     <PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="7.0.5">
       <PrivateAssets>all</PrivateAssets>
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
@@ -19,12 +20,9 @@
       <PrivateAssets>all</PrivateAssets>
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
     </PackageReference>
+    <PackageReference Include="Microsoft.Extensions.Azure" Version="1.6.3" />
     <PackageReference Include="Swashbuckle.AspNetCore" Version="6.4.0" />
     <PackageReference Include="System.IdentityModel.Tokens.Jwt" Version="6.30.0" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <ProjectReference Include="..\khawarizmi.BL\khawarizmi.BL.csproj" />
   </ItemGroup>
 
   <ItemGroup>
@@ -33,7 +31,12 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="wwwroot\" />
+
+    <!--<Folder Include="wwwroot\" />-->
+
+    <Folder Include="Uploads\Images\" />
+    <Folder Include="Uploads\Videos\" />
+
   </ItemGroup>
 
 </Project>

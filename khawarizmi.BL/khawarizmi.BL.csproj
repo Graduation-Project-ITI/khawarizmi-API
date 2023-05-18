@@ -9,8 +9,12 @@
   <ItemGroup>
     <Folder Include="Dtos\Users\" />
     <Folder Include="Managers\Feedback\" />
-    <Folder Include="Managers\Lessons\" />
     <Folder Include="Managers\Users\" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Azure.Storage.Blobs" Version="12.16.0" />
+    <PackageReference Include="Microsoft.Extensions.Azure" Version="1.6.3" />
   </ItemGroup>
 
   <ItemGroup>

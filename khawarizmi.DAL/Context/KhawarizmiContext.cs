@@ -19,6 +19,8 @@ public class KhawarizmiContext : IdentityDbContext<User>
     public DbSet<Feedback> Feedbacks => Set<Feedback>();
     public DbSet<Lesson> Lessons => Set<Lesson>();
     public DbSet<Tag> Tags => Set<Tag>();
+    public DbSet<UserCourses> UserCourses => Set<UserCourses>();
+
 
     public KhawarizmiContext(DbContextOptions<KhawarizmiContext> options) : base(options)
     {
@@ -46,7 +48,6 @@ public class KhawarizmiContext : IdentityDbContext<User>
             .WithMany(u => u.UserCourses)
             .HasForeignKey(uc => uc.UserId)
             .OnDelete(DeleteBehavior.NoAction);
-
 
         #region Data Seeding
 
@@ -129,6 +130,7 @@ public class KhawarizmiContext : IdentityDbContext<User>
             new { Id=61, Name = "Microsoft Power Platform"},
             new { Id=62, Name = "Wix"},
             new { Id=63, Name = "Elementor"}
+            
             );
 
         builder.Entity<Category>()
@@ -213,6 +215,7 @@ public class KhawarizmiContext : IdentityDbContext<User>
                         new{ CategoriesId= 10, TagsId=61 },
                         new{ CategoriesId= 10, TagsId=62 },
                         new{ CategoriesId= 10, TagsId=63 }
+                        
 
                     ));
         #endregion

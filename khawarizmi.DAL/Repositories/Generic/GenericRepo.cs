@@ -1,4 +1,5 @@
 ﻿using khawarizmi.DAL.Context;
+using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -15,8 +16,30 @@ public class GenericRepo<T> : IGenericRepo<T> where T : class
     {
         _context = context;
     }
-    public IQueryable<T> GetAll()
+    public List<T> GetAll()
     {
-        return _context.Set<T>();
+        return _context.Set<T>().ToList();
+    }
+    public T? Get(int id)
+    {
+        return _context.Set<T>().Find(id);
+    }
+    public void Add(T entity)
+    {
+        _context.Set<T>().Add(entity);
+    }
+
+    public void Delete(T entity)
+    {
+        _context.Set<T>().Remove(entity);
+    }
+
+    public void Update(T entity)
+    {
+        _context.Set<T>().Update(entity);
+    }
+    public int SaveChanges()
+    {
+        return _context.SaveChanges();
     }
 }
