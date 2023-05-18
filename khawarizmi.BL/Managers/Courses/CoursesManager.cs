@@ -67,11 +67,13 @@ public class CoursesManager : ICoursesManager
         Category? category = _categoriesRepo.GetCategoryByIdWithTags(newCourse.CategoryId);
         if(category == null) { return -1; }
 
+        if(newCourse.Image == null || newCourse.Image == "") newCourse.Image = DefaultCourseImage; 
+
         Course CourseToAdd = new() 
         {
             Name = newCourse.Title,
             Description = newCourse.Description,
-            CourseImage = newCourse.Image ?? DefaultCourseImage,
+            CourseImage = newCourse.Image,
             Date = DateTime.Now,
             UpVotes = 0,
             DownVotes = 0,
@@ -95,6 +97,15 @@ public class CoursesManager : ICoursesManager
         courseToEdit.Name = course.Name;
         courseToEdit.Description = course.Description;
         courseToEdit.CourseImage = course.CourseImage ?? DefaultCourseImage;
+    }
+
+    public void DeleteCourse(int CourseId)
+    {
+        var course = _coursesRepo.Get(CourseId);
+        if(course is null) return;
+
+        _coursesRepo.Delete(course);
+        _coursesRepo.SaveChanges();
     }
 
     public void UpdateUserCourseVote(int courseId, string userId, bool vote)

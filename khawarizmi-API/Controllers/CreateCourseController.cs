@@ -10,12 +10,14 @@ namespace khawarizmi_API.Controllers;
 [ApiController]
 public class CreateCourseController : ControllerBase
 {
+    private readonly ILogger<CreateCourseController> _logger;
     private readonly ITagsManager _tagsManager;
     private readonly ICoursesManager _coursesManager;
     private readonly ICategoriesManager _categoriesManager;
 
-    public CreateCourseController(ICoursesManager coursesManager, ICategoriesManager categoriesManager, ITagsManager tagsManager)
+    public CreateCourseController(ICoursesManager coursesManager, ICategoriesManager categoriesManager, ITagsManager tagsManager, ILogger<CreateCourseController> logger)
 	{
+        _logger = logger;
         _tagsManager = tagsManager;
         _coursesManager = coursesManager;
 		_categoriesManager = categoriesManager;
@@ -37,8 +39,22 @@ public class CreateCourseController : ControllerBase
 
 	[HttpPost]
 	[Route("/CreateCourse/{userId}")]
-	public ActionResult<int> PostNewCourse([FromForm] CourseAddDto newCourse, string userId)
-	{
+	public async Task<ActionResult<int>> PostNewCourse([FromForm] CourseAddDto newCourse, string userId)
+    {
+        if (newCourse.File != null)
+        {
+            IFormFile file = newCourse.File;
+            var fileName = Path.GetFileName(file.FileName);
+            var path = Path.Combine(Directory.GetCurrentDirectory(), "Images", fileName);
+            using var stream = new FileStream(path, FileMode.Create);
+            await file.CopyToAsync(stream);
+
+            newCourse.Image = path;
+
+            
+        }
+
+
         var NewCourseId = _coursesManager.AddNewCourse(userId, newCourse);
 
 		return Ok(NewCourseId);

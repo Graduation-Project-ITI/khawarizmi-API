@@ -14,6 +14,7 @@ public interface ICoursesManager
     CourseDisplayDto? GetCourseById(int courseId);
     int AddNewCourse(string userId, CourseAddDto newCourse);
     void EditCourse(CourseEditDto course);
+    void DeleteCourse(int courseId);
     void UpdateUserCourseVote(int courseId, string userId, bool vote);
     void UpdateUserCourseLearn(int courseId, string userId, bool learn);
     void UpdateUserCourseBookmark(int courseId, string userId, bool bookmark);

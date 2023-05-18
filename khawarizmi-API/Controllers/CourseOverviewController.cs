@@ -32,6 +32,14 @@ namespace khawarizmi_API.Controllers
             return Ok();
         }
 
+        [HttpDelete]
+        [Route("/CoursePage/Delete/{courseId}")]
+        public IActionResult DeleteCourse(int courseId)
+        {
+            _coursesManager.DeleteCourse(courseId);
+            return Ok();
+        }
+
         [HttpPatch]
         [Route("/CoursePage/userVote")]
         public IActionResult PatchUserCourseVote(UserCourseEditDto edit)
