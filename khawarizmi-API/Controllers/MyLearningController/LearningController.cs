@@ -17,9 +17,9 @@ public class LearningController : ControllerBase
     }
     [HttpGet]
     [Route("allcourses/{UserId}")]
-    public async Task<ActionResult> GetAllCoursesChecked( string UserId)
+    public async Task<ActionResult> GetAllCoursesChecked( string UserId, int pagenumber=1)
     {
-        var courses=  coursesManager.GetLearningCoursesById(UserId);
+        var courses=  coursesManager.GetLearningCoursesById(UserId,pagenumber);
         return Ok(courses);
     }
 

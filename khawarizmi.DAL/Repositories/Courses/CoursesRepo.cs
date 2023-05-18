@@ -1,5 +1,6 @@
 ﻿using khawarizmi.DAL.Context;
 using khawarizmi.DAL.Models;
+using Microsoft.Data.SqlClient.DataClassification;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
@@ -23,11 +24,13 @@ public class CoursesRepo : GenericRepo<Course>, ICoursesRepo
         _context.SaveChanges();
     }
 
-    public ICollection<UserCourses> GetAllCourses(string UserId)
+    public ICollection<UserCourses> GetAllCourses(string UserId,int pagenumber=1)
     {
         var courses = _context.Set<UserCourses>()
-      .Where(c => c.UserId == UserId && c.IsLearning && c.IsBookmarked)
+      .Where(c => c.UserId == UserId && c.IsLearning || c.IsBookmarked)
       .Include(c => c.Course)
+      .Skip((pagenumber-1)*12)
+      .Take(12)
       .ToList();
         return courses;
 
@@ -35,13 +38,19 @@ public class CoursesRepo : GenericRepo<Course>, ICoursesRepo
 
     public ICollection<UserCourses> GetAllCoursesIsBookMarked(string UserId)
     {
-        var CoursesIsBookMarked = _context.Set<UserCourses>().Where(c => c.IsBookmarked).Include(c => c.Course).ToList();
+        var CoursesIsBookMarked = _context.Set<UserCourses>()
+            .Where(c => c.IsBookmarked==true&& c.UserId==UserId)
+            .Include(c => c.Course)
+            .Take(12)
+            .ToList();
         return CoursesIsBookMarked;
     }
 
     public ICollection<UserCourses> GetAllCoursesIsLearining(string UserId)
     {
-        var coursesIsLearning = _context.Set<UserCourses>().Where(c => c.IsLearning).Include(c => c.Course).ToList();
+        var coursesIsLearning = _context.Set<UserCourses>()
+            .Where(c => c.IsLearning==true&&c.UserId==UserId)
+            .Include(c => c.Course).Take(12).ToList();
         return coursesIsLearning;
     }
 
@@ -55,10 +64,11 @@ public class CoursesRepo : GenericRepo<Course>, ICoursesRepo
                         .FirstOrDefault(c => c.Id == courseId);
     }
 
-    public string? GetCourseNameById(int courseId)
+    public string? GetPublisherNameById(string UserId)
     {
-        var courseName = _context.Set<Course>().FirstOrDefault(c => c.Id == courseId)?.Name;
-        return courseName;
+        var PublisherName = _context.Set<User>()
+            .FirstOrDefault(c => c.Id == UserId)?.UserName;
+        return PublisherName;
     }
 
 

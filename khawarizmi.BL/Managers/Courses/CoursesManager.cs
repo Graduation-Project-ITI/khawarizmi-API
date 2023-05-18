@@ -74,20 +74,29 @@ public class CoursesManager : ICoursesManager
                                     lessons);
     }
 
-    public ICollection<MyLearningDTO> GetLearningCoursesById(string UserId)
+
+    public ICollection<MyLearningDTO>GetLearningCoursesById(string UserId,int pagenumber)
     {
-        var courses = _coursesRepo.GetAllCoursesIsLearining(UserId);
-        return courses.Select(c => new MyLearningDTO( image: c.Course.CourseImage, name: c.Course.Name,
-            Creatorname: _coursesRepo.GetCourseNameById(c.CourseId))).ToList();
+        var courses = _coursesRepo.GetAllCourses(UserId,pagenumber);
+        return courses.Select(c => new MyLearningDTO( image: c.Course?.CourseImage, name: c.Course?.Name,
+            Creatorname: _coursesRepo.GetPublisherNameById(c.Course.PublisherId))).ToList();
     }
 
     public ICollection<MyLearningDTO> GetLearningCoursesIsBookMarked(string UserId)
     {
-        throw new NotImplementedException();
+        var courses = _coursesRepo.GetAllCoursesIsBookMarked(UserId);
+        return courses
+            .Select(c => new MyLearningDTO(image: c.Course?.CourseImage, name: c.Course?.Name,
+            Creatorname: _coursesRepo.GetPublisherNameById(c.Course.PublisherId)))
+            .ToList();
     }
 
     public ICollection<MyLearningDTO> GetLearningCoursesIsLearning(string UserId)
     {
-        throw new NotImplementedException();
+        var courses = _coursesRepo.GetAllCoursesIsLearining(UserId);
+        return courses
+            .Select(c => new MyLearningDTO(image: c.Course?.CourseImage, name: c.Course?.Name,
+            Creatorname: _coursesRepo.GetPublisherNameById(c.Course.PublisherId)))
+            .ToList();
     }
 }

@@ -8,7 +8,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 namespace khawarizmi.DAL.Migrations
 {
     /// <inheritdoc />
-    public partial class InitialCreation : Migration
+    public partial class AddData : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)

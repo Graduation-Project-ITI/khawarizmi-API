@@ -13,7 +13,7 @@ public interface ICoursesManager
 {
     void AddNewCourse(string userId, CourseAddDto newCourse);
     CourseDisplayDto? GetCourseById(int courseId);
-    ICollection<MyLearningDTO> GetLearningCoursesById(string UserId);
+    ICollection<MyLearningDTO> GetLearningCoursesById(string UserId, int pagenumber=1);
     ICollection<MyLearningDTO> GetLearningCoursesIsBookMarked(string UserId);
     ICollection<MyLearningDTO> GetLearningCoursesIsLearning(string UserId);
 }
