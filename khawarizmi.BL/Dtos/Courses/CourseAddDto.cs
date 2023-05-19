@@ -12,7 +12,7 @@ public class CourseAddDto
 {
     public string Title { get; set; } = string.Empty;
     public string Description { get; set; } = string.Empty;
-    public string? Image { get; set; } = string.Empty;
+    public string? Image { get; set; }
     public IFormFile? File { get; set; }
     public int CategoryId { get; set; }
     public string TagsIds { get; set; } = string.Empty;

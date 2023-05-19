@@ -1,8 +1,11 @@
-﻿using khawarizmi.BL.Dtos;
+﻿using CloudinaryDotNet;
+using CloudinaryDotNet.Actions;
+using khawarizmi.BL.Dtos;
 using khawarizmi.BL.Managers;
 using khawarizmi.DAL.Models;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.VisualBasic.FileIO;
 
 namespace khawarizmi_API.Controllers;
 
@@ -37,21 +40,28 @@ public class CreateCourseController : ControllerBase
 		return _tagsManager.GetTagsByCategory(categoryId);
     }
 
-	[HttpPost]
+    [HttpPost]
 	[Route("/CreateCourse/{userId}")]
-	public async Task<ActionResult<int>> PostNewCourse([FromForm] CourseAddDto newCourse, string userId)
+	public ActionResult<int> PostNewCourse([FromForm] CourseAddDto newCourse, string userId)
     {
         if (newCourse.File != null)
         {
-            IFormFile file = newCourse.File;
-            var fileName = Path.GetFileName(file.FileName);
-            var path = Path.Combine(Directory.GetCurrentDirectory(), "Images", fileName);
-            using var stream = new FileStream(path, FileMode.Create);
-            await file.CopyToAsync(stream);
+            var extension = Path.GetExtension(newCourse.File.FileName);
+            var d = DateTime.Now;
+            var fileName = $"{d.Year}{d.Month}{d.Day}{d.Hour}{d.Minute}{d.Second}{d.Millisecond}{d.Microsecond}{extension}";
+            var path = Path.Combine(Directory.GetCurrentDirectory(), "Uploads/Images", fileName);
+            using (var stream = new FileStream(path, FileMode.Create))
+            {
+                newCourse.File.CopyTo(stream);
+            }
 
-            newCourse.Image = path;
+            var cloudinary = new Cloudinary(new Account("dohd3qizc", "291665793866531", "k48cbVPUttntt6aMdE0ZMXQTuZQ"));
+            ImageUploadParams uploadParams = new() { File = new FileDescription(path), FilenameOverride = fileName };
+            ImageUploadResult uploadResult = cloudinary.Upload(uploadParams);
 
-            
+            FileSystem.DeleteFile(path);
+
+            newCourse.Image = uploadResult.Url.ToString();
         }
 
 

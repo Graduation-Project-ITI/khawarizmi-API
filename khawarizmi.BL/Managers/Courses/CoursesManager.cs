@@ -11,6 +11,7 @@ using System.Linq.Expressions;
 using System.Security.Policy;
 using System.Text;
 using System.Threading.Tasks;
+using Microsoft.IdentityModel.Tokens;
 
 namespace khawarizmi.BL.Managers;
 
@@ -67,7 +68,7 @@ public class CoursesManager : ICoursesManager
         Category? category = _categoriesRepo.GetCategoryByIdWithTags(newCourse.CategoryId);
         if(category == null) { return -1; }
 
-        if(newCourse.Image == null || newCourse.Image == "") newCourse.Image = DefaultCourseImage; 
+        if(newCourse.Image.IsNullOrEmpty()) newCourse.Image = DefaultCourseImage;
 
         Course CourseToAdd = new() 
         {
@@ -96,7 +97,7 @@ public class CoursesManager : ICoursesManager
 
         courseToEdit.Name = course.Name;
         courseToEdit.Description = course.Description;
-        courseToEdit.CourseImage = course.CourseImage ?? DefaultCourseImage;
+        courseToEdit.CourseImage = course.CourseImage;
     }
 
     public void DeleteCourse(int CourseId)
