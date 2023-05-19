@@ -13,14 +13,12 @@ namespace khawarizmi_API.Controllers;
 [ApiController]
 public class CreateCourseController : ControllerBase
 {
-    private readonly ILogger<CreateCourseController> _logger;
     private readonly ITagsManager _tagsManager;
     private readonly ICoursesManager _coursesManager;
     private readonly ICategoriesManager _categoriesManager;
 
-    public CreateCourseController(ICoursesManager coursesManager, ICategoriesManager categoriesManager, ITagsManager tagsManager, ILogger<CreateCourseController> logger)
+    public CreateCourseController(ICoursesManager coursesManager, ICategoriesManager categoriesManager, ITagsManager tagsManager)
 	{
-        _logger = logger;
         _tagsManager = tagsManager;
         _coursesManager = coursesManager;
 		_categoriesManager = categoriesManager;

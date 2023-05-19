@@ -244,8 +244,8 @@ public class CoursesManager : ICoursesManager
     public ICollection<MyLearningDTO> GetLearningCoursesById(string UserId,int pagenumber)
     {
         var courses = _coursesRepo.GetAllCourses(UserId, pagenumber);
-        return courses.Select(c => new MyLearningDTO(image: c.Course?.CourseImage, name: c.Course?.Name,
-            Creatorname: _coursesRepo.GetPublisherNameById(c.Course.PublisherId))).ToList();
+        return courses.Select(c => new MyLearningDTO(image: c.Course?.CourseImage??"", name: c.Course?.Name??"",
+            Creatorname: _coursesRepo.GetPublisherNameById(c.Course?.PublisherId??"")??"")).ToList();
       
     }
 
@@ -253,8 +253,8 @@ public class CoursesManager : ICoursesManager
     {
         var courses = _coursesRepo.GetAllCoursesIsBookMarked(UserId);
         return courses
-            .Select(c => new MyLearningDTO(image: c.Course?.CourseImage, name: c.Course?.Name,
-            Creatorname: _coursesRepo.GetPublisherNameById(c.Course.PublisherId)))
+            .Select(c => new MyLearningDTO(image: c.Course?.CourseImage??"", name: c.Course?.Name??"",
+            Creatorname: _coursesRepo.GetPublisherNameById(c.Course?.PublisherId??"")??""))
             .ToList();
     }
 
@@ -262,8 +262,8 @@ public class CoursesManager : ICoursesManager
     {
         var courses = _coursesRepo.GetAllCoursesIsLearining(UserId);
         return courses
-            .Select(c => new MyLearningDTO(image: c.Course?.CourseImage, name: c.Course?.Name,
-            Creatorname: _coursesRepo.GetPublisherNameById(c.Course.PublisherId)))
+            .Select(c => new MyLearningDTO(image: c.Course?.CourseImage??"", name: c.Course?.Name??"",
+            Creatorname: _coursesRepo.GetPublisherNameById(c.Course?.PublisherId??"")??""))
             .ToList();
     }
 
