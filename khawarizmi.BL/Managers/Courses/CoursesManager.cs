@@ -11,6 +11,7 @@ using System.Linq.Expressions;
 using System.Security.Policy;
 using System.Text;
 using System.Threading.Tasks;
+using Microsoft.IdentityModel.Tokens;
 
 namespace khawarizmi.BL.Managers;
 
@@ -67,11 +68,13 @@ public class CoursesManager : ICoursesManager
         Category? category = _categoriesRepo.GetCategoryByIdWithTags(newCourse.CategoryId);
         if(category == null) { return -1; }
 
+        if(newCourse.Image.IsNullOrEmpty()) newCourse.Image = DefaultCourseImage;
+
         Course CourseToAdd = new() 
         {
             Name = newCourse.Title,
             Description = newCourse.Description,
-            CourseImage = newCourse.Image ?? DefaultCourseImage,
+            CourseImage = newCourse.Image,
             Date = DateTime.Now,
             UpVotes = 0,
             DownVotes = 0,
@@ -94,7 +97,16 @@ public class CoursesManager : ICoursesManager
 
         courseToEdit.Name = course.Name;
         courseToEdit.Description = course.Description;
-        courseToEdit.CourseImage = course.CourseImage ?? DefaultCourseImage;
+        courseToEdit.CourseImage = course.CourseImage;
+    }
+
+    public void DeleteCourse(int CourseId)
+    {
+        var course = _coursesRepo.Get(CourseId);
+        if(course is null) return;
+
+        _coursesRepo.Delete(course);
+        _coursesRepo.SaveChanges();
     }
 
     public void UpdateUserCourseVote(int courseId, string userId, bool vote)
@@ -232,8 +244,8 @@ public class CoursesManager : ICoursesManager
     public ICollection<MyLearningDTO> GetLearningCoursesById(string UserId,int pagenumber)
     {
         var courses = _coursesRepo.GetAllCourses(UserId, pagenumber);
-        return courses.Select(c => new MyLearningDTO(image: c.Course?.CourseImage, name: c.Course?.Name,
-            Creatorname: _coursesRepo.GetPublisherNameById(c.Course.PublisherId))).ToList();
+        return courses.Select(c => new MyLearningDTO(image: c.Course?.CourseImage??"", name: c.Course?.Name??"",
+            Creatorname: _coursesRepo.GetPublisherNameById(c.Course?.PublisherId??"")??"")).ToList();
       
     }
 
@@ -241,8 +253,8 @@ public class CoursesManager : ICoursesManager
     {
         var courses = _coursesRepo.GetAllCoursesIsBookMarked(UserId);
         return courses
-            .Select(c => new MyLearningDTO(image: c.Course?.CourseImage, name: c.Course?.Name,
-            Creatorname: _coursesRepo.GetPublisherNameById(c.Course.PublisherId)))
+            .Select(c => new MyLearningDTO(image: c.Course?.CourseImage??"", name: c.Course?.Name??"",
+            Creatorname: _coursesRepo.GetPublisherNameById(c.Course?.PublisherId??"")??""))
             .ToList();
     }
 
@@ -250,8 +262,8 @@ public class CoursesManager : ICoursesManager
     {
         var courses = _coursesRepo.GetAllCoursesIsLearining(UserId);
         return courses
-            .Select(c => new MyLearningDTO(image: c.Course?.CourseImage, name: c.Course?.Name,
-            Creatorname: _coursesRepo.GetPublisherNameById(c.Course.PublisherId)))
+            .Select(c => new MyLearningDTO(image: c.Course?.CourseImage??"", name: c.Course?.Name??"",
+            Creatorname: _coursesRepo.GetPublisherNameById(c.Course?.PublisherId??"")??""))
             .ToList();
     }
 
