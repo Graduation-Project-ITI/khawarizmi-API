@@ -65,5 +65,8 @@ public class CoursesRepo : GenericRepo<Course>, ICoursesRepo
         return courseName;
     }
 
-
+    public List<Course> Search(string keyWord)
+    {
+        return _context.Courses.Where(c => c.Name.Contains(keyWord)).ToList();
+    }
 }
