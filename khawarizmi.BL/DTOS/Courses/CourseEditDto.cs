@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Microsoft.AspNetCore.Http;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -6,7 +7,13 @@ using System.Threading.Tasks;
 
 namespace khawarizmi.BL.Dtos;
 
-public record CourseEditDto(int Id,
-                            string Name, 
-                            string Description, 
-                            string? CourseImage);
+public class CourseEditDto
+{
+    public int Id { get; set; }
+    public string Name { get; set; } = string.Empty;
+    public string Description { get; set; } = string.Empty;
+    public string? CourseImage { get; set; }
+    public IFormFile? File { get; set; }
+    public int CategoryId { get; set; }
+    public string TagsIds { get; set; } = string.Empty;
+}

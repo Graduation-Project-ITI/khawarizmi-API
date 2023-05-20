@@ -42,27 +42,8 @@ public class CreateCourseController : ControllerBase
 	[Route("/CreateCourse/{userId}")]
 	public ActionResult<int> PostNewCourse([FromForm] CourseAddDto newCourse, string userId)
     {
-        if (newCourse.File != null)
-        {
-            var extension = Path.GetExtension(newCourse.File.FileName);
-            var d = DateTime.Now;
-            var fileName = $"{d.Year}{d.Month}{d.Day}{d.Hour}{d.Minute}{d.Second}{d.Millisecond}{d.Microsecond}{extension}";
-            var path = Path.Combine(Directory.GetCurrentDirectory(), "Uploads/Images", fileName);
-            using (var stream = new FileStream(path, FileMode.Create))
-            {
-                newCourse.File.CopyTo(stream);
-            }
-
-            var cloudinary = new Cloudinary(new Account("dohd3qizc", "291665793866531", "k48cbVPUttntt6aMdE0ZMXQTuZQ"));
-            ImageUploadParams uploadParams = new() { File = new FileDescription(path), FilenameOverride = fileName };
-            ImageUploadResult uploadResult = cloudinary.Upload(uploadParams);
-
-            FileSystem.DeleteFile(path);
-
-            newCourse.Image = uploadResult.Url.ToString();
-        }
-
-
+        newCourse.Image = Helper.UploadImageOnCloudinary(newCourse.File);
+        
         var NewCourseId = _coursesManager.AddNewCourse(userId, newCourse);
 
 		return Ok(NewCourseId);

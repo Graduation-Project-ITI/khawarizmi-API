@@ -26,10 +26,11 @@ namespace khawarizmi_API.Controllers
 
         [HttpPut]
         [Route("/CoursePage/Edit")]
-        public IActionResult PutCourse(CourseEditDto course)
+        public IActionResult PutCourse([FromForm] CourseEditDto course)
         {
+            course.CourseImage = Helper.UploadImageOnCloudinary(course.File);
             _coursesManager.EditCourse(course);
-            return Ok();
+            return Ok(course.Id);
         }
 
         [HttpDelete]
