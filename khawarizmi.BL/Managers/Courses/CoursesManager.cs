@@ -12,6 +12,7 @@ using System.Security.Policy;
 using System.Text;
 using System.Threading.Tasks;
 using Microsoft.IdentityModel.Tokens;
+using khawarizmi.BL.Dtos.Helpers;
 
 namespace khawarizmi.BL.Managers;
 
@@ -295,5 +296,36 @@ public class CoursesManager : ICoursesManager
         }).ToList();
     }
 
-   
+    // created by abdallah
+    public PaginationDisplayDto<AdminCoursesDisplayDto> CoursePaginator(int pageIndex, string searchBy, string orderBy, int pageSize)
+    {
+
+        List<Course> courses = _coursesRepo.GetAll()
+            .Where(c => c.Name.Contains(searchBy))
+            //.OrderByDescending(c => c.UpVotes) // this is hard coded cus it refuse to explicitly order by string 'orderBy'
+            .ToList();
+
+        int length = courses.Count();
+
+        // pages start with 0
+        var queryResultPage = courses.Skip(pageIndex * pageSize).Take(pageSize);
+
+        // course to admin dto
+        List<AdminCoursesDisplayDto> AdminDTO = queryResultPage.Select(c => new AdminCoursesDisplayDto
+        (
+            Id: c.Id,
+            Name: c.Name,
+            Publisher: c.PublisherId,
+            UpVotes: c.UpVotes,
+            DownVotes: c.DownVotes,
+            NetVotes: c.UpVotes - c.DownVotes,
+            Date: c.Date
+        )).ToList();
+
+        return new PaginationDisplayDto<AdminCoursesDisplayDto>
+            (
+                Length:length,
+                Data: AdminDTO
+            );
+    }
 }

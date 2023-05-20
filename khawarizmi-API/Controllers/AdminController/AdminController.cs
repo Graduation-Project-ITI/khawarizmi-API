@@ -8,13 +8,5 @@ namespace khawarizmi_API.Controllers.AdminController
     public class AdminController : ControllerBase
     {
 
-        [HttpGet]
-        public IActionResult GetCourses()
-        {
-
-
-
-            return Ok();
-        }
     }
 }

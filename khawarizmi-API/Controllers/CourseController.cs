@@ -1,4 +1,6 @@
 ﻿using khawarizmi.BL.Dtos;
+using khawarizmi.BL.Dtos.Courses;
+using khawarizmi.BL.Dtos.Helpers;
 using khawarizmi.BL.Managers;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -28,6 +30,14 @@ namespace khawarizmi_API.Controllers
         public ActionResult <List<AllCoursesDto>> GetPaginationCourse(int PageNumber)
         {
             return _courseManager.GetPaginationCourse(PageNumber);
+        }
+
+        // for Admin courses
+        [HttpGet]
+        [Route("AdminCourses")]
+        public ActionResult <PaginationDisplayDto<AdminCoursesDisplayDto>> GetAdminCourses(int pageIndex, int pageSize, string searchBy="", string orderBy="")
+        {
+            return _courseManager.CoursePaginator(pageIndex, searchBy, orderBy, pageSize);
         }
        
     }
