@@ -252,7 +252,7 @@ public class CoursesManager : ICoursesManager
     {
         var Allcourses = _coursesRepo.GetAll().Where(c => c.IsPublished == true);
         int y = Allcourses.Count();
-        List<Course> coursePageDb =Allcourses.Skip((PageNumber - 1) * 1).Take(8).ToList();
+        List<Course> coursePageDb =Allcourses.Skip((PageNumber - 1) * 8).Take(8).ToList();
         var x= coursePageDb.Select(c => new AllCoursesDto
         {
             Id = c.Id,
