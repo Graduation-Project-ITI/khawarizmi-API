@@ -28,6 +28,8 @@ public interface ICoursesManager
     ICollection<MyLearningDTO> GetLearningCoursesIsBookMarked(string UserId);
     ICollection<MyLearningDTO> GetLearningCoursesIsLearning(string UserId);
     List<AllCoursesDto> GetAll();
-    List<AllCoursesDto> GetPaginationCourse(int PageNumber);
+    AllAndCountDto GetPaginationCourse(int PageNumber);
+    AllAndCountDto? Search(string keyWord);
+    //List<AllCoursesDto> GetPaginationCourse(int PageNumber);
     PaginationDisplayDto<AdminCoursesDisplayDto> CoursePaginator(int pageIndex, string searchBy, string orderBy, int pageSize);
 }
