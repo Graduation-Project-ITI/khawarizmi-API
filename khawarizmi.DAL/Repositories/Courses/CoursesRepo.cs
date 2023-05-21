@@ -67,6 +67,12 @@ public class CoursesRepo : GenericRepo<Course>, ICoursesRepo
                         .FirstOrDefault(c => c.Id == courseId);
     }
 
+    public string? GetCourseNameById(int courseId)
+    {
+        var courseName = _context.Set<Course>().FirstOrDefault(c => c.Id == courseId)?.Name;
+        return courseName;
+    }
+
     public string? GetPublisherNameById(string UserId)
 
     {
@@ -75,5 +81,8 @@ public class CoursesRepo : GenericRepo<Course>, ICoursesRepo
         return PublisherName;
     }
 
-
+    public List<Course> Search(string keyWord)
+    {
+        return _context.Courses.Where(c => c.Name.Contains(keyWord)).ToList();
+    }
 }

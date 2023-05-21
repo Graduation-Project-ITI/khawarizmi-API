@@ -268,11 +268,14 @@ public class CoursesManager : ICoursesManager
             .ToList();
     }
 
-    public List<AllCoursesDto> GetPaginationCourse(int PageNumber)
+    public AllAndCountDto GetPaginationCourse(int PageNumber)
     {
-        List<Course> coursePageDb = _coursesRepo.GetAll().Where(c => c.IsPublished == true).Skip((PageNumber - 1) * 1).Take(8).ToList();
-        return coursePageDb.Select(c => new AllCoursesDto
+        var Allcourses = _coursesRepo.GetAll().Where(c => c.IsPublished == true);
+        int y = Allcourses.Count();
+        List<Course> coursePageDb =Allcourses.Skip((PageNumber - 1) * 8).Take(8).ToList();
+        var x= coursePageDb.Select(c => new AllCoursesDto
         {
+            Id = c.Id,
             Name = c.Name,
             Description = c.Description,
             CourseImage = c.CourseImage,
@@ -280,12 +283,18 @@ public class CoursesManager : ICoursesManager
             UpVotes = c.UpVotes,
             DownVotes = c.DownVotes
         }).ToList();
+        return new AllAndCountDto
+        {
+            Count = y,
+            AllCourses = x
+        };
     }
     public List<AllCoursesDto> GetAll()
     {
         List<Course> coursesDb = _coursesRepo.GetAll().Where(c => c.IsPublished == true).ToList();
         return coursesDb.Select(c => new AllCoursesDto
         {
+            Id = c.Id,
             Name = c.Name,
             Description = c.Description,
             CourseImage = c.CourseImage,
@@ -294,6 +303,27 @@ public class CoursesManager : ICoursesManager
             DownVotes = c.DownVotes
 
         }).ToList();
+    }
+
+    public AllAndCountDto? Search(string keyWord)
+    {
+        var searchData = _coursesRepo.Search(keyWord).ToList();
+        var courseCount = searchData.Count;
+        var t=  searchData.Select(c=> new AllCoursesDto
+        {
+            Id = c.Id,
+            Name = c.Name,
+            Description = c.Description,
+            CourseImage = c.CourseImage,
+            Date = c.Date,
+            UpVotes = c.UpVotes,
+            DownVotes = c.DownVotes,
+        }).ToList();
+        return new AllAndCountDto
+        {
+            Count = courseCount,
+            AllCourses = t
+        };
     }
 
     // created by abdallah
@@ -305,7 +335,7 @@ public class CoursesManager : ICoursesManager
             //.OrderByDescending(c => c.UpVotes) // this is hard coded cus it refuse to explicitly order by string 'orderBy'
             .ToList();
 
-        int length = courses.Count();
+        int length = courses.Count;
 
         // pages start with 0
         var queryResultPage = courses.Skip(pageIndex * pageSize).Take(pageSize);
