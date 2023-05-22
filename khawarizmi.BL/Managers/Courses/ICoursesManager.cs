@@ -32,4 +32,6 @@ public interface ICoursesManager
     AllAndCountDto? Search(string keyWord);
     //List<AllCoursesDto> GetPaginationCourse(int PageNumber);
     PaginationDisplayDto<AdminCoursesDisplayDto> CoursePaginator(int pageIndex, string searchBy, string orderBy, int pageSize);
+    List<AllCoursesDto> GetLatestCourses();
+    List<AllCoursesDto> GetTopCourses();
 }

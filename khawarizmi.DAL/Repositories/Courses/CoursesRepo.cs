@@ -21,7 +21,7 @@ public class CoursesRepo : GenericRepo<Course>, ICoursesRepo
     {
         _context.Set<Course>().Add(course);
 
-        _context.SaveChanges();
+        SaveChanges();
 
         return course.Id;
     }

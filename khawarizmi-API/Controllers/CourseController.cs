@@ -17,17 +17,16 @@ namespace khawarizmi_API.Controllers
         {
             _courseManager = courseManager;
         }
-        [HttpGet]  
+        [HttpGet]
         [Route("/CoursesPage")]
-        public ActionResult <List<AllCoursesDto>> GetAll()
+        public ActionResult<List<AllCoursesDto>> GetAll()
         {
             return _courseManager.GetAll();
-
         }
-
+  
         [HttpGet]
         [Route("/CoursesPerPage")]
-        public ActionResult <AllAndCountDto> GetPaginationCourse(int PageNumber)
+        public ActionResult<AllAndCountDto> GetPaginationCourse(int PageNumber)
         {
             return _courseManager.GetPaginationCourse(PageNumber);
         }
@@ -37,7 +36,7 @@ namespace khawarizmi_API.Controllers
         public ActionResult<AllAndCountDto> Search(string kerWord)
         {
             var x = _courseManager.Search(kerWord);
-            if(x.Count ==0)
+            if (x.Count == 0)
             {
                 return BadRequest(new { message = "No Courses Found" });
             }
@@ -49,12 +48,26 @@ namespace khawarizmi_API.Controllers
         }
 
         // for Admin courses
-        [HttpGet]
-        [Route("AdminCourses")]
+        [HttpGet("AdminCourses")]
+        //[Route("AdminCourses")]
+       
         public ActionResult <PaginationDisplayDto<AdminCoursesDisplayDto>> GetAdminCourses(int pageIndex, int pageSize, string searchBy="", string orderBy="")
         {
             return _courseManager.CoursePaginator(pageIndex, searchBy, orderBy, pageSize);
         }
-       
+
+        [HttpGet]
+        [Route("LatestCourses")]
+        public ActionResult<List<AllCoursesDto>> GetLatestCourses()
+        {
+            return _courseManager.GetLatestCourses();
+        }
+
+        [HttpGet]
+        [Route("TopCourses")]
+        public ActionResult<List<AllCoursesDto>> GetTopCourses()
+        {
+            return _courseManager.GetTopCourses(); 
+        }
     }
 }

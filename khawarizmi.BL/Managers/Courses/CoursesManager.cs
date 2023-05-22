@@ -358,4 +358,36 @@ public class CoursesManager : ICoursesManager
                 Data: AdminDTO
             );
     }
+
+    public List<AllCoursesDto> GetLatestCourses()
+    {
+       var coursesDb= _coursesRepo.GetAll().Where(c => c.IsPublished == true).OrderByDescending(c => c.Date).Take(5);
+        return coursesDb.Select(c => new AllCoursesDto
+        {
+            Id = c.Id,
+            Name = c.Name,
+            Description = c.Description,
+            CourseImage = c.CourseImage,
+            Date= c.Date,
+            UpVotes = c.UpVotes,
+            DownVotes = c.DownVotes,
+            SearchCount = 5
+        }).ToList();
+    }
+
+    public List<AllCoursesDto> GetTopCourses()
+    {
+    var TopDb = _coursesRepo.GetAll().Where(c=> c.IsPublished==true).OrderByDescending(c=>(c.UpVotes - c.DownVotes)).Take(5);
+        return TopDb.Select(c => new AllCoursesDto
+        {
+            Id = c.Id,
+            Name = c.Name,
+            Description = c.Description,
+            CourseImage = c.CourseImage,
+            Date = c.Date,
+            UpVotes = c.UpVotes,
+            DownVotes = c.DownVotes,
+            SearchCount = 5
+        }).ToList();
+    }
 }
