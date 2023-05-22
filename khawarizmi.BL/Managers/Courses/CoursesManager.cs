@@ -7,7 +7,7 @@ using Microsoft.AspNetCore.Http.Authentication.Internal;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Linq.Expressions; 
+using System.Linq.Expressions;
 using System.Security.Policy;
 using System.Text;
 using System.Threading.Tasks;
@@ -67,11 +67,11 @@ public class CoursesManager : ICoursesManager
         var tags = _tagsRepo.GetTagsByCategoryId(newCourse.CategoryId);
 
         Category? category = _categoriesRepo.GetCategoryByIdWithTags(newCourse.CategoryId);
-        if(category == null) { return -1; }
+        if (category == null) { return -1; }
 
-        if(newCourse.Image.IsNullOrEmpty()) newCourse.Image = DefaultCourseImage;
+        if (newCourse.Image.IsNullOrEmpty()) newCourse.Image = DefaultCourseImage;
 
-        Course CourseToAdd = new() 
+        Course CourseToAdd = new()
         {
             Name = newCourse.Title,
             Description = newCourse.Description,
@@ -104,7 +104,7 @@ public class CoursesManager : ICoursesManager
     public void DeleteCourse(int CourseId)
     {
         var course = _coursesRepo.Get(CourseId);
-        if(course is null) return;
+        if (course is null) return;
 
         _coursesRepo.Delete(course);
         _coursesRepo.SaveChanges();
@@ -121,8 +121,8 @@ public class CoursesManager : ICoursesManager
         {
             if (userCourse.IsVoted)
             {
-                if(userCourse.IsUpVoted) { course.UpVotes--; }
-                if(!userCourse.IsUpVoted) { course.DownVotes--; }
+                if (userCourse.IsUpVoted) { course.UpVotes--; }
+                if (!userCourse.IsUpVoted) { course.DownVotes--; }
 
                 userCourse.IsUpVoted = vote;
             }
@@ -242,20 +242,20 @@ public class CoursesManager : ICoursesManager
         _coursesRepo.SaveChanges();
     }
 
-    public ICollection<MyLearningDTO> GetLearningCoursesById(string UserId,int pagenumber)
+    public ICollection<MyLearningDTO> GetLearningCoursesById(string UserId, int pagenumber)
     {
         var courses = _coursesRepo.GetAllCourses(UserId, pagenumber);
-        return courses.Select(c => new MyLearningDTO(image: c.Course?.CourseImage??"", name: c.Course?.Name??"",
-            Creatorname: _coursesRepo.GetPublisherNameById(c.Course?.PublisherId??"")??"")).ToList();
-      
+        return courses.Select(c => new MyLearningDTO(image: c.Course?.CourseImage ?? "", name: c.Course?.Name ?? "",
+            Creatorname: _coursesRepo.GetPublisherNameById(c.Course?.PublisherId ?? "") ?? "")).ToList();
+
     }
 
     public ICollection<MyLearningDTO> GetLearningCoursesIsBookMarked(string UserId)
     {
         var courses = _coursesRepo.GetAllCoursesIsBookMarked(UserId);
         return courses
-            .Select(c => new MyLearningDTO(image: c.Course?.CourseImage??"", name: c.Course?.Name??"",
-            Creatorname: _coursesRepo.GetPublisherNameById(c.Course?.PublisherId??"")??""))
+            .Select(c => new MyLearningDTO(image: c.Course?.CourseImage ?? "", name: c.Course?.Name ?? "",
+            Creatorname: _coursesRepo.GetPublisherNameById(c.Course?.PublisherId ?? "") ?? ""))
             .ToList();
     }
 
@@ -263,8 +263,8 @@ public class CoursesManager : ICoursesManager
     {
         var courses = _coursesRepo.GetAllCoursesIsLearining(UserId);
         return courses
-            .Select(c => new MyLearningDTO(image: c.Course?.CourseImage??"", name: c.Course?.Name??"",
-            Creatorname: _coursesRepo.GetPublisherNameById(c.Course?.PublisherId??"")??""))
+            .Select(c => new MyLearningDTO(image: c.Course?.CourseImage ?? "", name: c.Course?.Name ?? "",
+            Creatorname: _coursesRepo.GetPublisherNameById(c.Course?.PublisherId ?? "") ?? ""))
             .ToList();
     }
 
@@ -329,11 +329,20 @@ public class CoursesManager : ICoursesManager
     // created by abdallah
     public PaginationDisplayDto<AdminCoursesDisplayDto> CoursePaginator(int pageIndex, string searchBy, string orderBy, int pageSize)
     {
-
-        List<Course> courses = _coursesRepo.GetAll()
+        List<Course> courses;
+        if (orderBy == "topVoted")
+        {
+            courses = _coursesRepo.GetAll()
+                .Where(c => c.Name.Contains(searchBy))
+                .OrderByDescending(c => c.UpVotes - c.DownVotes)
+                .ToList();
+        }
+        else
+        {
+            courses = _coursesRepo.GetAll()
             .Where(c => c.Name.Contains(searchBy))
-            //.OrderByDescending(c => c.UpVotes) // this is hard coded cus it refuse to explicitly order by string 'orderBy'
             .ToList();
+        }
 
         int length = courses.Count;
 
@@ -349,12 +358,12 @@ public class CoursesManager : ICoursesManager
             UpVotes: c.UpVotes,
             DownVotes: c.DownVotes,
             NetVotes: c.UpVotes - c.DownVotes,
-            Date: c.Date
+            Date: c.Date.ToShortDateString()
         )).ToList();
 
         return new PaginationDisplayDto<AdminCoursesDisplayDto>
             (
-                Length:length,
+                Length: length,
                 Data: AdminDTO
             );
     }

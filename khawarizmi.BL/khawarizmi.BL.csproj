@@ -8,7 +8,6 @@
 
   <ItemGroup>
     <Folder Include="Managers\Feedback\" />
-    <Folder Include="Managers\Users\" />
   </ItemGroup>
 
   <ItemGroup>
