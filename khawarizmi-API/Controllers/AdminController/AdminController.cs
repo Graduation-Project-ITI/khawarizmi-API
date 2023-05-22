@@ -1,4 +1,6 @@
-﻿using Microsoft.AspNetCore.Http;
+﻿using khawarizmi.BL.Dtos.Courses;
+using khawarizmi.BL.Dtos.Helpers;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
 namespace khawarizmi_API.Controllers.AdminController
@@ -7,6 +9,18 @@ namespace khawarizmi_API.Controllers.AdminController
     [ApiController]
     public class AdminController : ControllerBase
     {
+        public AdminController()
+        {
 
+        }
+
+        // endpoint for getting adming statistics
+        [HttpGet]
+        [Route("statistics")]
+        public IActionResult CardStatistics()
+        {
+
+            return Ok();
+        }
     }
 }

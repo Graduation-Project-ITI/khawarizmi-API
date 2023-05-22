@@ -55,6 +55,6 @@ namespace khawarizmi_API.Controllers
         {
             return _courseManager.CoursePaginator(pageIndex, searchBy, orderBy, pageSize);
         }
-       
+
     }
 }

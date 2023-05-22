@@ -358,7 +358,7 @@ public class CoursesManager : ICoursesManager
             UpVotes: c.UpVotes,
             DownVotes: c.DownVotes,
             NetVotes: c.UpVotes - c.DownVotes,
-            Date: c.Date
+            Date: c.Date.ToShortDateString()
         )).ToList();
 
         return new PaginationDisplayDto<AdminCoursesDisplayDto>
