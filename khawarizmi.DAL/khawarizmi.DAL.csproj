@@ -27,7 +27,6 @@
 
   <ItemGroup>
     <Folder Include="Repositories\Feedback\" />
-    <Folder Include="Repositories\Users\" />
   </ItemGroup>
 
 </Project>

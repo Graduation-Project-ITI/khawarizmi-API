@@ -1,5 +1,6 @@
 ﻿using khawarizmi.BL.Dtos;
 using khawarizmi.BL.Dtos.Courses;
+using khawarizmi.BL.Dtos.Helpers;
 using khawarizmi.DAL.Models;
 using System;
 using System.Collections.Generic;
@@ -25,5 +26,10 @@ public interface ICoursesManager
     ICollection<MyLearningDTO> GetLearningCoursesIsBookMarked(string UserId);
     ICollection<MyLearningDTO> GetLearningCoursesIsLearning(string UserId);
     List<AllCoursesDto> GetAll();
-    List<AllCoursesDto> GetPaginationCourse(int PageNumber);
+    AllAndCountDto GetPaginationCourse(int PageNumber);
+    AllAndCountDto? Search(string keyWord);
+    //List<AllCoursesDto> GetPaginationCourse(int PageNumber);
+    PaginationDisplayDto<AdminCoursesDisplayDto> CoursePaginator(int pageIndex, string searchBy, string orderBy, int pageSize);
+    List<AllCoursesDto> GetLatestCourses();
+    List<AllCoursesDto> GetTopCourses();
 }

@@ -7,11 +7,12 @@ using Microsoft.AspNetCore.Http.Authentication.Internal;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Linq.Expressions; 
+using System.Linq.Expressions;
 using System.Security.Policy;
 using System.Text;
 using System.Threading.Tasks;
 using Microsoft.IdentityModel.Tokens;
+using khawarizmi.BL.Dtos.Helpers;
 
 namespace khawarizmi.BL.Managers;
 
@@ -250,20 +251,20 @@ public class CoursesManager : ICoursesManager
         _coursesRepo.SaveChanges();
     }
 
-    public ICollection<MyLearningDTO> GetLearningCoursesById(string UserId,int pagenumber)
+    public ICollection<MyLearningDTO> GetLearningCoursesById(string UserId, int pagenumber)
     {
         var courses = _coursesRepo.GetAllCourses(UserId, pagenumber);
-        return courses.Select(c => new MyLearningDTO(image: c.Course?.CourseImage??"", name: c.Course?.Name??"",
-            Creatorname: _coursesRepo.GetPublisherNameById(c.Course?.PublisherId??"")??"")).ToList();
-      
+        return courses.Select(c => new MyLearningDTO(image: c.Course?.CourseImage ?? "", name: c.Course?.Name ?? "",
+            Creatorname: _coursesRepo.GetPublisherNameById(c.Course?.PublisherId ?? "") ?? "")).ToList();
+
     }
 
     public ICollection<MyLearningDTO> GetLearningCoursesIsBookMarked(string UserId)
     {
         var courses = _coursesRepo.GetAllCoursesIsBookMarked(UserId);
         return courses
-            .Select(c => new MyLearningDTO(image: c.Course?.CourseImage??"", name: c.Course?.Name??"",
-            Creatorname: _coursesRepo.GetPublisherNameById(c.Course?.PublisherId??"")??""))
+            .Select(c => new MyLearningDTO(image: c.Course?.CourseImage ?? "", name: c.Course?.Name ?? "",
+            Creatorname: _coursesRepo.GetPublisherNameById(c.Course?.PublisherId ?? "") ?? ""))
             .ToList();
     }
 
@@ -271,16 +272,19 @@ public class CoursesManager : ICoursesManager
     {
         var courses = _coursesRepo.GetAllCoursesIsLearining(UserId);
         return courses
-            .Select(c => new MyLearningDTO(image: c.Course?.CourseImage??"", name: c.Course?.Name??"",
-            Creatorname: _coursesRepo.GetPublisherNameById(c.Course?.PublisherId??"")??""))
+            .Select(c => new MyLearningDTO(image: c.Course?.CourseImage ?? "", name: c.Course?.Name ?? "",
+            Creatorname: _coursesRepo.GetPublisherNameById(c.Course?.PublisherId ?? "") ?? ""))
             .ToList();
     }
 
-    public List<AllCoursesDto> GetPaginationCourse(int PageNumber)
+    public AllAndCountDto GetPaginationCourse(int PageNumber)
     {
-        List<Course> coursePageDb = _coursesRepo.GetAll().Where(c => c.IsPublished == true).Skip((PageNumber - 1) * 1).Take(8).ToList();
-        return coursePageDb.Select(c => new AllCoursesDto
+        var Allcourses = _coursesRepo.GetAll().Where(c => c.IsPublished == true);
+        int y = Allcourses.Count();
+        List<Course> coursePageDb =Allcourses.Skip((PageNumber - 1) * 8).Take(8).ToList();
+        var x= coursePageDb.Select(c => new AllCoursesDto
         {
+            Id = c.Id,
             Name = c.Name,
             Description = c.Description,
             CourseImage = c.CourseImage,
@@ -288,12 +292,18 @@ public class CoursesManager : ICoursesManager
             UpVotes = c.UpVotes,
             DownVotes = c.DownVotes
         }).ToList();
+        return new AllAndCountDto
+        {
+            Count = y,
+            AllCourses = x
+        };
     }
     public List<AllCoursesDto> GetAll()
     {
         List<Course> coursesDb = _coursesRepo.GetAll().Where(c => c.IsPublished == true).ToList();
         return coursesDb.Select(c => new AllCoursesDto
         {
+            Id = c.Id,
             Name = c.Name,
             Description = c.Description,
             CourseImage = c.CourseImage,
@@ -301,6 +311,101 @@ public class CoursesManager : ICoursesManager
             UpVotes = c.UpVotes,
             DownVotes = c.DownVotes
 
+        }).ToList();
+    }
+
+    public AllAndCountDto? Search(string keyWord)
+    {
+        var searchData = _coursesRepo.Search(keyWord).ToList();
+        var courseCount = searchData.Count;
+        var t=  searchData.Select(c=> new AllCoursesDto
+        {
+            Id = c.Id,
+            Name = c.Name,
+            Description = c.Description,
+            CourseImage = c.CourseImage,
+            Date = c.Date,
+            UpVotes = c.UpVotes,
+            DownVotes = c.DownVotes,
+        }).ToList();
+        return new AllAndCountDto
+        {
+            Count = courseCount,
+            AllCourses = t
+        };
+    }
+
+    // created by abdallah
+    public PaginationDisplayDto<AdminCoursesDisplayDto> CoursePaginator(int pageIndex, string searchBy, string orderBy, int pageSize)
+    {
+        List<Course> courses;
+        if (orderBy == "topVoted")
+        {
+            courses = _coursesRepo.GetAll()
+                .Where(c => c.Name.Contains(searchBy))
+                .OrderByDescending(c => c.UpVotes - c.DownVotes)
+                .ToList();
+        }
+        else
+        {
+            courses = _coursesRepo.GetAll()
+            .Where(c => c.Name.Contains(searchBy))
+            .ToList();
+        }
+
+        int length = courses.Count;
+
+        // pages start with 0
+        var queryResultPage = courses.Skip(pageIndex * pageSize).Take(pageSize);
+
+        // course to admin dto
+        List<AdminCoursesDisplayDto> AdminDTO = queryResultPage.Select(c => new AdminCoursesDisplayDto
+        (
+            Id: c.Id,
+            Name: c.Name,
+            Publisher: c.PublisherId,
+            UpVotes: c.UpVotes,
+            DownVotes: c.DownVotes,
+            NetVotes: c.UpVotes - c.DownVotes,
+            Date: c.Date.ToShortDateString()
+        )).ToList();
+
+        return new PaginationDisplayDto<AdminCoursesDisplayDto>
+            (
+                Length: length,
+                Data: AdminDTO
+            );
+    }
+
+    public List<AllCoursesDto> GetLatestCourses()
+    {
+       var coursesDb= _coursesRepo.GetAll().Where(c => c.IsPublished == true).OrderByDescending(c => c.Date).Take(5);
+        return coursesDb.Select(c => new AllCoursesDto
+        {
+            Id = c.Id,
+            Name = c.Name,
+            Description = c.Description,
+            CourseImage = c.CourseImage,
+            Date= c.Date,
+            UpVotes = c.UpVotes,
+            DownVotes = c.DownVotes,
+            SearchCount = 5
+        }).ToList();
+    }
+
+    public List<AllCoursesDto> GetTopCourses()
+    {
+    var TopDb = _coursesRepo.GetAll().Where(c=> c.IsPublished==true).OrderByDescending(c=>(c.UpVotes - c.DownVotes)).Take(5);
+        return TopDb.Select(c => new AllCoursesDto
+        {
+            Id = c.Id,
+            Name = c.Name,
+            Description = c.Description,
+            CourseImage = c.CourseImage,
+            Date = c.Date,
+            UpVotes = c.UpVotes,
+            DownVotes = c.DownVotes,
+            SearchCount = 5
         }).ToList();
     }
 }

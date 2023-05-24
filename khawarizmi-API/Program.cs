@@ -17,6 +17,8 @@ using khawarizmi.BL;
 using Microsoft.AspNetCore.Http.Features;
 using Microsoft.Extensions.FileProviders;
 using khawarizmi.DAL.Repositories.Lessons;
+using khawarizmi.BL.Managers.Users;
+using khawarizmi.DAL.Repositories.Users;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -55,6 +57,7 @@ builder.Services.AddScoped<ICoursesRepo, CoursesRepo>();
 builder.Services.AddScoped<ICategoriesRepo, CategoriesRepo>();
 builder.Services.AddScoped<ITagsRepo, TagsRepo>();
 builder.Services.AddScoped<ILessonRepo, LessonRepo>();
+builder.Services.AddScoped<IUsersManager, UsersManager>();
 #endregion
 
 #region Managers
@@ -63,6 +66,7 @@ builder.Services.AddScoped<ICategoriesManager, CategoriesManager>();
 builder.Services.AddScoped<ITagsManager, TagsManager>();
 builder.Services.AddTransient<IStorageService, StorageService>();
 builder.Services.AddScoped<ILessonsManager, LessonsManager>();
+builder.Services.AddScoped<IUsersRepo, UsersRepo>();
 #endregion
 
 #region JWTBearer

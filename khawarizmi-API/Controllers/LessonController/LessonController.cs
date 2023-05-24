@@ -6,7 +6,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging.Abstractions;
 using System.Text.Json;
 
-namespace khawarizmi_API.Controllers
+namespace khawarizmi_API.Controllers.LessonController
 {
     [Route("api/[controller]")]
     [ApiController]
@@ -20,7 +20,7 @@ namespace khawarizmi_API.Controllers
         }
 
         [HttpPost]
-        async public Task<IActionResult> CreateLesson([FromForm]IFormFile video, [FromForm]string metadata)
+        async public Task<IActionResult> CreateLesson([FromForm] IFormFile video, [FromForm] string metadata)
         {
             //prepare video by providing path to uploads
             string path = lessonsManager.GetVideoPath(video.FileName);
@@ -73,7 +73,7 @@ namespace khawarizmi_API.Controllers
         {
             var lesson = lessonsManager.GetLessonById(id);
             if (lesson is null) return NotFound();
-            
+
             // delete prev video by full path
             string videoFullPath = lessonsManager.RelativeToAbsolutePath(lesson.VideoURL);
             lessonsManager.DeleteVideo(videoFullPath);
@@ -82,9 +82,9 @@ namespace khawarizmi_API.Controllers
             // store the new video
             await lessonsManager.StoreVideoToUploads(video, videoFullPath);
             //lessonsManager.ChangeVideo(id, videoFullPath);
-            
+
             // return new videoURL
-            return Ok(new {videoURL = lesson.VideoURL});
+            return Ok(new { videoURL = lesson.VideoURL });
         }
     }
 }

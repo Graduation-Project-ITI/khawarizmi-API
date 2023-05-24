@@ -39,7 +39,7 @@ public class SignUpController : ControllerBase
         var ClientCreationResult = await usermanger.CreateAsync(user, NewUser.password);
         if (!ClientCreationResult.Succeeded)
         {
-            return BadRequest(ClientCreationResult.Errors);
+            return BadRequest(new {message = "from signup controller"});
         }
         var ListOfclaims = new List<Claim>
         {

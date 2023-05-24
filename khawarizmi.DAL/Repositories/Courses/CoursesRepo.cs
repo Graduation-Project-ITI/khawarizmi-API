@@ -21,7 +21,7 @@ public class CoursesRepo : GenericRepo<Course>, ICoursesRepo
     {
         _context.Set<Course>().Add(course);
 
-        _context.SaveChanges();
+        SaveChanges();
 
         return course.Id;
     }
@@ -67,6 +67,13 @@ public class CoursesRepo : GenericRepo<Course>, ICoursesRepo
                         .FirstOrDefault(c => c.Id == courseId);
     }
 
+    public string? GetCourseNameById(int courseId)
+    {
+        var courseName = _context.Set<Course>().FirstOrDefault(c => c.Id == courseId)?.Name;
+        return courseName;
+    }
+
+
     public string? GetPublisherNameById(string UserId)
 
     {
@@ -75,5 +82,13 @@ public class CoursesRepo : GenericRepo<Course>, ICoursesRepo
         return PublisherName;
     }
 
-
+    public List<Course> Search(string keyWord)
+    {
+        return _context.Courses.Where(c => c.Name.Contains(keyWord)).ToList();
+    }
+    public IQueryable<Course> GetCoursesWithUsers()
+    {
+        IQueryable<Course> courses = _context.Set<Course>().Include(c => c.UserCourses);
+        return courses;
+    }
 }
