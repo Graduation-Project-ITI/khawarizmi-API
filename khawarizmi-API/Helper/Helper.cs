@@ -37,8 +37,7 @@ namespace khawarizmi_API;
         if (file is not null)
         {
             var extension = Path.GetExtension(file.FileName);
-            var d = DateTime.Now;
-            var fileName = $"{d.Year}{d.Month}{d.Day}{d.Hour}{d.Minute}{d.Second}{d.Millisecond}{d.Microsecond}{extension}";
+            var fileName = $"{DateTime.Now.Ticks}{extension}";
             var path = Path.Combine(Directory.GetCurrentDirectory(), "Uploads/Images", fileName);
             using (var stream = new FileStream(path, FileMode.Create))
             {

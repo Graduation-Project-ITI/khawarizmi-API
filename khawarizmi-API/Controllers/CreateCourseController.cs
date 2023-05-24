@@ -3,6 +3,7 @@ using CloudinaryDotNet.Actions;
 using khawarizmi.BL.Dtos;
 using khawarizmi.BL.Managers;
 using khawarizmi.DAL.Models;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.VisualBasic.FileIO;
@@ -33,7 +34,7 @@ public class CreateCourseController : ControllerBase
 
 	[HttpGet]
 	[Route("/CreateCourse/{categoryId}/tags")]
-	public ActionResult<List<TagReadDto>?> GetTags(int categoryId)
+    public ActionResult<List<TagReadDto>?> GetTags(int categoryId)
 	{
 		return _tagsManager.GetTagsByCategory(categoryId);
     }
