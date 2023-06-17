@@ -73,6 +73,11 @@ public class CoursesRepo : GenericRepo<Course>, ICoursesRepo
         return courseName;
     }
 
+    public IQueryable<Course> GetCoursesWithUsers()
+    {
+        return _context.Set<Course>().Include(c => c.UserCourses);
+    }
+
     public string? GetPublisherNameById(string UserId)
 
     {

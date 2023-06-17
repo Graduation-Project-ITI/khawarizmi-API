@@ -13,14 +13,5 @@ namespace khawarizmi_API.Controllers.AdminController
         {
 
         }
-
-        // endpoint for getting adming statistics
-        [HttpGet]
-        [Route("statistics")]
-        public IActionResult CardStatistics()
-        {
-
-            return Ok();
-        }
     }
 }
