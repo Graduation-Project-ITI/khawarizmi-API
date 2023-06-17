@@ -31,7 +31,10 @@ builder.Services.AddSwaggerGen();
 
 // Database Configuration
 var connectionString = builder.Configuration.GetConnectionString("connStr");
-builder.Services.AddDbContext<KhawarizmiContext>(options => options.UseSqlServer(connectionString));
+var sqlliteConnStr = builder.Configuration.GetConnectionString("sqliteConnStr");
+
+//builder.Services.AddDbContext<KhawarizmiContext>(options => options.UseSqlServer(connectionString));
+builder.Services.AddDbContext<KhawarizmiContext>(options => options.UseSqlite(sqlliteConnStr));
 
 // service for storing data to MS Azure Blob Storage
 builder.Services.AddAzureClients(options=>
