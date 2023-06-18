@@ -94,6 +94,10 @@ public class CoursesRepo : GenericRepo<Course>, ICoursesRepo
         return courseName;
     }
 
+    public IQueryable<Course> GetCoursesWithUsers()
+    {
+        return _context.Set<Course>().Include(c => c.UserCourses);
+    }
 
     public string? GetPublisherNameById(string UserId)
 
@@ -107,9 +111,9 @@ public class CoursesRepo : GenericRepo<Course>, ICoursesRepo
     {
         return _context.Courses.Where(c => c.Name.Contains(keyWord)).ToList();
     }
-    public IQueryable<Course> GetCoursesWithUsers()
-    {
-        IQueryable<Course> courses = _context.Set<Course>().Include(c => c.UserCourses);
-        return courses;
-    }
+    //public IQueryable<Course> GetCoursesWithUsers()
+    //{
+    //    IQueryable<Course> courses = _context.Set<Course>().Include(c => c.UserCourses);
+    //    return courses;
+    //}
 }

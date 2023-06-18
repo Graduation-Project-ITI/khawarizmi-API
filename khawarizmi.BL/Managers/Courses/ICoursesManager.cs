@@ -13,8 +13,6 @@ namespace khawarizmi.BL.Managers;
 public interface ICoursesManager
 {
     CourseDisplayDto? GetCourseById(int courseId);
-
-
     int AddNewCourse(string userId, CourseAddDto newCourse);
     void EditCourse(CourseEditDto course);
     void DeleteCourse(int courseId);

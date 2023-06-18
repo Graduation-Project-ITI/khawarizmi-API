@@ -64,14 +64,16 @@ public class CoursesManager : ICoursesManager
     {
         string[] tagsIds = newCourse.TagsIds.Split(',');
 
-        var tags = _tagsRepo.GetTagsByCategoryId(newCourse.CategoryId);
+        var tagsString = _tagsRepo.GetTagsByCategoryId(newCourse.CategoryId);
 
         Category? category = _categoriesRepo.GetCategoryByIdWithTags(newCourse.CategoryId);
-        if (category == null) { return -1; }
+        if(category == null) { return -1; }
+
+        var tags = tagsString?.Where(t => tagsIds.Contains(t.Id.ToString())).ToList() ?? new List<Tag>();
 
         if (newCourse.Image.IsNullOrEmpty()) newCourse.Image = DefaultCourseImage;
 
-        Course CourseToAdd = new()
+        Course CourseToAdd = new() 
         {
             Name = newCourse.Title,
             Description = newCourse.Description,
@@ -82,7 +84,7 @@ public class CoursesManager : ICoursesManager
             IsPublished = false,
             CategoryId = newCourse.CategoryId,
             PublisherId = userId,
-            Tags = tags?.Where(t => tagsIds.Contains(t.Id.ToString())).ToList() ?? new List<Tag>()
+            Tags = tags
         };
 
         int NewCourseId = _coursesRepo.AddNewCourse(CourseToAdd);
@@ -92,19 +94,26 @@ public class CoursesManager : ICoursesManager
 
     public void EditCourse(CourseEditDto course)
     {
-        Course? courseToEdit = _coursesRepo.GetCourseById(course.Id);
+        Course? courseInDB = _coursesRepo.GetCourseById(course.Id);
+        Category? category = _categoriesRepo.GetCategoryByIdWithTags(course.CategoryId);
+        if (courseInDB is null || category is null) return;
+        string[] tagsIds = course.TagsIds.Split(',');
+        var tagsString = _tagsRepo.GetTagsByCategoryId(course.CategoryId);
+        var tags = tagsString?.Where(t => tagsIds.Contains(t.Id.ToString())).ToList() ?? new List<Tag>();
 
-        if (courseToEdit == null) return;
+        courseInDB.Name = course.Name;
+        courseInDB.Description = course.Description;
+        courseInDB.CategoryId = category.Id;
+        courseInDB.Tags = tags;
+        if (!course.CourseImage.IsNullOrEmpty()) courseInDB.CourseImage = course.CourseImage;
 
-        courseToEdit.Name = course.Name;
-        courseToEdit.Description = course.Description;
-        courseToEdit.CourseImage = course.CourseImage;
+        _coursesRepo.SaveChanges();
     }
 
     public void DeleteCourse(int CourseId)
     {
         var course = _coursesRepo.Get(CourseId);
-        if (course is null) return;
+        if(course is null) return;
 
         _coursesRepo.Delete(course);
         _coursesRepo.SaveChanges();
@@ -121,8 +130,8 @@ public class CoursesManager : ICoursesManager
         {
             if (userCourse.IsVoted)
             {
-                if (userCourse.IsUpVoted) { course.UpVotes--; }
-                if (!userCourse.IsUpVoted) { course.DownVotes--; }
+                if(userCourse.IsUpVoted) { course.UpVotes--; }
+                if(!userCourse.IsUpVoted) { course.DownVotes--; }
 
                 userCourse.IsUpVoted = vote;
             }
