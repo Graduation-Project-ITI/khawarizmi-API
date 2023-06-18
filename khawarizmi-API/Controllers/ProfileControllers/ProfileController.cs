@@ -38,6 +38,7 @@ namespace khawarizmi_API.Controllers.ProfileControllers
             if (user == null) { return NotFound("ABC"); }
             user.UserName = userdata.Name;
             user.Email = userdata.Email;
+
             if (userdata.Gender == "male")
             {
                 user.Gender = Gender.male;
@@ -45,7 +46,6 @@ namespace khawarizmi_API.Controllers.ProfileControllers
             else
             {
                 user.Gender = Gender.female;
-
             }
 
 

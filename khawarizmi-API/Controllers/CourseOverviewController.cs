@@ -2,6 +2,7 @@
 using khawarizmi.BL.Managers;
 using khawarizmi.DAL.Models;
 using khawarizmi.DAL.Repositories;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
@@ -9,6 +10,7 @@ namespace khawarizmi_API.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
+    [Authorize]
     public class CourseOverviewController : ControllerBase
     {
         private readonly ICoursesManager _coursesManager;
@@ -26,10 +28,11 @@ namespace khawarizmi_API.Controllers
 
         [HttpPut]
         [Route("/CoursePage/Edit")]
-        public IActionResult PutCourse(CourseEditDto course)
+        public IActionResult PutCourse([FromForm] CourseEditDto course)
         {
+            course.CourseImage = Helper.UploadImageOnCloudinary(course.File);
             _coursesManager.EditCourse(course);
-            return Ok();
+            return Ok(course.Id);
         }
 
         [HttpDelete]

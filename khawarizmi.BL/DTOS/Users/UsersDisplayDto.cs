@@ -5,5 +5,5 @@ using System.Text;
 using System.Threading.Tasks;
 
 namespace khawarizmi.BL.Dtos.Users;
-public record UsersDisplayDto(string Id, string Name, int CoursesCreated, int NumberOfBookmarks, int NumberOfLearning);
+public record UsersDisplayDto(string Id, string Name,string Email ,int CoursesCreated);
 

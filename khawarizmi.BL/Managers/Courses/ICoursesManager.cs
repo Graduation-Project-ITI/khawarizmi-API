@@ -13,8 +13,6 @@ namespace khawarizmi.BL.Managers;
 public interface ICoursesManager
 {
     CourseDisplayDto? GetCourseById(int courseId);
-
-
     int AddNewCourse(string userId, CourseAddDto newCourse);
     void EditCourse(CourseEditDto course);
     void DeleteCourse(int courseId);
@@ -29,6 +27,9 @@ public interface ICoursesManager
     ICollection<MyLearningDTO> GetLearningCoursesIsLearning(string UserId);
     List<AllCoursesDto> GetAll();
     AllAndCountDto GetPaginationCourse(int PageNumber, int catId = 0);
+    //List<AllCoursesDto> GetPaginationCourse(int PageNumber);
+    object GetAdminDashbordinfo();
+
     AllAndCountDto? Search(string keyWord);
     //List<AllCoursesDto> GetPaginationCourse(int PageNumber);
     PaginationDisplayDto<AdminCoursesDisplayDto> CoursePaginator(int pageIndex, string searchBy, string orderBy, int pageSize);

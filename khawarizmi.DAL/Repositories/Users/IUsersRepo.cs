@@ -9,5 +9,6 @@ namespace khawarizmi.DAL.Repositories.Users;
 
 public interface IUsersRepo: IGenericRepo<User>
 {
-
+    IQueryable<User> GetPublisherCourses();
+    User? GetUserById(string id);
 }

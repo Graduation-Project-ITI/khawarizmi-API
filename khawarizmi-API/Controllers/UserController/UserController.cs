@@ -30,5 +30,13 @@ namespace khawarizmi_API.Controllers.UserController
 
             return _userManager.UserPaginator(pageIndex, searchBy, orderBy, pageSize);
         }
+
+        [HttpDelete]
+        [Route("delete-user")]
+        public IActionResult Delete(string id)
+        {
+            _userManager.DeleteUser(id);
+            return NoContent();
+        }
     }
 }

@@ -1,5 +1,6 @@
 ﻿using khawarizmi.BL.Dtos.Courses;
 using khawarizmi.BL.Dtos.Helpers;
+using khawarizmi.BL.Managers;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
@@ -9,9 +10,11 @@ namespace khawarizmi_API.Controllers.AdminController
     [ApiController]
     public class AdminController : ControllerBase
     {
-        public AdminController()
-        {
+        private readonly ICoursesManager coursemanager;
 
+        public AdminController(ICoursesManager _coursemanager)
+        {
+            coursemanager = _coursemanager;
         }
 
         // endpoint for getting adming statistics
@@ -21,6 +24,13 @@ namespace khawarizmi_API.Controllers.AdminController
         {
 
             return Ok();
+        }
+        [HttpGet]
+        public IActionResult GetDashInfo()
+        {
+            var Data=coursemanager.GetAdminDashbordinfo();
+            return Ok(Data);
+
         }
     }
 }
