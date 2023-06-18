@@ -19,13 +19,13 @@ using Microsoft.Extensions.FileProviders;
 using khawarizmi.DAL.Repositories.Lessons;
 using khawarizmi.BL.Managers.Users;
 using khawarizmi.DAL.Repositories.Users;
+using Microsoft.AspNetCore.Hosting;
 
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 
 builder.Services.AddControllers();
-// Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
@@ -143,13 +143,29 @@ app.UseCors("MyCorsPolicy");
 app.UseHttpsRedirection();
 app.UseStaticFiles(); // Add this line to enable serving of static files
 
-// to serve satatic files
+//// to serve satatic files
+//app.UseStaticFiles(new StaticFileOptions
+//{
+//    // now we can access any file in the "Uploads" folder like this:
+//    // https://<hostname>/Uploads/Images/red-rose.jpg or
+//    // https://<hostname>/Uploads/Videos/video.mp4
+//    FileProvider = new PhysicalFileProvider(Path.Combine(builder.Environment.ContentRootPath, "Uploads")),
+//    RequestPath = "/Uploads"
+//});
+
+// instead of the above due to error in docker
+var uploadsPath = Path.Combine(builder.Environment.ContentRootPath, "Uploads");
+if (!Directory.Exists(uploadsPath))
+{
+    Directory.CreateDirectory(uploadsPath);
+}
+
 app.UseStaticFiles(new StaticFileOptions
 {
-    // now we can access any file in the "Uploads" folder like this:
+    // Now we can access any file in the "Uploads" folder like this:
     // https://<hostname>/Uploads/Images/red-rose.jpg or
     // https://<hostname>/Uploads/Videos/video.mp4
-    FileProvider = new PhysicalFileProvider(Path.Combine(builder.Environment.ContentRootPath, "Uploads")),
+    FileProvider = new PhysicalFileProvider(uploadsPath),
     RequestPath = "/Uploads"
 });
 
@@ -158,5 +174,16 @@ app.UseAuthorization();
 app.UseStaticFiles();
 
 app.MapControllers();
+
+using (var scope = app.Services.CreateScope())
+{
+    var services = scope.ServiceProvider;
+
+    var context = services.GetRequiredService<KhawarizmiContext>();
+    if (context.Database.GetPendingMigrations().Any())
+    {
+        context.Database.Migrate();
+    }
+}
 
 app.Run();

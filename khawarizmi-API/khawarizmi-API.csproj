@@ -24,6 +24,9 @@
     <PackageReference Include="Microsoft.Extensions.Azure" Version="1.6.3" />
     <PackageReference Include="Swashbuckle.AspNetCore" Version="6.4.0" />
     <PackageReference Include="System.IdentityModel.Tokens.Jwt" Version="6.30.0" />
+	<Content Include="Uploads\*">
+		<CopyToPublishDirectory>always</CopyToPublishDirectory>
+	</Content>
   </ItemGroup>
 
   <ItemGroup>

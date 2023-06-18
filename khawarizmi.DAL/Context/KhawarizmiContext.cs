@@ -21,7 +21,6 @@ public class KhawarizmiContext : IdentityDbContext<User>
     public DbSet<Tag> Tags => Set<Tag>();
     public DbSet<UserCourses> UserCourses => Set<UserCourses>();
 
-
     public KhawarizmiContext(DbContextOptions<KhawarizmiContext> options) : base(options)
     {
 

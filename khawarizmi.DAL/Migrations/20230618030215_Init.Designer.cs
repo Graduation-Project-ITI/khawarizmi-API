@@ -11,7 +11,7 @@ using khawarizmi.DAL.Context;
 namespace khawarizmi.DAL.Migrations
 {
     [DbContext(typeof(KhawarizmiContext))]
-    [Migration("20230617153751_Init")]
+    [Migration("20230618030215_Init")]
     partial class Init
     {
         /// <inheritdoc />

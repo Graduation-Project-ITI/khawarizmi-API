@@ -3,11 +3,11 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.4.33213.308
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "khawarizmi-API", "khawarizmi-API\khawarizmi-API.csproj", "{ABED0046-C738-4B39-AB28-12F996DA55EB}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "khawarizmi-API", "khawarizmi-API\khawarizmi-API.csproj", "{ABED0046-C738-4B39-AB28-12F996DA55EB}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "khawarizmi.DAL", "khawarizmi.DAL\khawarizmi.DAL.csproj", "{6F6F54B9-4EC2-4F8F-B6EE-46E2FC7DA4E2}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "khawarizmi.DAL", "khawarizmi.DAL\khawarizmi.DAL.csproj", "{6F6F54B9-4EC2-4F8F-B6EE-46E2FC7DA4E2}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "khawarizmi.BL", "khawarizmi.BL\khawarizmi.BL.csproj", "{5A602948-CE02-4C8A-8138-CF856C72BB41}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "khawarizmi.BL", "khawarizmi.BL\khawarizmi.BL.csproj", "{5A602948-CE02-4C8A-8138-CF856C72BB41}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
