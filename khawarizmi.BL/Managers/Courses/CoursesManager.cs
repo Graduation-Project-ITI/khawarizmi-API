@@ -408,4 +408,12 @@ public class CoursesManager : ICoursesManager
             SearchCount = 5
         }).ToList();
     }
+    public object GetAdminDashbordinfo()
+    {
+        var vistor = _coursesRepo.Vistorssnumber();
+        var creator = _coursesRepo.Creatorsnumber();
+        var course=_coursesRepo.Coursesnumber();
+        var Dashinfo= new {Vistor=vistor, Creator=creator,Course=course};
+        return Dashinfo;
+    }
 }

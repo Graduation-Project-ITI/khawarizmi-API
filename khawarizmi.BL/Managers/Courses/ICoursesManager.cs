@@ -26,6 +26,9 @@ public interface ICoursesManager
     ICollection<MyLearningDTO> GetLearningCoursesIsBookMarked(string UserId);
     ICollection<MyLearningDTO> GetLearningCoursesIsLearning(string UserId);
     List<AllCoursesDto> GetAll();
+    //List<AllCoursesDto> GetPaginationCourse(int PageNumber);
+    object GetAdminDashbordinfo();
+
     AllAndCountDto GetPaginationCourse(int PageNumber);
     AllAndCountDto? Search(string keyWord);
     //List<AllCoursesDto> GetPaginationCourse(int PageNumber);
