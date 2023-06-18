@@ -46,7 +46,7 @@ namespace khawarizmi_API.Controllers
             }
             return x;
         }
-
+         
         // for Admin courses
         [HttpGet("AdminCourses")]
         //[Route("AdminCourses")]
@@ -54,7 +54,7 @@ namespace khawarizmi_API.Controllers
         public ActionResult <PaginationDisplayDto<AdminCoursesDisplayDto>> GetAdminCourses(int pageIndex, int pageSize, string searchBy="", string orderBy="")
         {
             return _courseManager.CoursePaginator(pageIndex, searchBy, orderBy, pageSize);
-        }
+        } 
 
         [HttpGet]
         [Route("LatestCourses")]
@@ -68,6 +68,12 @@ namespace khawarizmi_API.Controllers
         public ActionResult<List<AllCoursesDto>> GetTopCourses()
         {
             return _courseManager.GetTopCourses(); 
+        }
+        [HttpGet]
+        [Route(("CategoryCourses"))]
+        public ActionResult<AllAndCountDto> GetCategoryCourses(int catId, int pageNum)
+        {
+            return _courseManager.GetPaginationCourse(pageNum,catId);
         }
     }
 }

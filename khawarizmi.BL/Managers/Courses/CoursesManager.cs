@@ -10,7 +10,7 @@ using System.Linq;
 using System.Linq.Expressions;
 using System.Security.Policy;
 using System.Text;
-using System.Threading.Tasks;
+using System.Threading.Tasks; 
 using Microsoft.IdentityModel.Tokens;
 using khawarizmi.BL.Dtos.Helpers;
 
@@ -268,9 +268,14 @@ public class CoursesManager : ICoursesManager
             .ToList();
     }
 
-    public AllAndCountDto GetPaginationCourse(int PageNumber)
+    public AllAndCountDto GetPaginationCourse(int PageNumber, int catId=0)
     {
         var Allcourses = _coursesRepo.GetAll().Where(c => c.IsPublished == true);
+        if (catId > 0)
+        {
+            Allcourses = _coursesRepo.GetAll().Where(c => c.IsPublished == true).Where(c => c.CategoryId == catId);
+        }
+
         int y = Allcourses.Count();
         List<Course> coursePageDb =Allcourses.Skip((PageNumber - 1) * 8).Take(8).ToList();
         var x= coursePageDb.Select(c => new AllCoursesDto
@@ -399,4 +404,26 @@ public class CoursesManager : ICoursesManager
             SearchCount = 5
         }).ToList();
     }
+
+ 
 }
+
+
+//var Allcourses = _coursesRepo.GetAll().Where(c => c.IsPublished == true);
+//int y = Allcourses.Count();
+//List<Course> coursePageDb = Allcourses.Skip((PageNumber - 1) * 8).Take(8).ToList();
+//var x = coursePageDb.Select(c => new AllCoursesDto
+//{
+//    Id = c.Id,
+//    Name = c.Name,
+//    Description = c.Description,
+//    CourseImage = c.CourseImage,
+//    Date = c.Date,
+//    UpVotes = c.UpVotes,
+//    DownVotes = c.DownVotes
+//}).ToList();
+//        return new AllAndCountDto
+//        {
+//            Count = y,
+//            AllCourses = x
+//        };
