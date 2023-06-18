@@ -10,6 +10,7 @@ namespace khawarizmi.DAL.Repositories;
 public interface ICoursesRepo : IGenericRepo<Course>
 {
     int AddNewCourse(Course course);
+    IQueryable<Course> GetCoursesWithUsers();
     Course? GetCourseById(int courseId);
     ICollection<UserCourses> GetAllCourses(string UserId, int pagenumber=1);
     ICollection<UserCourses> GetAllCoursesIsBookMarked(string UserId);
@@ -19,4 +20,9 @@ public interface ICoursesRepo : IGenericRepo<Course>
     int Creatorsnumber();
     int Vistorssnumber();
 
+    string? GetCourseNameById(int courseId);
+
+    List<Course> Search(string keyWord);
+
 }
+

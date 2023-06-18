@@ -1,5 +1,6 @@
 ﻿using khawarizmi.BL.Dtos;
 using khawarizmi.BL.Dtos.Courses;
+using khawarizmi.BL.Dtos.Helpers;
 using khawarizmi.DAL.Models;
 using System;
 using System.Collections.Generic;
@@ -16,6 +17,7 @@ public interface ICoursesManager
 
     int AddNewCourse(string userId, CourseAddDto newCourse);
     void EditCourse(CourseEditDto course);
+    void DeleteCourse(int courseId);
     void UpdateUserCourseVote(int courseId, string userId, bool vote);
     void UpdateUserCourseLearn(int courseId, string userId, bool learn);
     void UpdateUserCourseBookmark(int courseId, string userId, bool bookmark);
@@ -29,4 +31,10 @@ public interface ICoursesManager
     List<AllCoursesDto> GetPaginationCourse(int PageNumber);
     object GetAdminDashbordinfo();
     
+    AllAndCountDto GetPaginationCourse(int PageNumber);
+    AllAndCountDto? Search(string keyWord);
+    //List<AllCoursesDto> GetPaginationCourse(int PageNumber);
+    PaginationDisplayDto<AdminCoursesDisplayDto> CoursePaginator(int pageIndex, string searchBy, string orderBy, int pageSize);
+    List<AllCoursesDto> GetLatestCourses();
+    List<AllCoursesDto> GetTopCourses();
 }
