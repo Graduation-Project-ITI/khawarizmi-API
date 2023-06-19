@@ -75,5 +75,14 @@ public class CoursesRepo : GenericRepo<Course>, ICoursesRepo
         return PublisherName;
     }
 
-
+    public List<Course> Search(string keyWord)
+    {
+        
+        return _context.Courses.Where(c => c.Name.Contains(keyWord)).ToList();
+    }
+    //public IQueryable<Course> GetCoursesWithUsers()
+    //{
+    //    IQueryable<Course> courses = _context.Set<Course>().Include(c => c.UserCourses);
+    //    return courses;
+    //}
 }
