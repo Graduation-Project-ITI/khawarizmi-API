@@ -2,6 +2,7 @@
 using khawarizmi.BL.Dtos.Courses;
 using khawarizmi.BL.Dtos.Helpers;
 using khawarizmi.BL.Managers;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
@@ -9,6 +10,7 @@ namespace khawarizmi_API.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
+    [Authorize]
     public class CourseController : ControllerBase
     {
         private readonly ICoursesManager _courseManager;
@@ -17,6 +19,7 @@ namespace khawarizmi_API.Controllers
         {
             _courseManager = courseManager;
         }
+
         [HttpGet]
         [Route("/CoursesPage")]
         public ActionResult<List<AllCoursesDto>> GetAll()

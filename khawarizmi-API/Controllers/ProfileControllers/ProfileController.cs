@@ -15,6 +15,7 @@ namespace khawarizmi_API.Controllers.ProfileControllers
 {
     [Route("api/[controller]")]
     [ApiController]
+    [Authorize]
     public class ProfileController : ControllerBase
     {
         private readonly UserManager<User> userManager;
@@ -30,7 +31,6 @@ namespace khawarizmi_API.Controllers.ProfileControllers
 
 
         [HttpPost]
-        [Authorize]
         public async Task<ActionResult> EditProfileInfo([FromForm] ProfileEditDTO userdata)
         {
             var userId = HttpContext.User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
