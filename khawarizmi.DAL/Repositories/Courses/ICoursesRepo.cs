@@ -16,6 +16,10 @@ public interface ICoursesRepo : IGenericRepo<Course>
     ICollection<UserCourses> GetAllCoursesIsBookMarked(string UserId);
     ICollection<UserCourses> GetAllCoursesIsLearining(string UserId);
     string? GetPublisherNameById(string UserId);
+    int Coursesnumber();
+    int Creatorsnumber();
+    int Vistorssnumber();
+
     string? GetCourseNameById(int courseId);
 
     List<Course> Search(string keyWord);

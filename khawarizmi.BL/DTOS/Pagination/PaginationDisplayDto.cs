@@ -6,3 +6,4 @@ using System.Threading.Tasks;
 
 namespace khawarizmi.BL.Dtos.Helpers;
 public record PaginationDisplayDto<T>(int Length, List<T> Data);
+ 

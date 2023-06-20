@@ -13,11 +13,11 @@ using System.Text.Json.Nodes;
 using System.Threading.Tasks;
 
 namespace khawarizmi.BL.Managers.Lessons;
-public class LessonsManager : LessonRepo, ILessonsManager
+public class LessonsManager : ILessonsManager
 {
     private readonly ILessonRepo lessonRepo;
 
-    public LessonsManager(KhawarizmiContext context, ILessonRepo lessonRepo) : base(context)
+    public LessonsManager(ILessonRepo lessonRepo)
     {
         this.lessonRepo = lessonRepo;
     }
