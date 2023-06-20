@@ -23,6 +23,9 @@ namespace khawarizmi_API.Controllers
         [Route("/CoursePage/{courseId}")]
         public ActionResult<CourseDisplayDto?> GetCourseInfo(int courseId) 
         {
+            CourseDisplayDto? course = _coursesManager.GetCourseById(courseId);
+            if (course is null) return NotFound(new { message = "Can not find this course" });
+
             return _coursesManager.GetCourseById(courseId);
         }
 
