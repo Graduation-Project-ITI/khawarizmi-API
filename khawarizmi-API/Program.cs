@@ -39,18 +39,6 @@ builder.Services.AddAzureClients(options=>
     options.AddBlobServiceClient(builder.Configuration.GetSection("Storage:ConnectionString").Value); // might be an issue here
 });
 
-#region IdentityManager
-builder.Services.AddIdentity<User, IdentityRole>(
-    options =>
-    {
-       
-        options.Password.RequireLowercase = false;
-        options.Password.RequireUppercase = false;
-        options.User.RequireUniqueEmail = true;
-        
-    }
-).AddEntityFrameworkStores<KhawarizmiContext>();
-#endregion
 
 #region Repositories
 builder.Services.AddScoped<ICoursesRepo, CoursesRepo>();
@@ -69,6 +57,23 @@ builder.Services.AddScoped<ILessonsManager, LessonsManager>();
 builder.Services.AddScoped<IUsersRepo, UsersRepo>();
 #endregion
 
+#region IdentityManager
+builder.Services.AddIdentity<User, IdentityRole>(
+    options =>
+    {
+       
+        options.Password.RequireLowercase = false;
+        options.Password.RequireUppercase = false;
+        options.User.RequireUniqueEmail = true;
+        
+    }
+).AddEntityFrameworkStores<KhawarizmiContext>();
+#endregion
+#region servicesRegistered
+builder.Services.AddScoped<IUserProfile, UserProfile>();
+builder.Services.AddScoped<IProfileManager,ProfileManager>();
+
+#endregion
 #region JWTBearer
 builder.Services.AddAuthentication(options =>
 {
@@ -76,7 +81,8 @@ builder.Services.AddAuthentication(options =>
     options.DefaultChallengeScheme = "AuthSchema";
 }).AddJwtBearer("AuthSchema",options=>{
 
-    var SecretKeyinString = builder.Configuration.GetValue<string>("SecretKey")?? "";
+    var SecretKeyinString = builder.Configuration.GetValue<string>("SecretKey") ?? "";
+    //var SecretKeyinString = "AAAVVVDDDDEEESSSWWWW";
     var secretKeyinBytes= Encoding.ASCII.GetBytes(SecretKeyinString);
     var secretkey= new SymmetricSecurityKey(secretKeyinBytes);
     options.TokenValidationParameters = new TokenValidationParameters()
@@ -115,11 +121,6 @@ builder.Services.AddCors(options =>
 
 #endregion
 
-#region servicesRegistered
-builder.Services.AddScoped<IUserProfile, UserProfile>();
-builder.Services.AddScoped<IProfileManager,ProfileManager>();
-
-#endregion
 
 // increasing the maximum multipart body length limit to 10MB
 builder.Services.Configure<FormOptions>(options =>
