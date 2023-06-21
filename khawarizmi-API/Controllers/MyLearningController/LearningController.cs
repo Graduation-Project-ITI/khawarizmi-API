@@ -1,5 +1,6 @@
 ﻿using khawarizmi.BL.Dtos.Courses;
 using khawarizmi.BL.Managers;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
@@ -7,6 +8,7 @@ namespace khawarizmi_API.Controllers.MyLearningController;
 
 [Route("api/[controller]")]
 [ApiController]
+[Authorize]
 public class LearningController : ControllerBase
 {
     private readonly ICoursesManager coursesManager;

@@ -2,6 +2,7 @@
 using khawarizmi.BL.Dtos.Courses;
 using khawarizmi.BL.Dtos.Helpers;
 using khawarizmi.BL.Managers;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
@@ -9,6 +10,7 @@ namespace khawarizmi_API.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
+    [Authorize]
     public class CourseController : ControllerBase
     {
         private readonly ICoursesManager _courseManager;
@@ -17,6 +19,7 @@ namespace khawarizmi_API.Controllers
         {
             _courseManager = courseManager;
         }
+
         [HttpGet]
         [Route("/CoursesPage")]
         public ActionResult<List<AllCoursesDto>> GetAll()
@@ -46,7 +49,7 @@ namespace khawarizmi_API.Controllers
             }
             return x;
         }
-
+         
         // for Admin courses
         [HttpGet("AdminCourses")]
         //[Route("AdminCourses")]
@@ -54,7 +57,7 @@ namespace khawarizmi_API.Controllers
         public ActionResult <PaginationDisplayDto<AdminCoursesDisplayDto>> GetAdminCourses(int pageIndex, int pageSize, string searchBy="", string orderBy="")
         {
             return _courseManager.CoursePaginator(pageIndex, searchBy, orderBy, pageSize);
-        }
+        } 
 
         [HttpGet]
         [Route("LatestCourses")]
@@ -68,6 +71,12 @@ namespace khawarizmi_API.Controllers
         public ActionResult<List<AllCoursesDto>> GetTopCourses()
         {
             return _courseManager.GetTopCourses(); 
+        }
+        [HttpGet]
+        [Route(("CategoryCourses"))]
+        public ActionResult<AllAndCountDto> GetCategoryCourses(int catId, int pageNum)
+        {
+            return _courseManager.GetPaginationCourse(pageNum,catId);
         }
     }
 }

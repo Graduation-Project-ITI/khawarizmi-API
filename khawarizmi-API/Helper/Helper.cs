@@ -32,12 +32,12 @@ namespace khawarizmi_API;
 
     }
 
-    public static string UploadImageOnCloudinary(IFormFile? file)
+    public static async Task<string> /*string*/ UploadImageOnCloudinary(IFormFile? file)
     {
         if (file is not null)
         {
             var extension = Path.GetExtension(file.FileName);
-            var fileName = $"{DateTime.Now.Ticks}{extension}";
+            var fileName = $"Img{DateTime.Now.Ticks}{extension}";
             var path = Path.Combine(Directory.GetCurrentDirectory(), "Uploads/Images", fileName);
             using (var stream = new FileStream(path, FileMode.Create))
             {
@@ -46,7 +46,8 @@ namespace khawarizmi_API;
 
             var cloudinary = new Cloudinary(new Account("dohd3qizc", "291665793866531", "k48cbVPUttntt6aMdE0ZMXQTuZQ"));
             ImageUploadParams uploadParams = new() { File = new FileDescription(path), FilenameOverride = fileName };
-            ImageUploadResult uploadResult = cloudinary.Upload(uploadParams);
+            //ImageUploadResult uploadResult = cloudinary.Upload(uploadParams);
+            ImageUploadResult uploadResult = await cloudinary.UploadAsync(uploadParams);
 
             FileSystem.DeleteFile(path);
 
@@ -56,5 +57,34 @@ namespace khawarizmi_API;
         {
             return string.Empty;
         }
+    }
+
+    public static async Task<string> UploadvideoOnCloudinary(IFormFile? file)
+    {
+        if (file is not null)
+        {
+            var extension = Path.GetExtension(file.FileName);
+            var fileName = $"Vid{DateTime.Now.Ticks}{extension}";
+            var path = Path.Combine(Directory.GetCurrentDirectory(), "Uploads/Videos", fileName);
+            using (var stream = new FileStream(path, FileMode.Create))
+            {
+                file.CopyTo(stream);
+            }
+
+            var cloudinary = new Cloudinary(new Account("dohd3qizc", "291665793866531", "k48cbVPUttntt6aMdE0ZMXQTuZQ"));
+            VideoUploadParams uploadParams = new() { File = new FileDescription(path), FilenameOverride = fileName };
+            VideoUploadResult uploadResult = await cloudinary.UploadAsync(uploadParams);
+
+            FileSystem.DeleteFile(path);
+
+            return uploadResult.Url.ToString();
+        }
+        else
+        {
+            return string.Empty;
+        }
+
+
+
     }
 }
