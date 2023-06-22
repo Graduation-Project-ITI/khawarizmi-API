@@ -26,7 +26,8 @@ public class SignUpController : ControllerBase
         User user = new User()
         {
             UserName = NewUser.name,
-            Email = NewUser.email
+            Email = NewUser.email,
+            Gender=NewUser.Gender
         };
         var IsEmailExist = await usermanger.FindByEmailAsync(NewUser.email);
         if(IsEmailExist !=null)

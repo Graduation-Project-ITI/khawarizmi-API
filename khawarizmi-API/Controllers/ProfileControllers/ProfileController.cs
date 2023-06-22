@@ -36,9 +36,9 @@ namespace khawarizmi_API.Controllers.ProfileControllers
             var userId = HttpContext.User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
             var user = await userManager.FindByIdAsync(userId);
             if (user == null) { return NotFound("ABC"); }
+
             user.UserName = userdata.Name;
             user.Email = userdata.Email;
-
             if (userdata.Gender == "male")
             {
                 user.Gender = Gender.male;
