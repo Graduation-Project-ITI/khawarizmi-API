@@ -252,9 +252,9 @@ public class CoursesManager : ICoursesManager
         _coursesRepo.SaveChanges();
     }
 
-    public ICollection<MyLearningDTO> GetLearningCoursesById(string UserId, int pagenumber)
+    public ICollection<MyLearningDTO> GetLearningCoursesById(string UserId)
     {
-        var courses = _coursesRepo.GetAllCourses(UserId, pagenumber);
+        var courses = _coursesRepo.GetAllCourses(UserId);
         return courses.Select(c => new MyLearningDTO(image: c.Course?.CourseImage ?? "", name: c.Course?.Name ?? "",
             Creatorname: _coursesRepo.GetPublisherNameById(c.Course?.PublisherId ?? "") ?? "")).ToList();
 
