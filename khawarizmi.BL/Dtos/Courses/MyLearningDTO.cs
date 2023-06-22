@@ -8,5 +8,5 @@ using System.Threading.Tasks;
 
 namespace khawarizmi.BL.Dtos.Courses;
 
-public record MyLearningDTO( string image, string name,string Creatorname );
+public record MyLearningDTO( string image, string name,string Creatorname,int id );
 

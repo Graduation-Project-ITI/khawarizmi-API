@@ -32,19 +32,19 @@ namespace khawarizmi_API.Controllers.LessonController
 
             lessonsManager.AddLesson(lessonToAdd);
 
-            return NoContent();
+            return Ok(new {message = "Lesson added successfully"});
 
             #region Abdullah
-            //prepare video by providing path to uploads
-            string path = lessonsManager.GetVideoPath(video.FileName);
+            ////prepare video by providing path to uploads
+            //string path = lessonsManager.GetVideoPath(video.FileName);
 
-            await lessonsManager.StoreVideoToUploads(video, path);
-            Lesson? lesson = lessonsManager.VideoMetadataToLesson(metadata, path);
+            //await lessonsManager.StoreVideoToUploads(video, path);
+            //Lesson? lesson = lessonsManager.VideoMetadataToLesson(metadata, path);
 
-            if (lesson is null) return BadRequest();
-            lessonsManager.AddLesson(lesson);
+            //if (lesson is null) return BadRequest();
+            //lessonsManager.AddLesson(lesson);
 
-            return NoContent();
+            //return NoContent();
             #endregion
         }
 
