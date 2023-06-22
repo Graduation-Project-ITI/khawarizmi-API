@@ -6,5 +6,5 @@ using System.Threading.Tasks;
 
 namespace khawarizmi.BL;
 
-public record SignUpDTO(string name,string email, string password);
+public record SignUpDTO(string name,string email, string password,string role);
 

@@ -25,6 +25,7 @@ namespace khawarizmi.BL
 
             var courseDTOs = courses.Select(c => new ProfileCourseDTO
             {
+                id= c.Id,
                 Name = c.Name,
                 Description = c.Description,
                 CourseImage = string.IsNullOrEmpty(c.CourseImage) ? DefaultCourseImage : c.CourseImage,

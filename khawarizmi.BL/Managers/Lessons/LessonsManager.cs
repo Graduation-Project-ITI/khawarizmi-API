@@ -64,13 +64,12 @@ public class LessonsManager : ILessonsManager
             Description = lessonObj.description,
             IsPublished = lessonObj.isPublish,
             CourseId = lessonObj.courseId,
-            VideoURL= videoPath,
+            VideoURL= videoPath
         };
     }
 
     public void AddLesson(Lesson lesson)
     {
-        if (lesson == null) return;
         lessonRepo.Add(lesson);
         lessonRepo.SaveChanges();
     }

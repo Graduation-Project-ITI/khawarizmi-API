@@ -23,14 +23,17 @@ namespace khawarizmi_API.Controllers
         [Route("/CoursePage/{courseId}")]
         public ActionResult<CourseDisplayDto?> GetCourseInfo(int courseId) 
         {
+            CourseDisplayDto? course = _coursesManager.GetCourseById(courseId);
+            if (course is null) return NotFound(new { message = "Can not find this course" });
+
             return _coursesManager.GetCourseById(courseId);
         }
 
         [HttpPut]
         [Route("/CoursePage/Edit")]
-        public IActionResult PutCourse([FromForm] CourseEditDto course)
+        public async Task<IActionResult> PutCourse([FromForm] CourseEditDto course)
         {
-            course.CourseImage = Helper.UploadImageOnCloudinary(course.File);
+            course.CourseImage = await Helper.UploadImageOnCloudinary(course.File);
             _coursesManager.EditCourse(course);
             return Ok(course.Id);
         }
