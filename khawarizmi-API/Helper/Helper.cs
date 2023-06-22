@@ -32,7 +32,7 @@ namespace khawarizmi_API;
 
     }
 
-    public static async Task<string> /*string*/ UploadImageOnCloudinary(IFormFile? file)
+    public static async Task<string> UploadImageOnCloudinary(IFormFile? file)
     {
         if (file is not null)
         {
@@ -46,7 +46,6 @@ namespace khawarizmi_API;
 
             var cloudinary = new Cloudinary(new Account("dohd3qizc", "291665793866531", "k48cbVPUttntt6aMdE0ZMXQTuZQ"));
             ImageUploadParams uploadParams = new() { File = new FileDescription(path), FilenameOverride = fileName };
-            //ImageUploadResult uploadResult = cloudinary.Upload(uploadParams);
             ImageUploadResult uploadResult = await cloudinary.UploadAsync(uploadParams);
 
             FileSystem.DeleteFile(path);
