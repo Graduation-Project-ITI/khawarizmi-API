@@ -20,9 +20,9 @@ public class LearningController : ControllerBase
 
     [HttpGet]
     [Route("allcourses/{UserId}")]
-    public ActionResult GetAllCoursesChecked( string UserId, int pagenumber=1)
+    public ActionResult GetAllCoursesChecked( string UserId)
     {
-        var courses=  coursesManager.GetLearningCoursesById(UserId,pagenumber);
+        var courses=  coursesManager.GetLearningCoursesById(UserId);
         return Ok(courses);
     }
 

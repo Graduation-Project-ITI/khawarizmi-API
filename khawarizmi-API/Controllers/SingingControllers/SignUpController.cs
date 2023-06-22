@@ -28,6 +28,7 @@ public class SignUpController : ControllerBase
             UserName = NewUser.name,
             Email = NewUser.email
         };
+        if(NewUser.role=="admin") user.IsAdmin= true;  
         var IsEmailExist = await usermanger.FindByEmailAsync(NewUser.email);
         if(IsEmailExist !=null)
         {
@@ -44,7 +45,7 @@ public class SignUpController : ControllerBase
         var ListOfclaims = new List<Claim>
         {
             new Claim(ClaimTypes.NameIdentifier,user.Id),
-            new Claim(ClaimTypes.Role,"User"),
+            new Claim(ClaimTypes.Role,NewUser.role),
 
 
         };

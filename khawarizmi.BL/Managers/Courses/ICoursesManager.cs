@@ -22,7 +22,7 @@ public interface ICoursesManager
     void UpdateCoursePublish(int courseId, string userId, bool publish);
     void AddCourseFeedback(int courseId, string userId, string feedback);
 
-    ICollection<MyLearningDTO> GetLearningCoursesById(string UserId, int pagenumber=1);
+    ICollection<MyLearningDTO> GetLearningCoursesById(string UserId);
     ICollection<MyLearningDTO> GetLearningCoursesIsBookMarked(string UserId);
     ICollection<MyLearningDTO> GetLearningCoursesIsLearning(string UserId);
     List<AllCoursesDto> GetAll();

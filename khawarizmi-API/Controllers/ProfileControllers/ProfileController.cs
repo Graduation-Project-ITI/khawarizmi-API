@@ -22,7 +22,7 @@ namespace khawarizmi_API.Controllers.ProfileControllers
         private readonly IUserProfile userprofile;
         private readonly IProfileManager profile;
 
-        public ProfileController(UserManager<User> userManager,IUserProfile userProfile, IProfileManager profile)
+        public ProfileController(UserManager<User> userManager, IUserProfile userProfile, IProfileManager profile)
         {
             this.userManager = userManager;
             this.userprofile = userProfile;
@@ -68,8 +68,8 @@ namespace khawarizmi_API.Controllers.ProfileControllers
 
                 //get extention
                 //abanoub.jpg
-               var extention=Path.GetExtension(userdata.UserImage.FileName).ToLower(); //=jpg
-               //i want save image in wwwroot   "newguid.jpg"
+                var extention = Path.GetExtension(userdata.UserImage.FileName).ToLower(); //=jpg
+                                                                                          //i want save image in wwwroot   "newguid.jpg"
                 var now = DateTime.Now;
                 var newImageName = $"{now.Year}{now.Month}{now.Day}{now.Hour}{now.Minute}{now.Second}{now.Millisecond}{extention}";                //make a path consist of www root path(base url) / image name   "localhost/newguid.jpg"
                 var imagePath = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot", newImageName); // specify the path to save the image
@@ -111,16 +111,11 @@ namespace khawarizmi_API.Controllers.ProfileControllers
                 UserImage = imageUrl,
                 Email = user.Email,
                 Gender = user.Gender,
-                Courses =  await profile.GetCoursesByPublisherIdAsync(userId)
+                Courses = await profile.GetCoursesByPublisherIdAsync(userId)
 
-        };
+            };
 
             return Ok(userProfile);
         }
-
-       
-
-
-
     }
 }
