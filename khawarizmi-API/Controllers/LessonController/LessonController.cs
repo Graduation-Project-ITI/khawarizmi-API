@@ -2,11 +2,7 @@
 using khawarizmi.BL.Managers.Lessons;
 using khawarizmi.DAL.Models;
 using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.Extensions.Logging.Abstractions;
-using System.Drawing;
-using System.Text.Json;
 
 namespace khawarizmi_API.Controllers.LessonController
 {
@@ -28,11 +24,11 @@ namespace khawarizmi_API.Controllers.LessonController
             string videoPath = await Helper.UploadvideoOnCloudinary(video);
 
             Lesson? lessonToAdd = lessonsManager.VideoMetadataToLesson(metadata, videoPath);
-            if(lessonToAdd is null) return BadRequest();
+            if (lessonToAdd is null) return BadRequest();
 
             lessonsManager.AddLesson(lessonToAdd);
 
-            return Ok(new {message = "Lesson added successfully"});
+            return Ok(new { message = "Lesson added successfully" });
         }
 
         [HttpDelete]
@@ -81,11 +77,11 @@ namespace khawarizmi_API.Controllers.LessonController
         [Route("update-video/{id}")]
         async public Task<IActionResult> ChangeVideo(int id, [FromForm] IFormFile video)
         {
-            string videoPath = await Helper.UploadvideoOnCloudinary(video);
+            string videoURL = await Helper.UploadvideoOnCloudinary(video);
 
-            lessonsManager.ChangeVideo(id, videoPath);
+            lessonsManager.ChangeVideo(id, videoURL);
 
-            return Ok(new { message = "Video updated successfully" });
+            return Ok(new { message = "Video updated successfully" , videoURL });
         }
     }
 }

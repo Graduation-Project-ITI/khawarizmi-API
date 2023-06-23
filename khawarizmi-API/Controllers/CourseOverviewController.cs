@@ -1,9 +1,6 @@
 ﻿using khawarizmi.BL.Dtos;
 using khawarizmi.BL.Managers;
-using khawarizmi.DAL.Models;
-using khawarizmi.DAL.Repositories;
 using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
 namespace khawarizmi_API.Controllers
@@ -21,12 +18,12 @@ namespace khawarizmi_API.Controllers
 
         [HttpGet]
         [Route("/CoursePage/{courseId}")]
-        public ActionResult<CourseDisplayDto?> GetCourseInfo(int courseId) 
+        public ActionResult<CourseDisplayDto?> GetCourseInfo(int courseId)
         {
             CourseDisplayDto? course = _coursesManager.GetCourseById(courseId);
             if (course is null) return NotFound(new { message = "Can not find this course" });
 
-            return _coursesManager.GetCourseById(courseId);
+            return course;
         }
 
         [HttpPut]
@@ -53,7 +50,7 @@ namespace khawarizmi_API.Controllers
             _coursesManager.UpdateUserCourseVote(edit.CourseId, edit.UserId, edit.Boolean);
             return Ok();
         }
-        
+
         [HttpPatch]
         [Route("/CoursePage/userLearn")]
         public IActionResult PatchUserCourseLearn(UserCourseEditDto edit)
@@ -61,7 +58,7 @@ namespace khawarizmi_API.Controllers
             _coursesManager.UpdateUserCourseLearn(edit.CourseId, edit.UserId, edit.Boolean);
             return Ok();
         }
-        
+
         [HttpPatch]
         [Route("/CoursePage/userBookmark")]
         public IActionResult PatchUserCourseBookmark(UserCourseEditDto edit)
