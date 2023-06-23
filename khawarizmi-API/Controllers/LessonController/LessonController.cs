@@ -1,15 +1,18 @@
 ﻿using khawarizmi.BL.Dtos.Lessons;
 using khawarizmi.BL.Managers.Lessons;
 using khawarizmi.DAL.Models;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging.Abstractions;
+using System.Drawing;
 using System.Text.Json;
 
 namespace khawarizmi_API.Controllers.LessonController
 {
     [Route("api/[controller]")]
     [ApiController]
+    [Authorize]
     public class LessonController : ControllerBase
     {
         private readonly ILessonsManager lessonsManager;
@@ -20,18 +23,29 @@ namespace khawarizmi_API.Controllers.LessonController
         }
 
         [HttpPost]
-        async public Task<IActionResult> CreateLesson([FromForm] IFormFile video, [FromForm] string metadata)
+        public async Task<IActionResult> CreateLesson([FromForm] IFormFile video, [FromForm] string metadata)
         {
-            //prepare video by providing path to uploads
-            string path = lessonsManager.GetVideoPath(video.FileName);
+            string videoPath = await Helper.UploadvideoOnCloudinary(video);
 
-            await lessonsManager.StoreVideoToUploads(video, path);
-            Lesson? lesson = lessonsManager.VideoMetadataToLesson(metadata, path);
+            Lesson? lessonToAdd = lessonsManager.VideoMetadataToLesson(metadata, videoPath);
+            if(lessonToAdd is null) return BadRequest();
 
-            if (lesson is null) return BadRequest();
-            lessonsManager.AddLesson(lesson);
+            lessonsManager.AddLesson(lessonToAdd);
 
-            return NoContent();
+            return Ok(new {message = "Lesson added successfully"});
+
+            #region Abdullah
+            ////prepare video by providing path to uploads
+            //string path = lessonsManager.GetVideoPath(video.FileName);
+
+            //await lessonsManager.StoreVideoToUploads(video, path);
+            //Lesson? lesson = lessonsManager.VideoMetadataToLesson(metadata, path);
+
+            //if (lesson is null) return BadRequest();
+            //lessonsManager.AddLesson(lesson);
+
+            //return NoContent();
+            #endregion
         }
 
         [HttpGet]

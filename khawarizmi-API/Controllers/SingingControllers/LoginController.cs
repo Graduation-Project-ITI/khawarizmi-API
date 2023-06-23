@@ -16,7 +16,7 @@ namespace khawarizmi_API.Controllers.SingingControllers
         private readonly UserManager<User> userManager;
         private readonly IConfiguration config;
 
-        public LoginController(UserManager<User> userManager,IConfiguration _config)
+        public LoginController(UserManager<User> userManager, IConfiguration _config)
         {
             this.userManager = userManager;
             config = _config;
@@ -38,9 +38,32 @@ namespace khawarizmi_API.Controllers.SingingControllers
             var claims= await userManager.GetClaimsAsync(user);
             var exp=DateTime.Now.AddDays(1);
 
-          var token=  Helper.GenrateToken(claims, exp, config);
+            var token=  Helper.GenrateToken(claims, exp, config);
 
             return new TokenDTO(token, user.Id);
+
+        }
+
+        [HttpPost]
+        [Route("api/adminLogin")]
+        public async Task<ActionResult<TokenDTO>> SignInAdmin([FromBody] LoginDTO Credtentials)
+        {
+            User? user = await userManager.FindByNameAsync(Credtentials.name);
+           
+            if (user is null) return BadRequest(new { Message = "error user or pass" });
+
+            if (user?.IsAdmin == false) return BadRequest("Only Admins can signin");
+           
+            var IsPasswordCorrect = await userManager.CheckPasswordAsync(user ?? new User(), Credtentials.password);
+           
+            if (!IsPasswordCorrect) return Unauthorized();
+
+            var claims = await userManager.GetClaimsAsync(user ?? new User());
+            var exp = DateTime.Now.AddDays(1);
+
+            var token = Helper.GenrateToken(claims, exp, config);
+
+            return new TokenDTO(token, user?.Id??"");
 
         }
     }

@@ -2,6 +2,7 @@
 using khawarizmi.BL.Dtos.Helpers;
 using khawarizmi.BL.Dtos.Users;
 using khawarizmi.BL.Managers.Users;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;

@@ -8,6 +8,8 @@ namespace khawarizmi.BL.Dtos.ProfileDTO
 {
     public class ProfileCourseDTO
     {
+        public int id { get; init; }
+
         public string Name { get; init; }
         public string Description { get; init; }
         public string CourseImage { get; init; }

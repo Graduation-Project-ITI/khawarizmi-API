@@ -12,6 +12,7 @@ namespace khawarizmi_API.Controllers;
 
 [Route("api/[controller]")]
 [ApiController]
+[Authorize]
 public class CreateCourseController : ControllerBase
 {
     private readonly ITagsManager _tagsManager;
@@ -41,11 +42,11 @@ public class CreateCourseController : ControllerBase
 
     [HttpPost]
 	[Route("/CreateCourse/{userId}")]
-	public ActionResult<int> PostNewCourse([FromForm] CourseAddDto newCourse, string userId)
+	public async Task<ActionResult<int>> PostNewCourse([FromForm] CourseAddDto newCourse, string userId)
     {
-        newCourse.Image = Helper.UploadImageOnCloudinary(newCourse.File);
+        newCourse.Image = await Helper.UploadImageOnCloudinary(newCourse.File);
         
-        var NewCourseId = _coursesManager.AddNewCourse(userId, newCourse);
+        int NewCourseId = _coursesManager.AddNewCourse(userId, newCourse);
 
 		return Ok(NewCourseId);
 	}

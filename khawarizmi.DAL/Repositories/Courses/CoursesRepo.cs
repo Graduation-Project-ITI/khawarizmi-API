@@ -47,13 +47,12 @@ public class CoursesRepo : GenericRepo<Course>, ICoursesRepo
 
     }
 
-    public ICollection<UserCourses> GetAllCourses(string UserId,int pagenumber=1)
+    public ICollection<UserCourses> GetAllCourses(string UserId)
     {
         var courses = _context.Set<UserCourses>()
-      .Where(c => c.UserId == UserId && c.IsLearning || c.IsBookmarked)
+      .Where(c => c.UserId == UserId)
+      .Where(c => c.IsLearning || c.IsBookmarked)
       .Include(c => c.Course)
-      .Skip((pagenumber-1)*12)
-      .Take(12)
       .ToList();
         return courses;
 
@@ -62,9 +61,9 @@ public class CoursesRepo : GenericRepo<Course>, ICoursesRepo
     public ICollection<UserCourses> GetAllCoursesIsBookMarked(string UserId)
     {
         var CoursesIsBookMarked = _context.Set<UserCourses>()
-            .Where(c => c.IsBookmarked==true&& c.UserId==UserId)
+            .Where(c => c.UserId==UserId)
+            .Where(c => c.IsBookmarked==true)
             .Include(c => c.Course)
-            .Take(12)
             .ToList();
         return CoursesIsBookMarked;
     }
@@ -72,8 +71,10 @@ public class CoursesRepo : GenericRepo<Course>, ICoursesRepo
     public ICollection<UserCourses> GetAllCoursesIsLearining(string UserId)
     {
         var coursesIsLearning = _context.Set<UserCourses>()
-            .Where(c => c.IsLearning==true&&c.UserId==UserId)
-            .Include(c => c.Course).Take(12).ToList();
+            .Where(c => c.UserId==UserId)
+            .Where(c => c.IsLearning==true)
+            .Include(c => c.Course)
+            .ToList();
         return coursesIsLearning;
     }
 
@@ -109,6 +110,7 @@ public class CoursesRepo : GenericRepo<Course>, ICoursesRepo
 
     public List<Course> Search(string keyWord)
     {
+
         return _context.Courses.Where(c => c.Name.Contains(keyWord)).ToList();
     }
     //public IQueryable<Course> GetCoursesWithUsers()
