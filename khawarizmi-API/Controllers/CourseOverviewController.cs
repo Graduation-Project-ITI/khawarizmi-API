@@ -31,7 +31,7 @@ namespace khawarizmi_API.Controllers
 
         [HttpPut]
         [Route("/CoursePage/Edit")]
-        public async Task<IActionResult> PutCourse([FromForm] CourseEditDto course)
+        public async Task<ActionResult<int>> PutCourse([FromForm] CourseEditDto course)
         {
             course.CourseImage = await Helper.UploadImageOnCloudinary(course.File);
             _coursesManager.EditCourse(course);

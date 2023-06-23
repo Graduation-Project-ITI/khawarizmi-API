@@ -16,10 +16,12 @@ namespace khawarizmi.BL.Managers.Lessons;
 public class LessonsManager : ILessonsManager
 {
     private readonly ILessonRepo lessonRepo;
+    private readonly KhawarizmiContext _context;
 
-    public LessonsManager(ILessonRepo lessonRepo)
+    public LessonsManager(ILessonRepo lessonRepo, KhawarizmiContext context)
     {
         this.lessonRepo = lessonRepo;
+        _context = context;
     }
     public string GetVideoPath(string videoName)
     {
@@ -74,6 +76,19 @@ public class LessonsManager : ILessonsManager
         lessonRepo.SaveChanges();
     }
 
+    public void DeleteLesson(string userId, int lessonId)
+    {
+        Lesson? lessonToDelete = lessonRepo.Get(lessonId);
+        if(lessonToDelete is null) return;
+        _context.Entry(lessonToDelete).Reference(l => l.Course).Load();
+        
+        if (lessonToDelete.Course.PublisherId == userId)
+        {
+            lessonRepo.Delete(lessonToDelete);
+            lessonRepo.SaveChanges();
+        }
+    }
+
     public Lesson? GetLessonById(int id)
     {
         return lessonRepo.Get(id);
@@ -108,8 +123,9 @@ public class LessonsManager : ILessonsManager
     }
     public void ChangeVideo(int id, string videoURL)
     {
-        var lesson = lessonRepo.Get(id);
+        Lesson? lesson = lessonRepo.Get(id);
         if (lesson is null) return;
+
         lesson.VideoURL = videoURL;
         lessonRepo.SaveChanges();
     }
