@@ -13,6 +13,7 @@ using System.Text;
 using System.Threading.Tasks; 
 using Microsoft.IdentityModel.Tokens;
 using khawarizmi.BL.Dtos.Helpers;
+using System.Text.Json;
 
 namespace khawarizmi.BL.Managers;
 
@@ -36,7 +37,7 @@ public class CoursesManager : ICoursesManager
 
 
         IEnumerable<TagReadDto> tags = c?.Tags?.Select(t => new TagReadDto(t.Id, t.Name)) ?? new List<TagReadDto>();
-        IEnumerable<FeedbackReadDto> feedbacks = c?.Feedbacks?.Select(t => new FeedbackReadDto(t.Id, t.body)) ?? new List<FeedbackReadDto>();
+        IEnumerable<FeedbackReadDto> feedbacks = c?.Feedbacks?.Select(t => new FeedbackReadDto(t.Id, t.UserId, t.body)) ?? new List<FeedbackReadDto>();
         IEnumerable<LessonReadDto> lessons = c?.Lessons?.Select(t => new LessonReadDto(t.Id, t.Name, t.Description ?? "", t.VideoURL, t.IsPublished)) ?? new List<LessonReadDto>();
         IEnumerable<CourseUsersOverviewDto> courseUsers = c?.UserCourses?.Select(cu => new CourseUsersOverviewDto(cu.Id, cu.CourseId, cu.UserId, cu.IsBookmarked, cu.IsLearning, cu.IsVoted, cu.IsUpVoted)) ?? new List<CourseUsersOverviewDto>();
 

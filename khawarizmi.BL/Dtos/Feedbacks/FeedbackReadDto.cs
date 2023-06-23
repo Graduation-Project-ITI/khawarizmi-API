@@ -6,4 +6,4 @@ using System.Threading.Tasks;
 
 namespace khawarizmi.BL.Dtos;
 
-public record FeedbackReadDto (int Id, string Body);
+public record FeedbackReadDto (int CourseId, string UserId, string Body);
