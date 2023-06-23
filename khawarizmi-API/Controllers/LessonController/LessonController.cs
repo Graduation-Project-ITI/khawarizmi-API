@@ -33,19 +33,15 @@ namespace khawarizmi_API.Controllers.LessonController
             lessonsManager.AddLesson(lessonToAdd);
 
             return Ok(new {message = "Lesson added successfully"});
+        }
 
-            #region Abdullah
-            ////prepare video by providing path to uploads
-            //string path = lessonsManager.GetVideoPath(video.FileName);
+        [HttpDelete]
+        [Route("delete/{lessonId}/{userId}")]
+        public IActionResult DeleteLesson(string userId, int lessonId)
+        {
+            lessonsManager.DeleteLesson(userId, lessonId);
 
-            //await lessonsManager.StoreVideoToUploads(video, path);
-            //Lesson? lesson = lessonsManager.VideoMetadataToLesson(metadata, path);
-
-            //if (lesson is null) return BadRequest();
-            //lessonsManager.AddLesson(lesson);
-
-            //return NoContent();
-            #endregion
+            return Ok(new { message = "Lesson deleted successfully" });
         }
 
         [HttpGet]
@@ -85,20 +81,11 @@ namespace khawarizmi_API.Controllers.LessonController
         [Route("update-video/{id}")]
         async public Task<IActionResult> ChangeVideo(int id, [FromForm] IFormFile video)
         {
-            var lesson = lessonsManager.GetLessonById(id);
-            if (lesson is null) return NotFound();
+            string videoPath = await Helper.UploadvideoOnCloudinary(video);
 
-            // delete prev video by full path
-            string videoFullPath = lessonsManager.RelativeToAbsolutePath(lesson.VideoURL);
-            lessonsManager.DeleteVideo(videoFullPath);
+            lessonsManager.ChangeVideo(id, videoPath);
 
-
-            // store the new video
-            await lessonsManager.StoreVideoToUploads(video, videoFullPath);
-            //lessonsManager.ChangeVideo(id, videoFullPath);
-
-            // return new videoURL
-            return Ok(new { videoURL = lesson.VideoURL });
+            return Ok(new { message = "Video updated successfully" });
         }
     }
 }
