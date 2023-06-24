@@ -3,14 +3,7 @@ using khawarizmi.DAL.Context;
 using khawarizmi.DAL.Models;
 using khawarizmi.DAL.Repositories.Lessons;
 using Microsoft.AspNetCore.Http;
-using Microsoft.EntityFrameworkCore.Metadata.Internal;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using System.Text.Json;
-using System.Text.Json.Nodes;
-using System.Threading.Tasks;
 
 namespace khawarizmi.BL.Managers.Lessons;
 public class LessonsManager : ILessonsManager
@@ -66,7 +59,7 @@ public class LessonsManager : ILessonsManager
             Description = lessonObj.description,
             IsPublished = lessonObj.isPublish,
             CourseId = lessonObj.courseId,
-            VideoURL= videoPath
+            VideoURL = videoPath
         };
     }
 
@@ -79,9 +72,9 @@ public class LessonsManager : ILessonsManager
     public void DeleteLesson(string userId, int lessonId)
     {
         Lesson? lessonToDelete = lessonRepo.Get(lessonId);
-        if(lessonToDelete is null) return;
+        if (lessonToDelete is null) return;
         _context.Entry(lessonToDelete).Reference(l => l.Course).Load();
-        
+
         if (lessonToDelete.Course.PublisherId == userId)
         {
             lessonRepo.Delete(lessonToDelete);
@@ -101,7 +94,7 @@ public class LessonsManager : ILessonsManager
         return new LessonDisplayDto
         (
             lesson.Name,
-            videoURLWithHostName, 
+            videoURLWithHostName,
             lesson.Description
         );
     }

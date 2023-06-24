@@ -1,11 +1,6 @@
 ﻿using khawarizmi.BL.Dtos.Lessons;
 using khawarizmi.DAL.Models;
 using Microsoft.AspNetCore.Http;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace khawarizmi.BL.Managers.Lessons;
 
