@@ -58,20 +58,21 @@ namespace khawarizmi_API.Controllers.ProfileControllers
 
             if (userdata.UserImage != null)
             {
+                user.UserImage = await Helper.UploadImageOnCloudinary(userdata.UserImage);
 
-                //get extention
-                //abanoub.jpg
-                var extention = Path.GetExtension(userdata.UserImage.FileName).ToLower(); //=jpg
-                                                                                          //i want save image in wwwroot   "newguid.jpg"
-                var now = DateTime.Now;
-                var newImageName = $"{now.Year}{now.Month}{now.Day}{now.Hour}{now.Minute}{now.Second}{now.Millisecond}{extention}";                //make a path consist of www root path(base url) / image name   "localhost/newguid.jpg"
-                var imagePath = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot", newImageName); // specify the path to save the image
-                //go to stream and copy user image 
-                using (var stream = new FileStream(imagePath, FileMode.Create))
-                {
-                    await userdata.UserImage.CopyToAsync(stream); // copy the image to the specified location
-                }
-                user.UserImage = newImageName;
+                ////get extention
+                ////abanoub.jpg
+                //var extention = Path.GetExtension(userdata.UserImage.FileName).ToLower(); //=jpg
+                //                                                                          //i want save image in wwwroot   "newguid.jpg"
+                //var now = DateTime.Now;
+                //var newImageName = $"{now.Year}{now.Month}{now.Day}{now.Hour}{now.Minute}{now.Second}{now.Millisecond}{extention}";                //make a path consist of www root path(base url) / image name   "localhost/newguid.jpg"
+                //var imagePath = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot", newImageName); // specify the path to save the image
+                ////go to stream and copy user image 
+                //using (var stream = new FileStream(imagePath, FileMode.Create))
+                //{
+                //    await userdata.UserImage.CopyToAsync(stream); // copy the image to the specified location
+                //}
+                //user.UserImage = newImageName;
             }
 
 
