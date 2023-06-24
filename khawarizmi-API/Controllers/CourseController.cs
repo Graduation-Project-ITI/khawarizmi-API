@@ -10,7 +10,6 @@ namespace khawarizmi_API.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    [Authorize]
     public class CourseController : ControllerBase
     {
         private readonly ICoursesManager _courseManager;
@@ -22,6 +21,7 @@ namespace khawarizmi_API.Controllers
 
         [HttpGet]
         [Route("/CoursesPage")]
+        [Authorize]
         public ActionResult<List<AllCoursesDto>> GetAll()
         {
             return _courseManager.GetAll();
@@ -29,6 +29,7 @@ namespace khawarizmi_API.Controllers
   
         [HttpGet]
         [Route("/CoursesPerPage")]
+        [Authorize]
         public ActionResult<AllAndCountDto> GetPaginationCourse(int PageNumber)
         {
             return _courseManager.GetPaginationCourse(PageNumber);
@@ -36,6 +37,7 @@ namespace khawarizmi_API.Controllers
 
         [HttpGet]
         [Route("/CourseSearch")]
+        [Authorize]
         public ActionResult<AllAndCountDto> Search(string kerWord)
         {
             var x = _courseManager.Search(kerWord);
@@ -52,8 +54,9 @@ namespace khawarizmi_API.Controllers
          
         // for Admin courses
         [HttpGet("AdminCourses")]
+        [Authorize]
         //[Route("AdminCourses")]
-       
+
         public ActionResult <PaginationDisplayDto<AdminCoursesDisplayDto>> GetAdminCourses(int pageIndex, int pageSize, string searchBy="", string orderBy="")
         {
             return _courseManager.CoursePaginator(pageIndex, searchBy, orderBy, pageSize);
