@@ -51,9 +51,7 @@ namespace khawarizmi_API.Controllers
         }
          
         // for Admin courses
-        [HttpGet("AdminCourses")]
-        //[Route("AdminCourses")]
-       
+        [HttpGet("AdminCourses")]       
         public ActionResult <PaginationDisplayDto<AdminCoursesDisplayDto>> GetAdminCourses(int pageIndex, int pageSize, string searchBy="", string orderBy="")
         {
             return _courseManager.CoursePaginator(pageIndex, searchBy, orderBy, pageSize);
