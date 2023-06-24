@@ -11,8 +11,8 @@ namespace khawarizmi.DAL.Models;
 
 public class User: IdentityUser
 {
-    [NotMapped]
-    private readonly static string DefaultUserImage = "http://res.cloudinary.com/dzjcky6eb/image/upload/v1677747807/vyvdoxetqkgbelmrdl3f.png";
+    //[NotMapped]
+    private readonly static string DefaultUserImage = "https://upload.wikimedia.org/wikipedia/commons/b/b5/Windows_10_Default_Profile_Picture.svg";
     public bool IsAdmin { get; set; }
     public Gender Gender { get; set; }
     public string UserImage { get; set; } = DefaultUserImage;

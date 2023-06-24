@@ -1,15 +1,14 @@
 ﻿using khawarizmi.BL.Dtos.Lessons;
 using khawarizmi.BL.Managers.Lessons;
 using khawarizmi.DAL.Models;
-using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.Extensions.Logging.Abstractions;
-using System.Text.Json;
 
 namespace khawarizmi_API.Controllers.LessonController
 {
     [Route("api/[controller]")]
     [ApiController]
+    [Authorize]
     public class LessonController : ControllerBase
     {
         private readonly ILessonsManager lessonsManager;
@@ -20,18 +19,25 @@ namespace khawarizmi_API.Controllers.LessonController
         }
 
         [HttpPost]
-        async public Task<IActionResult> CreateLesson([FromForm] IFormFile video, [FromForm] string metadata)
+        public async Task<IActionResult> CreateLesson([FromForm] IFormFile video, [FromForm] string metadata)
         {
-            //prepare video by providing path to uploads
-            string path = lessonsManager.GetVideoPath(video.FileName);
+            string videoPath = await Helper.UploadvideoOnCloudinary(video);
 
-            await lessonsManager.StoreVideoToUploads(video, path);
-            Lesson? lesson = lessonsManager.VideoMetadataToLesson(metadata, path);
+            Lesson? lessonToAdd = lessonsManager.VideoMetadataToLesson(metadata, videoPath);
+            if (lessonToAdd is null) return BadRequest();
 
-            if (lesson is null) return BadRequest();
-            lessonsManager.AddLesson(lesson);
+            lessonsManager.AddLesson(lessonToAdd);
 
-            return NoContent();
+            return Ok(new { message = "Lesson added successfully" });
+        }
+
+        [HttpDelete]
+        [Route("delete/{lessonId}/{userId}")]
+        public IActionResult DeleteLesson(string userId, int lessonId)
+        {
+            lessonsManager.DeleteLesson(userId, lessonId);
+
+            return Ok(new { message = "Lesson deleted successfully" });
         }
 
         [HttpGet]
@@ -71,20 +77,11 @@ namespace khawarizmi_API.Controllers.LessonController
         [Route("update-video/{id}")]
         async public Task<IActionResult> ChangeVideo(int id, [FromForm] IFormFile video)
         {
-            var lesson = lessonsManager.GetLessonById(id);
-            if (lesson is null) return NotFound();
+            string videoURL = await Helper.UploadvideoOnCloudinary(video);
 
-            // delete prev video by full path
-            string videoFullPath = lessonsManager.RelativeToAbsolutePath(lesson.VideoURL);
-            lessonsManager.DeleteVideo(videoFullPath);
+            lessonsManager.ChangeVideo(id, videoURL);
 
-
-            // store the new video
-            await lessonsManager.StoreVideoToUploads(video, videoFullPath);
-            //lessonsManager.ChangeVideo(id, videoFullPath);
-
-            // return new videoURL
-            return Ok(new { videoURL = lesson.VideoURL });
+            return Ok(new { message = "Video updated successfully" , videoURL });
         }
     }
 }

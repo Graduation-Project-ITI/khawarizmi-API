@@ -2,6 +2,7 @@
 using khawarizmi.BL.Dtos.Courses;
 using khawarizmi.BL.Dtos.Helpers;
 using khawarizmi.BL.Managers;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
@@ -17,8 +18,10 @@ namespace khawarizmi_API.Controllers
         {
             _courseManager = courseManager;
         }
+
         [HttpGet]
         [Route("/CoursesPage")]
+        [Authorize]
         public ActionResult<List<AllCoursesDto>> GetAll()
         {
             return _courseManager.GetAll();
@@ -26,6 +29,7 @@ namespace khawarizmi_API.Controllers
   
         [HttpGet]
         [Route("/CoursesPerPage")]
+        [Authorize]
         public ActionResult<AllAndCountDto> GetPaginationCourse(int PageNumber)
         {
             return _courseManager.GetPaginationCourse(PageNumber);
@@ -33,6 +37,7 @@ namespace khawarizmi_API.Controllers
 
         [HttpGet]
         [Route("/CourseSearch")]
+        [Authorize]
         public ActionResult<AllAndCountDto> Search(string kerWord)
         {
             var x = _courseManager.Search(kerWord);
@@ -46,15 +51,16 @@ namespace khawarizmi_API.Controllers
             }
             return x;
         }
-
+         
         // for Admin courses
         [HttpGet("AdminCourses")]
+        [Authorize]
         //[Route("AdminCourses")]
-       
+
         public ActionResult <PaginationDisplayDto<AdminCoursesDisplayDto>> GetAdminCourses(int pageIndex, int pageSize, string searchBy="", string orderBy="")
         {
             return _courseManager.CoursePaginator(pageIndex, searchBy, orderBy, pageSize);
-        }
+        } 
 
         [HttpGet]
         [Route("LatestCourses")]
@@ -68,6 +74,12 @@ namespace khawarizmi_API.Controllers
         public ActionResult<List<AllCoursesDto>> GetTopCourses()
         {
             return _courseManager.GetTopCourses(); 
+        }
+        [HttpGet]
+        [Route(("CategoryCourses"))]
+        public ActionResult<AllAndCountDto> GetCategoryCourses(int catId, int pageNum)
+        {
+            return _courseManager.GetPaginationCourse(pageNum,catId);
         }
     }
 }

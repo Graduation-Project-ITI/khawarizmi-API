@@ -1,9 +1,6 @@
 ﻿using khawarizmi.BL.Dtos;
 using khawarizmi.BL.Managers;
-using khawarizmi.DAL.Models;
-using khawarizmi.DAL.Repositories;
 using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
 namespace khawarizmi_API.Controllers
@@ -21,16 +18,19 @@ namespace khawarizmi_API.Controllers
 
         [HttpGet]
         [Route("/CoursePage/{courseId}")]
-        public ActionResult<CourseDisplayDto?> GetCourseInfo(int courseId) 
+        public ActionResult<CourseDisplayDto?> GetCourseInfo(int courseId)
         {
-            return _coursesManager.GetCourseById(courseId);
+            CourseDisplayDto? course = _coursesManager.GetCourseById(courseId);
+            if (course is null) return NotFound(new { message = "Can not find this course" });
+
+            return course;
         }
 
         [HttpPut]
         [Route("/CoursePage/Edit")]
-        public IActionResult PutCourse([FromForm] CourseEditDto course)
+        public async Task<ActionResult<int>> PutCourse([FromForm] CourseEditDto course)
         {
-            course.CourseImage = Helper.UploadImageOnCloudinary(course.File);
+            course.CourseImage = await Helper.UploadImageOnCloudinary(course.File);
             _coursesManager.EditCourse(course);
             return Ok(course.Id);
         }
@@ -50,7 +50,7 @@ namespace khawarizmi_API.Controllers
             _coursesManager.UpdateUserCourseVote(edit.CourseId, edit.UserId, edit.Boolean);
             return Ok();
         }
-        
+
         [HttpPatch]
         [Route("/CoursePage/userLearn")]
         public IActionResult PatchUserCourseLearn(UserCourseEditDto edit)
@@ -58,7 +58,7 @@ namespace khawarizmi_API.Controllers
             _coursesManager.UpdateUserCourseLearn(edit.CourseId, edit.UserId, edit.Boolean);
             return Ok();
         }
-        
+
         [HttpPatch]
         [Route("/CoursePage/userBookmark")]
         public IActionResult PatchUserCourseBookmark(UserCourseEditDto edit)

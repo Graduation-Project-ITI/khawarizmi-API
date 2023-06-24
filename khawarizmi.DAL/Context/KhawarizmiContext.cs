@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Configuration;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -23,7 +24,7 @@ public class KhawarizmiContext : IdentityDbContext<User>
 
     public KhawarizmiContext(DbContextOptions<KhawarizmiContext> options) : base(options)
     {
-
+        
     }
 
     protected override void OnModelCreating(ModelBuilder builder)

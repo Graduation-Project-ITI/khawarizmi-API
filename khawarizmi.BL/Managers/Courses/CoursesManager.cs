@@ -10,9 +10,10 @@ using System.Linq;
 using System.Linq.Expressions;
 using System.Security.Policy;
 using System.Text;
-using System.Threading.Tasks;
+using System.Threading.Tasks; 
 using Microsoft.IdentityModel.Tokens;
 using khawarizmi.BL.Dtos.Helpers;
+using System.Text.Json;
 
 namespace khawarizmi.BL.Managers;
 
@@ -34,8 +35,9 @@ public class CoursesManager : ICoursesManager
     {
         Course? c = _coursesRepo.GetCourseById(courseId);
 
+
         IEnumerable<TagReadDto> tags = c?.Tags?.Select(t => new TagReadDto(t.Id, t.Name)) ?? new List<TagReadDto>();
-        IEnumerable<FeedbackReadDto> feedbacks = c?.Feedbacks?.Select(t => new FeedbackReadDto(t.Id, t.body)) ?? new List<FeedbackReadDto>();
+        IEnumerable<FeedbackReadDto> feedbacks = c?.Feedbacks?.Select(t => new FeedbackReadDto(t.Id, t.UserId, t.body)) ?? new List<FeedbackReadDto>();
         IEnumerable<LessonReadDto> lessons = c?.Lessons?.Select(t => new LessonReadDto(t.Id, t.Name, t.Description ?? "", t.VideoURL, t.IsPublished)) ?? new List<LessonReadDto>();
         IEnumerable<CourseUsersOverviewDto> courseUsers = c?.UserCourses?.Select(cu => new CourseUsersOverviewDto(cu.Id, cu.CourseId, cu.UserId, cu.IsBookmarked, cu.IsLearning, cu.IsVoted, cu.IsUpVoted)) ?? new List<CourseUsersOverviewDto>();
 
@@ -251,11 +253,11 @@ public class CoursesManager : ICoursesManager
         _coursesRepo.SaveChanges();
     }
 
-    public ICollection<MyLearningDTO> GetLearningCoursesById(string UserId, int pagenumber)
+    public ICollection<MyLearningDTO> GetLearningCoursesById(string UserId)
     {
-        var courses = _coursesRepo.GetAllCourses(UserId, pagenumber);
+        var courses = _coursesRepo.GetAllCourses(UserId);
         return courses.Select(c => new MyLearningDTO(image: c.Course?.CourseImage ?? "", name: c.Course?.Name ?? "",
-            Creatorname: _coursesRepo.GetPublisherNameById(c.Course?.PublisherId ?? "") ?? "")).ToList();
+            Creatorname: _coursesRepo.GetPublisherNameById(c.Course?.PublisherId ?? "") ?? "",id: c.Course.Id)).ToList();
 
     }
 
@@ -263,7 +265,7 @@ public class CoursesManager : ICoursesManager
     {
         var courses = _coursesRepo.GetAllCoursesIsBookMarked(UserId);
         return courses
-            .Select(c => new MyLearningDTO(image: c.Course?.CourseImage ?? "", name: c.Course?.Name ?? "",
+            .Select(c => new MyLearningDTO(image: c.Course?.CourseImage ?? "", name: c.Course?.Name ?? "", id: c.Course.Id,
             Creatorname: _coursesRepo.GetPublisherNameById(c.Course?.PublisherId ?? "") ?? ""))
             .ToList();
     }
@@ -272,14 +274,19 @@ public class CoursesManager : ICoursesManager
     {
         var courses = _coursesRepo.GetAllCoursesIsLearining(UserId);
         return courses
-            .Select(c => new MyLearningDTO(image: c.Course?.CourseImage ?? "", name: c.Course?.Name ?? "",
+            .Select(c => new MyLearningDTO(image: c.Course?.CourseImage ?? "", name: c.Course?.Name ?? "", id: c.Course.Id,
             Creatorname: _coursesRepo.GetPublisherNameById(c.Course?.PublisherId ?? "") ?? ""))
             .ToList();
     }
 
-    public AllAndCountDto GetPaginationCourse(int PageNumber)
+    public AllAndCountDto GetPaginationCourse(int PageNumber, int catId=0)
     {
         var Allcourses = _coursesRepo.GetAll().Where(c => c.IsPublished == true);
+        if (catId > 0)
+        {
+            Allcourses = _coursesRepo.GetAll().Where(c => c.IsPublished == true).Where(c => c.CategoryId == catId);
+        }
+
         int y = Allcourses.Count();
         List<Course> coursePageDb =Allcourses.Skip((PageNumber - 1) * 8).Take(8).ToList();
         var x= coursePageDb.Select(c => new AllCoursesDto
@@ -408,4 +415,32 @@ public class CoursesManager : ICoursesManager
             SearchCount = 5
         }).ToList();
     }
+    public object GetAdminDashbordinfo()
+    {
+        var vistor = _coursesRepo.Vistorssnumber();
+        var creator = _coursesRepo.Creatorsnumber();
+        var course=_coursesRepo.Coursesnumber();
+        var Dashinfo= new {Vistor=vistor, Creator=creator,Course=course};
+        return Dashinfo;
+    }
 }
+
+
+//var Allcourses = _coursesRepo.GetAll().Where(c => c.IsPublished == true);
+//int y = Allcourses.Count();
+//List<Course> coursePageDb = Allcourses.Skip((PageNumber - 1) * 8).Take(8).ToList();
+//var x = coursePageDb.Select(c => new AllCoursesDto
+//{
+//    Id = c.Id,
+//    Name = c.Name,
+//    Description = c.Description,
+//    CourseImage = c.CourseImage,
+//    Date = c.Date,
+//    UpVotes = c.UpVotes,
+//    DownVotes = c.DownVotes
+//}).ToList();
+//        return new AllAndCountDto
+//        {
+//            Count = y,
+//            AllCourses = x
+//        };
