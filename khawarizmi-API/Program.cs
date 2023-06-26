@@ -62,8 +62,9 @@ builder.Services.AddIdentity<User, IdentityRole>(
     options =>
     {
        
-        options.Password.RequireLowercase = false;
-        options.Password.RequireUppercase = false;
+        options.Password.RequireLowercase = true;
+        options.Password.RequireUppercase = true;
+        options.Password.RequireDigit = true;
         options.User.RequireUniqueEmail = true;
         
     }

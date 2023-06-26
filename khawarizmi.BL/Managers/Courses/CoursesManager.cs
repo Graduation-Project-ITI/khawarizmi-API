@@ -386,7 +386,7 @@ public class CoursesManager : ICoursesManager
 
     public List<AllCoursesDto> GetLatestCourses()
     {
-       var coursesDb= _coursesRepo.GetAll().Where(c => c.IsPublished == true).OrderByDescending(c => c.Date).Take(5);
+       var coursesDb= _coursesRepo.GetAll().Where(c => c.IsPublished == true).OrderByDescending(c => c.Id).Take(5);
         return coursesDb.Select(c => new AllCoursesDto
         {
             Id = c.Id,
